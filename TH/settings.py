@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import pymysql
+
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +28,7 @@ SECRET_KEY = '1dcs*9$k2ei0phpwt6&%=8v68oyog*a)d86vt4-m*+8u3-=595'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.13']
+ALLOWED_HOSTS = ['192.168.1.13','127.0.0.1']
 
 
 # Application definition
@@ -37,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'appTH.apps.AppTHConfig',
+    'appTH',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +58,7 @@ ROOT_URLCONF = 'TH.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +71,16 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_DIRS = (
+
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+
+)
+
+
 WSGI_APPLICATION = 'TH.wsgi.application'
 
 
@@ -76,8 +89,15 @@ WSGI_APPLICATION = 'TH.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'th_db',
+        'USER': 'pi',
+        'PASSWORD':'',
+        'HOST':'localhost',
+        'PORT': '3306',
+        'OPTIONS':{
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
