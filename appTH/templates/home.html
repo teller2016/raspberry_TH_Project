@@ -5,24 +5,33 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>우정바이오 온습도계</title>
     <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
     <h1>우정바이오 온습도계</h1>
     <button><a href="{% url 'home' %}">새로고침</a></button>
-    <button>csv파일로 저장하기</button>
     
     <br></br>
     <div class="pi-state">
         <p>파이 정보: {{pi_num}}번</p>
         <p>파이 주소: {{pi_ip}}</p>
-        <p>파이 연결 상태: {{pi_state}}</p>
-        <p>파이 실행 상태: {{run_state}}</p>
-        
-        <br></br>
-    </div>    
-    <button>새로시작하기</button>
-    <button>종료하기</button>
+    {% if pi_state == 0 %}
+        <p>파이 연결 상태: 연결 안 됨</p>
+        <p>파이 실행 상태: 연결 안 됨</p>
+    </div>
+    {% else %}
+        <p>파이 연결 상태: 연결 됨</p>
+        {% if run_state == 1 %}
+            <p>파이 실행 상태: 실행중</p>
+    </div>
+    <button><a href="{% url 'end' %}">종료하기</a></button>
+        {% else %}
+            <p>파이 실행 상태: 대기중</p>
+    </div>
+    <button><a href="{% url 'restart' %}">새로 시작하기</a></button>
+    <button><a href="{% url 'csv' %}">csv파일로 저장하기</a></button>
+        {% endif %}
     
     <br></br>
 
@@ -32,5 +41,13 @@
             <th><font size=3>측정습도</font></th>
             <th><font size = 3>측정온도</font></th>
         </tr>
+        {% for th in th_list %}
+        <tr>
+            <th><font size = 3>{{th.run_time}}</font></th>
+            <th><font size=3>{{th.temperature}}</font></th>
+            <th><font size = 3>{{th.humidity}}</font></th>
+        </tr>
+        {% endfor %}
     </table>
+    {% endif %}
 </body>

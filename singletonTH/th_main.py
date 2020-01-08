@@ -28,45 +28,53 @@ class th_model:
         global pi_num, pi_ip, pi_state, run_state
         pi_num = 13
         pi_ip = "192.168.0.13"
-        pi_state = "접속중/끊김"
-        run_state = "실행중/대기중/연결없음"
-
+        pi_state = 1
+        run_state = 2
+        
+    # get
     def getPiNum(self):
-        return pi_num
+        return self.pi_num
 
     def getPiIp(self):
-        return pi_ip
+        return self.pi_ip
     
     def getPiState(self):
-        return pi_state
+        return self.pi_state
     
     def getRunState(self):
-        return run_state
+        return self.run_state
+    
+    # set
+    def setRunState(self, value):
+        self.run_state = value
 
-    if run_state == 1:
-        sensor = Adafruit_DHT.DHT22
-        conn= pymysql.connect(host="localhost",
-                              user="pi",
-                              passwd="",
-                              db="th_db")
+    while pi_state:
+        if run_state == 2:
+            continue
+        elif run_state == 1:
+            sensor = Adafruit_DHT.DHT22
+            conn= pymysql.connect(host="localhost",
+                                  user="pi",
+                                  passwd="",
+                                  db="th_db")
 
-        pin = 4
-        
-        start = time.time()
-        try :
-           with conn.cursor() as cur :
-            sql="INSERT INTO appTH_th_data (run_time, temperature, humidity) VALUES(%s,%s,%s)"
-            while True :
-               humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-               if humidity is not None and temperature is not None and humidity < 120 :
-                   print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
-                   time.sleep(10)
-                   end=time.time()
-                   cur.execute(sql,
-                               ((end-start),
-                               temperature,humidity))
-                   conn.commit()
-        except KeyboardInterrupt:
-           exit()
-        finally :
-           conn.close()
+            pin = 4
+            
+            start = time.time()
+            try :
+               with conn.cursor() as cur :
+                sql="INSERT INTO appTH_th_data (run_time, temperature, humidity) VALUES(%s,%s,%s)"
+                while run_state == 1:
+                   humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+                   if humidity is not None and temperature is not None and humidity < 120 :
+                       print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
+                       time.sleep(10)
+                       end=time.time()
+                       cur.execute(sql,
+                                   ((end-start),
+                                   temperature,humidity))
+                       conn.commit()
+            except KeyboardInterrupt:
+               exit()
+            finally :
+               conn.close()
