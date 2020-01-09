@@ -45,6 +45,9 @@ def end(request):
     TH.setRunState(2)
     return redirect('home')
 
+def graph(request):
+    return render(request,'graph.html')
+
 
 
 

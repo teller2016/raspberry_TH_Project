@@ -9,8 +9,9 @@
     <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <img class="logo" src="{% static '/images/KS.jpg' %}">
+    <a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
     <h1 class="title1">감염관리사업부 온습도계 관리</h1>
+    <a href="{% url 'graph' %}"><img class="graph-img" src="{% static '/images/graph.JPG' %}"></a>
     <p class="title2">파이 상태 확인</p>
     <div class="pi-state">
         <p>파이 정보: {{pi_num}}번</p>
@@ -22,11 +23,11 @@
     {% else %}
         <p>파이 연결 상태: 연결 됨</p>
         {% if run_state == 1 %}
-            <p>파이 실행 상태: 실행중</p>
+            <p>파이 실행 상태: <strong style="color:red">실행중</strong> </p>
     </div>
     <a href="{% url 'end' %}"><button class="btn-end">종료하기</button></a>
         {% else %}
-            <p>파이 실행 상태: 대기중</p>
+            <p>파이 실행 상태: <strong style="color:blue">대기중</strong> </p>
     </div>
     <br>
     <a href="{% url 'restart' %}"><button class="btn-start">시작하기</button></a>

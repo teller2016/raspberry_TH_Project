@@ -23,4 +23,5 @@ urlpatterns = [
     path('restart', appTH.views.restart, name="restart"),
     path('end', appTH.views.end, name="end"),
     path('csv', appTH.views.csv, name="csv"),
+    path('graph', appTH.views.graph, name="graph"),
 ]

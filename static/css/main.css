@@ -43,12 +43,13 @@
 }
 
 .table-th{
-	width:100%;
 	border-collapse: collapse;
+	width: 95%;
+	max-width: 500px;
 }
 
 .table-div{
-	margin:3%;
+	margin-left:3%;
 	width:100%;
 }
 
@@ -57,8 +58,16 @@ table, th, td {
 	padding: 10px;
 }
 
+.graph-img{
+	width: 30px;
+	height: 30px;
+	margin-right: 3%;
+	float: right;
+}
+
 .btn-re{
 	float: right;
+	margin-right: 3%
 	box-shadow: rgb(255, 255, 255) 0px 1px 0px 0px inset;
 	background: linear-gradient(rgb(255, 255, 255) 5%, rgb(246, 246, 246) 100%) rgb(255, 255, 255);
 	border-radius: 6px;
