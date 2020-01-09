@@ -1,4 +1,125 @@
 .pi-state{
-	background-color: #97e1f0;
 	margin:3%;
+	padding:3%;
+	box-shadow: rgb(255, 255, 255) 0px 1px 0px 0px inset;
+	background: linear-gradient(rgb(255, 255, 255) 5%, rgb(246, 246, 246) 100%) rgb(255, 255, 255);
+	border-radius: 6px;
+	border: 1px solid rgb(220, 220, 220);
+	color: rgb(102, 102, 102);
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+}
+
+.logo{
+	height: 30%;
+    width: 30%;
+}
+
+.tr-bar{
+	background-color: #cccccc;
+}
+
+.title1{
+	font-size: 20px;
+	border:solid 1px #cccccc;
+	background: -webkit-linear-gradient(white, #ececec); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(white, #ececec); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(white, #ececec); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(white, #ececec); /* Standard syntax */
+	padding: 7px 10px 7px 10px;
+	font-family: Tahoma, 돋움체;
+	line-height:100%;
+	color:#351483;
+}
+
+.title2{
+	color: #000;
+	font-size: 20px;
+	margin-left: 3%;
+	font-weight: bold;
+}
+
+.table-th{
+	width:100%;
+	border-collapse: collapse;
+}
+
+.table-div{
+	margin:3%;
+	width:100%;
+}
+
+table, th, td {
+	border: 1px solid black;
+	padding: 10px;
+}
+
+.btn-re{
+	float: right;
+	box-shadow: rgb(255, 255, 255) 0px 1px 0px 0px inset;
+	background: linear-gradient(rgb(255, 255, 255) 5%, rgb(246, 246, 246) 100%) rgb(255, 255, 255);
+	border-radius: 6px;
+	border: 1px solid rgb(220, 220, 220);
+	display: inline-block;
+	cursor: pointer;
+	color: rgb(102, 102, 102);
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+}
+
+.btn-start{
+	box-shadow: rgb(164, 226, 113) 0px 1px 0px 0px inset;
+	background: linear-gradient(rgb(137, 196, 3) 5%, rgb(119, 168, 9) 100%) rgb(137, 196, 3);
+	border-radius: 6px;
+	border: 1px solid rgb(116, 184, 7);
+	display: inline-block;
+	cursor: pointer;
+	color: rgb(255, 255, 255);
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	margin-left:3%;
+	text-shadow: rgb(82, 128, 9) 0px 1px 0px;
+}
+
+.btn-csv{
+	box-shadow: rgb(255, 246, 175) 0px 1px 0px 0px inset;
+	background: linear-gradient(rgb(255, 236, 100) 5%, rgb(255, 171, 35) 100%) rgb(255, 236, 100);
+	border-radius: 6px;
+	border: 1px solid rgb(255, 170, 34);
+	display: inline-block; 
+	cursor: pointer; 
+	color: rgb(51, 51, 51); 
+	font-family: Arial; 
+	font-size: 15px; 
+	font-weight: bold; 
+	padding: 6px 24px; 
+	text-decoration: none;
+	text-shadow: rgb(255, 238, 102) 0px 1px 0px;
+}
+
+.btn-end{
+	box-shadow: rgb(245, 151, 142) 0px 1px 0px 0px inset;
+	background: linear-gradient(rgb(242, 69, 55) 5%, rgb(198, 45, 31) 100%) rgb(242, 69, 55);
+	border-radius: 6px; 
+	border: 1px solid rgb(208, 39, 24);
+	display: inline-block; 
+	cursor: pointer; 
+	color: rgb(255, 255, 255); 
+	font-family: Arial; 
+	font-size: 15px; 
+	font-weight: bold; 
+	padding: 6px 24px; 
+	margin-left:3%;
+	text-decoration: none; 
+	text-shadow: rgb(129, 14, 5) 0px 1px 0px;
 }

@@ -9,10 +9,9 @@
     <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <h1>우정바이오 온습도계</h1>
-    <button><a href="{% url 'home' %}">새로고침</a></button>
-    
-    <br></br>
+    <img class="logo" src="{% static '/images/KS.jpg' %}">
+    <h1 class="title1">감염관리사업부 온습도계 관리</h1>
+    <p class="title2">파이 상태 확인</p>
     <div class="pi-state">
         <p>파이 정보: {{pi_num}}번</p>
         <p>파이 주소: {{pi_ip}}</p>
@@ -25,29 +24,34 @@
         {% if run_state == 1 %}
             <p>파이 실행 상태: 실행중</p>
     </div>
-    <button><a href="{% url 'end' %}">종료하기</a></button>
+    <a href="{% url 'end' %}"><button class="btn-end">종료하기</button></a>
         {% else %}
             <p>파이 실행 상태: 대기중</p>
     </div>
-    <button><a href="{% url 'restart' %}">새로 시작하기</a></button>
-    <button><a href="{% url 'csv' %}">csv파일로 저장하기</a></button>
+    <br>
+    <a href="{% url 'restart' %}"><button class="btn-start">시작하기</button></a>
+    <a href="{% url 'csv' %}"><button class="btn-csv">csv파일로 저장하기</button></a>
         {% endif %}
-    
-    <br></br>
-
-    <table width=100% border='1' align=center bordercolor='black' cellpadding = 15 style='border-collapse:collapse;'>
-        <tr>
-            <th><font size = 3> 경과시간 </font></th>
-            <th><font size=3>측정습도</font></th>
-            <th><font size = 3>측정온도</font></th>
-        </tr>
+    <br>
+    <div class="result">
+        <a href="{% url 'home' %}"><button class="btn-re">새로고침</button></a>
+        <p class="title2">측정 결과 확인</p>
+    </div>
+    <div class="table-div">
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th><font size = 3> 경과시간 </font></th>
+                <th><font size=3>측정습도</font></th>
+                <th><font size =3>측정온도</font></th>
+            </tr>
         {% for th in th_list %}
-        <tr>
-            <th><font size = 3>{{th.run_time}}</font></th>
-            <th><font size=3>{{th.temperature}}</font></th>
-            <th><font size = 3>{{th.humidity}}</font></th>
-        </tr>
+            <tr>
+                <th><font size = 3>{{th.run_time}}</font></th>
+                <th><font size=3>{{th.temperature}}</font></th>
+                <th><font size = 3>{{th.humidity}}</font></th>
+            </tr>
         {% endfor %}
-    </table>
+        </table>
+    </div>
     {% endif %}
 </body>
