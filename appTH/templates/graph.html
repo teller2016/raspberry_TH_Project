@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>우정바이오 온습도계</title>
+    <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
+    <h1 class="title1">감염관리사업부 온습도계 분석</h1>
+</body>
+	<p class="title2">습도 그래프</p>
+	<div id="lineWithFocusChart">
+		<svg style="height:450px;"></svg>
+	</div>
+	<p class="title2">온도 그래프</p>
+	<div id="lineWithFocusChart">
+		<svg style="height:450px;"></svg>
+	</div>

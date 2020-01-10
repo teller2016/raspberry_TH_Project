@@ -132,3 +132,25 @@ table, th, td {
 	text-decoration: none; 
 	text-shadow: rgb(129, 14, 5) 0px 1px 0px;
 }
+
+.btn-pi{
+	box-shadow: rgb(255, 255, 255) 0px 1px 0px 0px inset;
+	background: linear-gradient(rgb(255, 255, 255) 5%, rgb(246, 246, 246) 100%) rgb(255, 255, 255);
+	border-radius: 6px;
+	border: 1px solid rgb(220, 220, 220);
+	display: inline-block;
+	cursor: pointer;
+	color: rgb(102, 102, 102);
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+}
+
+.pi-select{
+	margin-left:3%;
+	padding-left:3%;
+	display: inline-block;
+}
