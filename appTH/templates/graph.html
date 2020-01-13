@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 {% load static %}
+<link media="all" href="{% static 'nvd3/src/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="{% static 'd3/d3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'nvd3/nv.d3.min.js' %}"></script>
+{% load nvd3_tags %}
 <html lang="en">
-  
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
     <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
+    {% load_chart charttype chartdata "linewithfocuschart_container" True "%d %b %Y %H" %}
 </head>
 <body>
 	<a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
     <h1 class="title1">감염관리사업부 온습도계 분석</h1>
-</body>
 	<p class="title2">습도 그래프</p>
 	<div id="lineWithFocusChart">
-		<svg style="height:450px;"></svg>
+		{% include_container "linewithfocuschart_container" 400 '100%' %}
 	</div>
 	<p class="title2">온도 그래프</p>
 	<div id="lineWithFocusChart">
 		<svg style="height:450px;"></svg>
 	</div>
+</body>

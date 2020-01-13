@@ -62,6 +62,7 @@ table, th, td {
 	width: 30px;
 	height: 30px;
 	margin-right: 3%;
+	margin-top:3%;
 	float: right;
 }
 
@@ -146,11 +147,10 @@ table, th, td {
 	font-weight: bold;
 	padding: 6px 24px;
 	text-decoration: none;
+	margin-bottom: 5px;
 	text-shadow: rgb(255, 255, 255) 0px 1px 0px;
 }
 
 .pi-select{
 	margin-left:3%;
-	padding-left:3%;
-	display: inline-block;
 }

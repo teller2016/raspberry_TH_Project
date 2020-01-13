@@ -7,10 +7,18 @@ import sys
 import Adafruit_DHT
 import pymysql
 import csv
+from django.utils.encoding import smart_str
 import pandas as pd
 from .models import *
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from TH_Project.singletonTH.th_main import th_model
+
+import random
+import datetime
+import time
+
+pymysql.version_info = (1, 3, 13, "final", 0)
+pymysql.install_as_MySQLdb()
 
 def home(request):
     TH = th_model.instance()
@@ -35,13 +43,31 @@ def restart(request):
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py')
     return redirect('home')
 
-def csv(request, word):
-    conn = pymysql.connect(host='localhost', user='pi', password='' ,db='th_db', charset='utf8')
-    query = 'SELECT run_time_str, temperature, humidity FROM appTH_th_data'
-    df = pd.read_sql_query(query,conn)
-    filename = word+".csv"
-    df.to_csv(filename, header=True, index=False)
-    return redirect('home')
+def th_csv(request, word):
+    # response content type
+    response = HttpResponse(content_type='text/csv')
+    #decide the file name
+    response['Content-Disposition'] = 'attachment; filename="'+word+'.csv"'
+
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))
+
+    #write the headers
+    writer.writerow([
+            smart_str(u"실행시간"),
+            smart_str(u"온도"),
+            smart_str(u"습도"),
+    ])
+    #get data from database or from text file....
+    #events = event_services.get_events_by_year(year) #dummy function to fetch data
+    th_list = TH_data.objects.all()
+    for th_data in th_list:
+            writer.writerow([
+                    smart_str(th_data.run_time_str),
+                    smart_str(th_data.temperature),
+                    smart_str(th_data.humidity),
+            ])
+    return response
 
 def end(request):
     # run_state 1 -> 2
@@ -51,7 +77,8 @@ def end(request):
     return redirect('home')
 
 def graph(request):
-    return render(request,'graph.html')
+
+    return render(request, 'graph.html')
 
 
 
