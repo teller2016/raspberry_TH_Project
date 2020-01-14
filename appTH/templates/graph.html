@@ -19,10 +19,10 @@
         svg {
             display: block;
         }
-        html, body, #chart, svg {
+        #chart, svg {
             margin: 0px;
             padding: 0px;
-            height: 100%;
+            height: 450px;
             width: 100%;
         }
     </style>
@@ -30,19 +30,50 @@
 <body>
 <a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
 <h1 class="title1">감염관리사업부 온습도계 분석</h1>
-<p class="title2">습도 그래프</p>
+<p class="title2">온습도 그래프</p>
+
 <div id="chart" class='with-3d-shadow with-transitions'>
     <svg></svg>
 </div>
 
-<script>
+<script type="text/javascript">
 
     nv.addGraph(function() {
         var chart = nv.models.lineWithFocusChart();
+	
+	var dataList = new Array();
+	var dataList2 = new Array();
+	
+	{% for th in th_list %}
+	    var data = new Object() ;
+	    data.x = {{th.run_time}}
+	    data.y = {{th.humidity}}
+	    data.series = 0
+	    dataList.push(data);
+	    
+	    var data2 = new Object() ;
+	    data2.x = {{th.run_time}}
+	    data2.y = {{th.temperature}}
+	    data2.series = 1
+	    dataList2.push(data2);
+	{% endfor %}
+	
+	var th_data = [
+	  {
+	    "key": "습도(%)",
+	    "color": "#00ace6",
+	    "values": dataList
+	  },
+	  {
+	    "key": "온도(°C)",
+	    "color": "#ff5c33",
+	    "values": dataList2
+	  }
+	]
+	
+        chart.brushExtent([20,70]);
 
-        chart.brushExtent([50,70]);
-
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("Stream - 3,128,.1");
+        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
         chart.x2Axis.tickFormat(d3.format(',f'));
 
         chart.yTickFormat(d3.format(',.2f'));
@@ -50,23 +81,13 @@
         chart.useInteractiveGuideline(true);
 
         d3.select('#chart svg')
-            .datum(testData())
+            .datum(th_data)
             .call(chart);
 
         nv.utils.windowResize(chart.update);
 
         return chart;
     });
-
-    function testData() {
-        return stream_layers(3,128,.1).map(function(data, i) {
-            return {
-                key: 'Stream' + i,
-                area: i === 1,
-                values: data
-            };
-        });
-    }
 
 </script>
 </body>
