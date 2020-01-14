@@ -40,7 +40,15 @@ def restart(request):
     TH = th_model.instance()
     TH.setRunState(1)
     # os.system('sudo  python3 /home/pi/Project/TH_Project/appTH/th_run.py')
-    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py')
+    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py &')
+    return redirect('home')
+
+def end(request):
+    # run_state 1 -> 2
+    os.system('sudo pkill -9 -ef th_run')
+    TH = th_model.instance()
+    TH.setRunState(2)
+    # os.system('sudo halt')
     return redirect('home')
 
 def th_csv(request, word):
@@ -68,13 +76,6 @@ def th_csv(request, word):
                     smart_str(th_data.humidity),
             ])
     return response
-
-def end(request):
-    # run_state 1 -> 2
-    TH = th_model.instance()
-    TH.setRunState(2)
-    # os.system('sudo halt')
-    return redirect('home')
 
 def graph(request):
     th_list = TH_data.objects.all()
