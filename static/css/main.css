@@ -16,6 +16,7 @@
 .logo{
 	height: 30%;
     width: 30%;
+    max-width: 200px;
 }
 
 .tr-bar{
@@ -30,7 +31,6 @@
 	background: -moz-linear-gradient(white, #ececec); /* For Firefox 3.6 to 15 */
 	background: linear-gradient(white, #ececec); /* Standard syntax */
 	padding: 7px 10px 7px 10px;
-	font-family: Tahoma, 돋움체;
 	line-height:100%;
 	color:#351483;
 }
@@ -44,7 +44,7 @@
 
 .table-th{
 	border-collapse: collapse;
-	width: 95%;
+	width: 60%; 
 	max-width: 500px;
 }
 

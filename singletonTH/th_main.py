@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 class th_model:
     
@@ -7,6 +8,7 @@ class th_model:
     pi_ip = None
     pi_state = None
     run_state = None
+    pi_date = None
 
     @classmethod
     def _getInstance(cls):
@@ -19,11 +21,12 @@ class th_model:
         return cls._instance
     
     def __init__(self):
-        global pi_num, pi_ip, pi_state, run_state
+        global pi_num, pi_ip, pi_state, run_state, pi_date
         self.pi_num = 13
         self.pi_ip = "192.168.0.13"
         self.pi_state = 1
         self.run_state = 2
+        self.pi_date = datetime.datetime.now()
         
     # get
     def getPiNum(self):
@@ -38,7 +41,13 @@ class th_model:
     def getRunState(self):
         return self.run_state
     
+    def getPiDate(self):
+        return self.pi_date
+    
     # set
     def setRunState(self, value):
         self.run_state = value
+        
+    def setPiDate(self, value):
+        self.pi_date = datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         

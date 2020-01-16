@@ -79,6 +79,7 @@
         chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
         chart.x2Axis.tickFormat(d3.format(',f'));
 
+	chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.2f'));
 
         chart.useInteractiveGuideline(true);

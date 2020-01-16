@@ -26,29 +26,36 @@ def home(request):
     pi_ip = TH.getPiIp()
     pi_state = TH.getPiState()
     run_state = TH.getRunState()
-            
+    pi_date = TH.getPiDate() 
+    
     # 순으로 지정
     th_list = TH_data.objects.all().order_by('-id')
+    
+    # datafield update하는 코드 추가하기(상태반영해서 업데이트할 것 - 실행중일때만)
+
+    if run_state == 1:
+    # Last id remember
+        for th_update in th_list:
+            th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
+            th_update.save()
 
     return render(request,'home.html',{'pi_num':pi_num, 'pi_ip':pi_ip,
-                                       'pi_state': pi_state, 'run_state':run_state, 'th_list':th_list})
+                                       'pi_state': pi_state, 'run_state':run_state, 'th_list':th_list,
+                                       'pi_date':pi_date})
 
-def restart(request):
+def restart(request, word):
+    TH = th_model.instance()
+    TH.setPiDate(word)
+    TH.setRunState(1) # run_state 2 -> 1
     th_list = TH_data.objects.all()
     th_list.delete()
-    # run_state 2 -> 1
-    TH = th_model.instance()
-    TH.setRunState(1)
-    # os.system('sudo  python3 /home/pi/Project/TH_Project/appTH/th_run.py')
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py &')
     return redirect('home')
 
 def end(request):
-    # run_state 1 -> 2
     os.system('sudo pkill -9 -ef th_run')
     TH = th_model.instance()
-    TH.setRunState(2)
-    # os.system('sudo halt')
+    TH.setRunState(2) # run_state 1 -> 2
     return redirect('home')
 
 def th_csv(request, word):
@@ -62,7 +69,7 @@ def th_csv(request, word):
 
     #write the headers
     writer.writerow([
-            smart_str(u"실행시간"),
+            smart_str(u"시간"),
             smart_str(u"온도"),
             smart_str(u"습도"),
     ])
@@ -71,7 +78,7 @@ def th_csv(request, word):
     th_list = TH_data.objects.all()
     for th_data in th_list:
             writer.writerow([
-                    smart_str(th_data.run_time_str),
+                    smart_str(th_data.run_time_date.strftime("%Y-%m-%d %H:%M:%S")),
                     smart_str(th_data.temperature),
                     smart_str(th_data.humidity),
             ])

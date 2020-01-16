@@ -20,11 +20,18 @@
         function start_check(){
             var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 삭제됩니다.");
             if(result){
-                location.href="/restart";
-                return true;
-            }else{
-                return false;
+                var userInput = prompt("현재날짜와 시간을 입력해주세요. 2020-01-01 18:34:56 의 형태로 입력바랍니다.");
+                if(userInput == null){
+                    alert("취소되었습니다.");
+                } else{
+                    alert("성공적으로 실행되었습니다.");
+                    location.href="/restart/"+userInput;
+                    return true;
+                    //alert("잘못된 양식입니다. 다시 입력해주세요.");
+                }
+                
             }
+             return false;
         }
     </script>
 </head>
@@ -50,6 +57,7 @@
         <p>파이 연결 상태: 연결 됨</p>
         {% if run_state == 1 %}
             <p>파이 실행 상태: <strong style="color:red">실행중</strong> </p>
+            <p>파이 시작 시간 : {{pi_date|date:"Y년 m월 d일 H시i분s초"}}</p>
     </div>
     <a href="{% url 'end' %}"><button class="btn-end">종료하기</button></a>
         {% else %}
@@ -67,13 +75,13 @@
     <div class="table-div">
         <table class="table-th">
             <tr class="tr-bar">
-                <th><font size = 3> 경과시간 </font></th>
+                <th><font size = 3> 시간 </font></th>
                 <th><font size=3>측정온도(°C)</font></th>
                 <th><font size =3>측정습도(%)</font></th>
             </tr>
         {% for th in th_list %}
             <tr>
-                <th><font size = 3>{{th.run_time_str}}</font></th>
+                <th><font size = 3>{{th.run_time_date|date:"Y-m-d H:i:s"}}</font></th>
                 <th><font size=3>{{th.temperature}}</font></th>
                 <th><font size = 3>{{th.humidity}}</font></th>
             </tr>
