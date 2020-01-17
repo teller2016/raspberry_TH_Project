@@ -40,15 +40,19 @@ def home(request):
                 th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
                 th_update.save()
                 if th_update.humidity > th_state.max_hum:
+                    th_state.run_id = th_update.run_id
+                    th_state.run_time_str = th_update.run_time_str
                     th_state.max_hum = th_update.humidity
                     th_state.max_hum_temp = th_update.temperature
                     th_state.max_hum_time = th_update.run_time_date
                 th_state.last_run_id = th_update.run_id
-                th_state.save()
-                
+                th_state.save()     
     else:
-        if th_state and TH_data.objects.last():
-            th_state.end_time = TH_data.objects.last().run_time_date
+        th_update = TH_data.objects.last()
+        if th_state and th_update:
+            th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
+            th_update.save()
+            th_state.end_time = th_update.run_time_date
             th_state.save()
 
     return render(request,'home.html',{'pi_num':pi_num, 'pi_ip':pi_ip,
@@ -69,9 +73,11 @@ def restart(request, word):
     new_state = TH_state()
     new_state.last_run_id = 0
     new_state.start_time = TH.getPiDate()
+    new_state.end_time = TH.getPiDate()
     new_state.max_hum_time = TH.getPiDate()
     new_state.max_hum = 0
     new_state.max_hum_temp = 0
+    new_state.run_time_str = "-"
     new_state.save()
     
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py &')

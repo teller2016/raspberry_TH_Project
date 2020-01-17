@@ -1,7 +1,7 @@
 .pi-state{
-	max-width: 400px;
+	max-width: 450px;
 	margin-left:3%;
-	padding:3%;
+	padding: 2%;
 	box-shadow: rgb(255, 255, 255) 0px 1px 0px 0px inset;
 	background: linear-gradient(rgb(255, 255, 255) 5%, rgb(246, 246, 246) 100%) rgb(255, 255, 255);
 	border-radius: 6px;
@@ -45,7 +45,14 @@
 
 .table-th{
 	border-collapse: collapse;
-	width: 90%; 
+	width: 100%; 
+	max-width: 500px;
+	font-size: 14px;
+}
+
+.table-th2{
+	border-collapse: collapse;
+	width: 97%; 
 	max-width: 500px;
 }
 
@@ -156,6 +163,29 @@ table, th, td {
 	text-shadow: rgb(255, 255, 255) 0px 1px 0px;
 }
 
+.btn-pi-me{
+	box-shadow:inset 0px 1px 0px 0px #3dc21b;
+	background:linear-gradient(to bottom, #44c767 5%, #5cbf2a 100%);
+	background-color:#44c767;
+	border-radius:6px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+
 .pi-select{
 	margin-left:3%;
+}
+
+.result{
+	width: 100%;
+	max-width: 550px;
+	margin-left: 2%;
 }
