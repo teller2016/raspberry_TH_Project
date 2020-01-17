@@ -38,6 +38,7 @@
 </head>
 <body>
     <a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
+    <a href="{% url 'graph' %}"><img class="graph-img" src="{% static '/images/graph.JPG' %}"></a>
     <h1 class="title1">감염관리사업부 온습도계</h1>
     <div class="pi-select">
         <h4>파이 선택</h4>
@@ -45,7 +46,6 @@
         <a href="http://192.168.1.13:8000/"><button class="btn-pi">26번</button></a>
         <a href="http://192.168.1.13:8000/"><button class="btn-pi">27번</button></a>
     </div>
-    <a href="{% url 'graph' %}"><img class="graph-img" src="{% static '/images/graph.JPG' %}"></a>
     <p class="title2">파이 상태 확인</p>
     <div class="pi-state">
         <p>파이 정보: {{pi_num}}번</p>
@@ -58,8 +58,8 @@
         <p>파이 연결 상태: 연결 됨</p>
         {% if run_state == 1 %}
             <p>파이 실행 상태: <strong style="color:red">실행중</strong> </p>
-            <p>파이 시작 시간 : {{pi_date|date:"Y년 m월 d일 H시i분s초"}}</p>
     </div>
+    <br>
     <a href="{% url 'end' %}"><button class="btn-end">종료하기</button></a>
         {% else %}
             <p>파이 실행 상태: <strong style="color:blue">대기중</strong> </p>
@@ -70,21 +70,47 @@
         {% endif %}
     <br>
     <div class="result">
+        <p class="title2">측정 상태 요약</p>
+        <div class="pi-state">
+        <p>시작시간: {{th_state.start_time|date:"Y년 m월 d일 H시i분s초"}}</p>
+        {% if run_state == 2 %}
+        <p>종료시간: {{th_state.end_time|date:"Y년 m월 d일 H시i분s초"}}</p>
+        {% endif %}
+        <p>최대 습도:</p>
+        <table class="table-th">
+            <tr>
+                <th>습도</th>
+                <th>온도</th>
+                <th>시간</th>
+            </tr>
+            <tr>
+                <th>{{th_state.max_hum}}</th>
+                <th>{{th_state.max_hum_temp}}</th>
+                <th>{{th_state.max_hum_time|date:"H시i분s초"}}</th>
+            </tr>
+        </table>
+        </div>
+    </div>
+    <div class="result">
         <a href="{% url 'home' %}"><button class="btn-re">새로고침</button></a>
         <p class="title2">측정 결과 확인</p>
     </div>
     <div class="table-div">
         <table class="table-th">
             <tr class="tr-bar">
-                <th><font size = 3> 시간 </font></th>
-                <th><font size=3>측정온도(°C)</font></th>
-                <th><font size =3>측정습도(%)</font></th>
+                <th><font size = 3>no.</font></th>
+                <th><font size = 3>경과 시간</font></th>
+                <th><font size =3>습도(%)</font></th>
+                <th><font size=3>온도(°C)</font></th>
+                <th><font size = 3>실제 시간</font></th>
             </tr>
         {% for th in th_list %}
             <tr>
-                <th><font size = 3>{{th.run_time_date|date:"Y-m-d H:i:s"}}</font></th>
-                <th><font size=3>{{th.temperature}}</font></th>
+                <th><font size = 3>{{th.run_id}}</font></th>
+                <th><font size = 3>{{th.run_time_str}}</font></th>
                 <th><font size = 3>{{th.humidity}}</font></th>
+                <th><font size=3>{{th.temperature}}</font></th>
+                <th><font size = 3>{{th.run_time_date|date:"H:i:s"}}</font></th>
             </tr>
         {% endfor %}
         </table>
