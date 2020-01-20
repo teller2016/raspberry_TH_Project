@@ -71,11 +71,10 @@ table, th, td {
 }
 
 .graph-img{
-	width: 30px;
-	height: 30px;
+	width: 20px;
+	height: 20px;
 	margin-right: 3%;
 	margin-top:3%;
-	float: right;
 }
 
 .btn-re{
@@ -182,10 +181,4 @@ table, th, td {
 
 .pi-select{
 	margin-left:3%;
-}
-
-.result{
-	width: 100%;
-	max-width: 550px;
-	margin-left: 2%;
 }

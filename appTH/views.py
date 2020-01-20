@@ -84,8 +84,14 @@ def restart(request, word):
     return redirect('home')
 
 def end(request):
-    os.system('sudo pkill -9 -ef th_run')
     TH = th_model.instance()
+    pi_date = TH.getPiDate()
+     
+    th_update = TH_data.objects.last()
+    th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
+    th_update.save()
+    
+    os.system('sudo pkill -9 -ef th_run')
     TH.setRunState(2) # run_state 1 -> 2
     return redirect('home')
 
