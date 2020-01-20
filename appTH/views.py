@@ -50,8 +50,6 @@ def home(request):
     else:
         th_update = TH_data.objects.last()
         if th_state and th_update:
-            th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
-            th_update.save()
             th_state.end_time = th_update.run_time_date
             th_state.save()
 

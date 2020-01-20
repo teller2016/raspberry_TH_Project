@@ -15,22 +15,11 @@
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
     <script src="{% static 'js/stream_layers.js' %}"></script>
-    
-    <!-- jQuery -->
-    <!-- <script src="{% static 'js/jquery.3.3.1.slim.min.js' %}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
-
-    <!-- XDSoft DateTimePicker -->
-    <link rel="stylesheet" href="{% static 'js/jquery.datetimepicker.min.css' %}" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
-    <script src="{% static 'js/jquery.datetimepicker.full.min.js' %}" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
-    
-    <!-- jQuery
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
-        -->
-    
+    <!-- this should go after your </body> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
+    <script src="{% static 'datetimepicker/jquery.js' %}"></script>
+    <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
     
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
@@ -124,9 +113,7 @@
         
         <input id="datetimepicker" type="text" value="">
         <script>
-            $(function () {
-              $("#datetimepicker").datetimepicker();
-            });
+            jQuery('#datetimepicker').datetimepicker();
         </script>
         
         <button class="btn-start" onclick="start_check();">시작하기</button>
