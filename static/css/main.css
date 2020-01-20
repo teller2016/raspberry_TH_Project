@@ -14,6 +14,27 @@
 	text-shadow: rgb(255, 255, 255) 0px 1px 0px;
 }
 
+.table-start{
+	border-collapse: collapse;
+    text-align: left;
+    line-height: 1.5;
+    margin : 20px 10px;
+}
+
+.table-start th {
+    width: 100px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    border: 1px solid #ccc;
+}
+.table-start td {
+    width: 150px;
+    padding: 10px;
+    vertical-align: top;
+    border: 1px solid #ccc;
+}
+
 .logo{
 	height: 30%;
     width: 30%;
@@ -116,8 +137,7 @@ table, th, td {
 	box-shadow: rgb(255, 246, 175) 0px 1px 0px 0px inset;
 	background: linear-gradient(rgb(255, 236, 100) 5%, rgb(255, 171, 35) 100%) rgb(255, 236, 100);
 	border-radius: 6px;
-	border: 1px solid rgb(255, 170, 34);
-	display: inline-block; 
+	border: 1px solid rgb(255, 170, 34); 
 	cursor: pointer; 
 	color: rgb(51, 51, 51); 
 	font-family: Arial; 

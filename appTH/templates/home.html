@@ -16,11 +16,13 @@
     <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
     <script src="{% static 'js/stream_layers.js' %}"></script>
 
-    <!-- this should go after your </body> -->
     <link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
     <script src="{% static 'datetimepicker/jquery.js' %}"></script>
     <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
     
+    <link rel="stylesheet" href="{% static 'wickedpicker/stylesheets/wickedpicker.css' %}">
+    <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>    
+
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
@@ -37,13 +39,14 @@
         function start_check(){
             var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 삭제됩니다.");
             if(result){
-                //var userInput = prompt("현재날짜와 시간을 입력해주세요. 2020-01-01 18:34:56 의 형태로 입력바랍니다.");
-                var userInput = document.getElementById("datetimepicker").value;
-                if(userInput == ""){
-                    alert("현재날짜와 시간을 입력해주세요.");
-                }else{
-                    alert("성공적으로 실행되었습니다.");
-                    userInput = userInput.replaceAll("/","-") +":00";
+                var userInput_date = document.getElementById("datetimepicker").value;
+                var userInput_time = document.getElementById("timepicker").value;
+                if(userInput_date == ""){
+                    alert("현재 날짜를 입력해주세요.");
+                    document.getElementById("datetimepicker").focus();
+                } else {
+                    alert(userInput_time);
+                    var userInput = userInput_date + " " + userInput_time.replaceAll(" ","")+":00";
                     location.href="/restart/"+userInput;
                     return true;
                 }
@@ -109,14 +112,35 @@
         {% else %}
         <p>파이 실행 상태: <strong style="color:blue">대기중</strong> </p>
         </div>
+        <div>
         <br>
-        
-        <input id="datetimepicker" type="text" value="">
-        <script>
-            jQuery('#datetimepicker').datetimepicker();
-        </script>
-        
-        <button class="btn-start" onclick="start_check();">시작하기</button>
+        <table class="table-start">
+           <tr>
+              <td>
+                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD">
+                <script type="text/javascript">
+                    jQuery('#datetimepicker').datetimepicker({
+                      lang:'ko',
+                      format:'Y-m-d',
+                      timepicker:false,
+                     });
+                </script>
+              </td>
+              <td rowspan="2"><button class="btn-start" onclick="start_check();">시작하기</button></td>
+           </tr>
+           <tr>
+              <td>
+                <input id="timepicker" type="text" name="timepicker" class="timepicker"/>
+                <script>
+                    var options = {
+                        twentyFour: true,
+                        secondsInterval: 1,};
+                    jQuery('#timepicker').wickedpicker(options);
+                </script>
+              </td>
+           </tr>
+        </table>
+        <br>
         <button class="btn-csv" onclick="csv_name();">csv파일로 저장하기</button>
         {% endif %}
         <br>
@@ -133,7 +157,7 @@
     <script type="text/javascript">
 
         nv.addGraph(function() {
-        var chart = nv.models.lineWithFocusChart();
+        var chart = nv.models.lineChart();
     
         var dataList = new Array();
         var dataList2 = new Array();
