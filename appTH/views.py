@@ -22,9 +22,6 @@ pymysql.install_as_MySQLdb()
 
 def home(request):
     TH = th_model.instance()
-    pi_num = TH.getPiNum()
-    pi_ip = TH.getPiIp()
-    pi_state = TH.getPiState()
     run_state = TH.getRunState()
     pi_date = TH.getPiDate() 
     
@@ -53,8 +50,7 @@ def home(request):
             th_state.end_time = th_update.run_time_date
             th_state.save()
 
-    return render(request,'home.html',{'pi_num':pi_num, 'pi_ip':pi_ip,
-                                       'pi_state': pi_state, 'run_state':run_state, 'th_list':th_list,
+    return render(request,'home.html',{'run_state':run_state, 'th_list':th_list,
                                        'pi_date':pi_date, 'th_state':th_state})
 
 def restart(request, word):
