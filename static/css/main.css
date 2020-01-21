@@ -16,23 +16,29 @@
 
 .table-start{
 	border-collapse: collapse;
+	border: 0px solid #ccc;
     text-align: left;
     line-height: 1.5;
     margin : 20px 10px;
 }
 
 .table-start th {
-    width: 100px;
+	margin: auto;
     padding: 10px;
     font-weight: bold;
     vertical-align: top;
     border: 1px solid #ccc;
 }
 .table-start td {
-    width: 150px;
+	margin: auto;
     padding: 10px;
     vertical-align: top;
     border: 1px solid #ccc;
+    text-align: center;
+}
+
+.div-start{
+	margin-left: 2%;
 }
 
 .logo{
@@ -131,9 +137,12 @@ table, th, td {
 	text-decoration: none;
 	margin-left:3%;
 	text-shadow: rgb(82, 128, 9) 0px 1px 0px;
+	width: 100%;
+	height: 100px;
 }
 
 .btn-csv{
+	margin-left:1%;
 	box-shadow: rgb(255, 246, 175) 0px 1px 0px 0px inset;
 	background: linear-gradient(rgb(255, 236, 100) 5%, rgb(255, 171, 35) 100%) rgb(255, 236, 100);
 	border-radius: 6px;
@@ -202,3 +211,15 @@ table, th, td {
 .pi-select{
 	margin-left:3%;
 }
+
+.start-input{
+	display:liline;
+	width: 100%; 
+	padding: 12px 20px;
+	display: inline-block;
+	border: 0px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+

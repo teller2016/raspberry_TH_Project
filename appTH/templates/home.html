@@ -45,7 +45,6 @@
                     alert("현재 날짜를 입력해주세요.");
                     document.getElementById("datetimepicker").focus();
                 } else {
-                    alert(userInput_time);
                     var userInput = userInput_date + " " + userInput_time.replaceAll(" ","")+":00";
                     location.href="/restart/"+userInput;
                     return true;
@@ -112,12 +111,13 @@
         {% else %}
         <p>파이 실행 상태: <strong style="color:blue">대기중</strong> </p>
         </div>
-        <div>
+        <div class="div-start">
         <br>
         <table class="table-start">
            <tr>
+              <td>날짜</td>
               <td>
-                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD">
+                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD" class="start-input">
                 <script type="text/javascript">
                     jQuery('#datetimepicker').datetimepicker({
                       lang:'ko',
@@ -129,8 +129,9 @@
               <td rowspan="2"><button class="btn-start" onclick="start_check();">시작하기</button></td>
            </tr>
            <tr>
+              <td>시간</td>
               <td>
-                <input id="timepicker" type="text" name="timepicker" class="timepicker"/>
+                <input id="timepicker" type="text" name="timepicker" class="start-input"/>
                 <script>
                     var options = {
                         twentyFour: true,
@@ -140,7 +141,7 @@
               </td>
            </tr>
         </table>
-        <br>
+
         <button class="btn-csv" onclick="csv_name();">csv파일로 저장하기</button>
         {% endif %}
         <br>
