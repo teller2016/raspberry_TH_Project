@@ -143,6 +143,24 @@ button {
 	border: 1px solid #a8a8a8;
 }
 
+.table-result{
+	width: 600px;
+	height: 150px;
+	font-size: 22px;
+	border: 0px solid #a8a8a8;
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+
+.tr-bar2{
+	margin: 0 auto;
+	border-bottom: 1px solid #a8a8a8;
+}
+
+.table-start{
+	margin: 0 auto;
+}
+
 .table-line{
 	clear:both;
 	height:80px;
@@ -159,4 +177,60 @@ button {
 	width: 250px;
 	height: auto;
 	margin: 20px 0px 20px 0px;
+}
+
+.btn-end{
+	box-shadow: 0px 0px 4px 0px #4A74D7;
+	background-color:#4A74D7;
+	border:1px solid #4A74D7;
+	color:#ffffff;
+	text-shadow:0px 1px 0px #4A74D7;
+	height: 80px;
+	width: 200px;
+}
+
+.btn-start{
+	box-shadow: 0px 0px 4px 0px #4A74D7;
+	background-color:#4A74D7;
+	border:1px solid #4A74D7;
+	color:#ffffff;
+	text-shadow:0px 1px 0px #4A74D7;
+	height: 70px;
+	width: 80px;
+}
+
+input{
+	margin-left: 20px;
+	border: 0px solid #ccc;
+	font-size: 16px;
+	color: #707070;
+	width: 120px;
+}
+
+.button2{
+	margin-top:30px;
+	margin-right: 15px;
+	float:right;
+	font-size: 12px;
+	width: 100px;
+	height: 30px;
+	color:#ffffff;
+	box-shadow: 0px 0px 2px 0px #4A74D7;
+	background-color:#4A74D7;
+	border:1px solid #4A74D7;
+}
+
+.bt2{
+	margin-left: 100px;
+}
+
+.table-div{
+	margin: 0 auto;
+	border:1px solid #a8a8a8;
+	width: 700px;
+}
+
+.graph-div{
+	margin: 0 auto;
+	width: 700px;
 }

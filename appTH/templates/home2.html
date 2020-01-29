@@ -22,7 +22,54 @@
     <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
     
     <link rel="stylesheet" href="{% static 'wickedpicker/stylesheets/wickedpicker.css' %}">
-    <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>    
+    <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>
+    
+    <script type="text/javascript">
+        String.prototype.replaceAll = function(org, dest) {
+            return this.split(org).join(dest);
+        }
+        function csv_name(){
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요. (이름은 영어와 숫자로 구성되어야 합니다.)")
+            if(userInput == null){
+                alert("취소되었습니다.");
+            } else{
+                alert("다운로드를 시작합니다.");
+                location.href="/th_csv/"+userInput;
+            }
+        }
+        function start_check(){
+            var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 삭제됩니다.");
+            if(result){
+                var userInput_date = document.getElementById("datetimepicker").value;
+                var userInput_time = document.getElementById("timepicker").value;
+                if(userInput_date == ""){
+                    alert("현재 날짜를 입력해주세요.");
+                    document.getElementById("datetimepicker").focus();
+                } else {
+                    var userInput = userInput_date + " " + userInput_time.replaceAll(" ","")+":00";
+                    location.href="/restart/"+userInput;
+                    return true;
+                }
+            }
+             return false;
+        }
+    </script>
+    
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        #chart, svg {
+            margin: 0 auto;
+            padding: 0px;
+            height: 300px;
+            max-width: 700px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 	<div class="header">
@@ -73,19 +120,18 @@
         <br>
         <hr>
         <br>
-        <a href="{% url 'end' %}"><button class="btn-end">종료하기</button></a>
+        <a href="{% url 'end' %}"><button class="btn-end">종료</button></a>
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
         </div>
         <br>
         <hr>
-        <div class="div-start">
         <br>
         <table class="table-start">
            <tr>
               <td>날짜</td>
               <td>
-                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD" class="start-input">
+                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD"/>
                 <script type="text/javascript">
                     jQuery('#datetimepicker').datetimepicker({
                       lang:'ko',
@@ -94,12 +140,12 @@
                      });
                 </script>
               </td>
-              <td rowspan="2"><button class="btn-start" onclick="start_check();">시작하기</button></td>
+              <td rowspan="2"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
            </tr>
            <tr>
               <td>시간</td>
               <td>
-                <input id="timepicker" type="text" name="timepicker" class="start-input"/>
+                <input id="timepicker" type="text" name="timepicker"/>
                 <script>
                     var options = {
                         twentyFour: true,
@@ -109,11 +155,94 @@
               </td>
            </tr>
         </table>
-
-        <button class="btn-csv" onclick="csv_name();">csv파일로 저장하기</button>
         {% endif %}
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="graph-div">
+    <br><br>
+    <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
+    <p class="home-title bt2">측정 결과 그래프</p>
+    
+    
+    <div id="chart" class='with-3d-shadow with-transitions'>
+        <svg></svg>
+    </div>
+
+    <script type="text/javascript">
+
+        nv.addGraph(function() {
+        var chart = nv.models.lineChart();
+    
+        var dataList = new Array();
+        var dataList2 = new Array();
+        
+        {% for th in th_list %}
+            var data = new Object() ;
+            data.x = {{th.run_time}}
+            data.y = {{th.humidity}}
+            data.series = 0
+            dataList.push(data);
+            
+            var data2 = new Object() ;
+            data2.x = {{th.run_time}}
+            data2.y = {{th.temperature}}
+            data2.series = 1
+            dataList2.push(data2);
+        {% endfor %}
+    
+        var th_data = [
+          {
+            "key": "습도(%)",
+            "color": "#00ace6",
+            "values": dataList
+          },
+          {
+            "key": "온도(°C)",
+            "color": "#ff5c33",
+            "values": dataList2
+          }
+        ]
+    
+    
+        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        chart.x2Axis.tickFormat(d3.format(',f'));
+
+        chart.yDomain([0,100]);
+        chart.yTickFormat(d3.format(',.1f'));
+
+        chart.useInteractiveGuideline(true);
+
+        d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        return chart;
+        });
+
+    </script>
+    <br><br><br><br>
 	</div>
-    
-    
+    <div class="table-div">
+	<button class="button2" onclick="csv_name();">csv파일 저장</button>
+    <p class="home-title bt2">측정 결과 확인</p>
+        <table class="table-result">
+            <tr class="tr-bar2">
+                <th><font size = 3>no.</font></th>
+                <th><font size = 3>경과 시간</font></th>
+                <th><font size =3>습도(%)</font></th>
+                <th><font size=3>온도(°C)</font></th>
+                <th><font size = 3>현재 시간</font></th>
+            </tr>
+        {% for th in th_list %}
+            <tr>
+                <th><font size = 3>{{th.run_id}}</font></th>
+                <th><font size = 3>{{th.run_time_str}}</font></th>
+                <th><font size = 3>{{th.humidity}}</font></th>
+                <th><font size=3>{{th.temperature}}</font></th>
+                <th><font size = 3>{{th.run_time_date|date:"H:i:s"}}</font></th>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <br><br>
 </body>
