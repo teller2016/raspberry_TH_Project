@@ -6,7 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
-    <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
+    
+    <link href="{% static '/css/web.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/modile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
+    
     <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
@@ -23,22 +26,28 @@
             margin: 0px;
             padding: 0px;
             height: 450px;
-            width: 100%;
+            width: 98%;
         }
     </style>
 </head>
 <body>
-<a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
-<h1 class="title1">감염관리사업부 온습도계 분석</h1>
+<div class="header">
+    <div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
+    <div class="main-title-container">
+	    <h1 class="main-title">감염관리사업부 온습도계</h1>
+    </div>
+</div>
+<a href="{% url 'home' %}"><button class="btn-back"> < </button></a>
 
 <div class="result">
     <a href="{% url 'graph' %}"><button class="btn-re">새로고침</button></a>
-    <p class="title2">온습도 그래프</p>
+    <p class="graph-title">온습도 그래프</p>
 </div>
 
 <div id="chart" class='with-3d-shadow with-transitions'>
     <svg></svg>
 </div>
+
 
 <script type="text/javascript">
 

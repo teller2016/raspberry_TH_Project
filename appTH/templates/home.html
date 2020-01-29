@@ -9,7 +9,8 @@
     {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
-    <link href="{% static '/css/main.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/web.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/modile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
     
     <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
@@ -21,14 +22,14 @@
     <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
     
     <link rel="stylesheet" href="{% static 'wickedpicker/stylesheets/wickedpicker.css' %}">
-    <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>    
-
+    <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>
+    
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
         }
         function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요. (이름은 영어와 숫자로 구성되어야 합니다.)")
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
             if(userInput == null){
                 alert("취소되었습니다.");
             } else{
@@ -53,6 +54,7 @@
              return false;
         }
     </script>
+    
     <style>
         text {
             font: 12px sans-serif;
@@ -61,39 +63,46 @@
             display: block;
         }
         #chart, svg {
-            margin: 0px;
+            margin: 0 auto;
             padding: 0px;
             height: 300px;
-            max-width: 450px;
+            max-width: 700px;
             width: 100%;
         }
     </style>
 </head>
 <body>
-    <a href="{% url 'home' %}"><img class="logo" src="{% static '/images/KS.jpg' %}"></a>
-    
-    <h1 class="title1">감염관리사업부 온습도계</h1>
-    <div class="pi-select">
-        <h4>파이 선택</h4>
-        <a href="http://192.168.243.13:8000/"><button class="btn-pi-me">13번</button></a>
-        <a href="http://192.168.243.26:8000/"><button class="btn-pi">26번</button></a>
-        <a href="http://192.168.243.27:8000/"><button class="btn-pi">27번</button></a>
-    </div>
-    <div class="result">
-        <p class="title2">측정 상태 요약</p>
-        <div class="pi-state">
-        <p>시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
+	<div class="header">
+		<div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
+		<div class="main-title-container">
+			<h1 class="main-title">감염관리사업부 온습도계</h1>
+		</div>
+	</div>
+	<div class="content-container">
+		<div class="pi-select">
+		<a href="http://192.168.243.13:8000/"><button class="btn-me">13번</button></a>
+		<a href="http://192.168.243.26:8000/"><button>26번</button></a>
+		<a href="http://192.168.243.27:8000/"><button>27번</button></a>
+		</div>
+		
+		<p class="home-title">측정 상태 요약</p>
+
+        <p class="time-title">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
         {% if run_state == 2 %}
-        <p>종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
+        <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
         {% endif %}
-        <p>최대 습도:</p>
+        <p class="home-title-mini">최대 습도</p>
         <table class="table-th">
             <tr class="tr-bar">
-                <th><font size = 3>no.</font></th>
-                <th><font size = 3>경과 시간</font></th>
-                <th><font size =3>습도(%)</font></th>
-                <th><font size=3>온도(°C)</font></th>
-                <th><font size = 3>현재 시간</font></th>
+                <th><font>NO.</font></th>
+                <th rowspan="2"><div class="table-line"></div></th>
+                <th><font>경과 시간</font></th>
+                <th rowspan="2"><div class="table-line"></div></th>
+                <th><font>습도(%)</font></th>
+                <th rowspan="2"><div class="table-line"></div></th>
+                <th><font>온도(°C)</font></th>
+                <th rowspan="2"><div class="table-line"></div></th>
+                <th><font>현재 시간</font></th>
             </tr>
             <tr>
                 <th>{{th_state.run_id}}</th>
@@ -103,21 +112,26 @@
                 <th>{{th_state.max_hum_time|date:"H:i:s"}}</th>
             </tr>
         </table>
+  
+		<div class="pi-state">
         {% if run_state == 1 %}
-        <p>파이 실행 상태: <strong style="color:red">실행중</strong> </p>
+        <p>온습도계 실행 상태: <strong style="color:red">실행중</strong> </p>
         </div>
         <br>
-        <a href="{% url 'end' %}"><button class="btn-end">종료하기</button></a>
+        <hr class="hr-div">
+        <br>
+        <a href="{% url 'end' %}"><button class="btn-end">종료</button></a>
         {% else %}
-        <p>파이 실행 상태: <strong style="color:blue">대기중</strong> </p>
+        <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
         </div>
-        <div class="div-start">
+        <br>
+        <hr class="hr-div">
         <br>
         <table class="table-start">
            <tr>
               <td>날짜</td>
               <td>
-                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD" class="start-input">
+                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD"/>
                 <script type="text/javascript">
                     jQuery('#datetimepicker').datetimepicker({
                       lang:'ko',
@@ -126,12 +140,13 @@
                      });
                 </script>
               </td>
-              <td rowspan="2"><button class="btn-start" onclick="start_check();">시작하기</button></td>
+              <td rowspan="3"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
            </tr>
+           <tr><td colspan="2"><hr></td></tr>
            <tr>
               <td>시간</td>
               <td>
-                <input id="timepicker" type="text" name="timepicker" class="start-input"/>
+                <input id="timepicker" type="text" name="timepicker"/>
                 <script>
                     var options = {
                         twentyFour: true,
@@ -141,16 +156,13 @@
               </td>
            </tr>
         </table>
-
-        <button class="btn-csv" onclick="csv_name();">csv파일로 저장하기</button>
         {% endif %}
-        <br>
-        </div>
-    </div>
-    <div class="result2">
-        <p class="title2">측정 결과 그래프  <a href="{% url 'graph' %}"><img class="graph-img" src="{% static '/images/graph.JPG' %}"></a></p>
+    <div class="graph-div">
+    <br><br>
+    <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
+    <p class="home-title bt2">측정 결과 그래프</p>
     
-    </div>
+    
     <div id="chart" class='with-3d-shadow with-transitions'>
         <svg></svg>
     </div>
@@ -209,13 +221,13 @@
         });
 
     </script>
-    <br>
-    <div class="result">
-        <p class="title2">측정 결과 확인</p>
-    </div>
+    <br><br><br><br>
+	</div>
     <div class="table-div">
-        <table class="table-th2">
-            <tr class="tr-bar">
+	<button class="button2" onclick="csv_name();">csv파일 저장</button>
+    <p class="home-title bt2">측정 결과 확인</p>
+        <table class="table-result">
+            <tr class="tr-bar2">
                 <th><font size = 3>no.</font></th>
                 <th><font size = 3>경과 시간</font></th>
                 <th><font size =3>습도(%)</font></th>
@@ -232,5 +244,7 @@
             </tr>
         {% endfor %}
         </table>
+        <br><br>
     </div>
+    <br><br>
 </body>

@@ -7,9 +7,11 @@ body{
 	left: 0;
 }
 
-hr{
+.hr-div{
 	margin-top: 20px;
-	background: #a6c0ff;
+	color: #a6c0ff;
+    border-color: #a6c0ff;
+    background-color: #a6c0ff;
 	clear:both;
 }
 
@@ -159,6 +161,8 @@ button {
 
 .table-start{
 	margin: 0 auto;
+	border: 0px solid #a8a8a8;
+	border-collapse: collapse;
 }
 
 .table-line{
