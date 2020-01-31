@@ -198,3 +198,33 @@ input{
 	margin: 0 auto;
 	border-bottom: 1px solid #a8a8a8;
 }
+
+.btn-re{
+	float:right;
+	margin-top: 15px;
+	margin-right: 20px;
+}
+
+.btn-back{
+	float: left;
+	width:28px;
+	height:28px;
+	margin-top: 15px;
+	margin-left: 20px;
+	border-radius:50%;
+	font-size:14px;
+	text-align:center;
+	color: #F6F6F6;
+	background: rgb(112,112,112);
+}
+
+.graph-title{
+	float: left;
+	margin-top: 20px;
+	margin-left: 20px;
+	font-size:15pt;
+	font-weight: bold;
+}
+
+
+.result{clear:both;}
