@@ -9,8 +9,8 @@
     {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
-    <link href="{% static '/css/web.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static '/css/modile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/web.css' %}" media="(min-width:600px)" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/mobile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
     
     <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
@@ -224,23 +224,23 @@
     <br><br><br><br>
 	</div>
     <div class="table-div">
-	<button class="button2" onclick="csv_name();">csv파일 저장</button>
+	<button class="button2" onclick="csv_name();">CSV파일 저장</button>
     <p class="home-title bt2">측정 결과 확인</p>
         <table class="table-result">
             <tr class="tr-bar2">
-                <th><font size = 3>no.</font></th>
-                <th><font size = 3>경과 시간</font></th>
-                <th><font size =3>습도(%)</font></th>
-                <th><font size=3>온도(°C)</font></th>
-                <th><font size = 3>현재 시간</font></th>
+                <th><font>no.</font></th>
+                <th><font>경과 시간</font></th>
+                <th><font>습도(%)</font></th>
+                <th><font>온도(°C)</font></th>
+                <th><font>현재 시간</font></th>
             </tr>
         {% for th in th_list %}
             <tr>
-                <th><font size = 3>{{th.run_id}}</font></th>
-                <th><font size = 3>{{th.run_time_str}}</font></th>
-                <th><font size = 3>{{th.humidity}}</font></th>
-                <th><font size=3>{{th.temperature}}</font></th>
-                <th><font size = 3>{{th.run_time_date|date:"H:i:s"}}</font></th>
+                <th><font>{{th.run_id}}</font></th>
+                <th><font>{{th.run_time_str}}</font></th>
+                <th><font>{{th.humidity}}</font></th>
+                <th><font>{{th.temperature}}</font></th>
+                <th><font>{{th.run_time_date|date:"H:i:s"}}</font></th>
             </tr>
         {% endfor %}
         </table>
