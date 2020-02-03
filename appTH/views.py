@@ -91,8 +91,9 @@ def end(request):
     pi_date = TH.getPiDate()
      
     th_update = TH_data.objects.last()
-    th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
-    th_update.save()
+    if th_update:
+        th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
+        th_update.save()
     
     os.system('sudo pkill -9 -ef th_run')
 

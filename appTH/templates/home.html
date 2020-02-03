@@ -53,6 +53,14 @@
             }
              return false;
         }
+        function end_check(){
+            var result = confirm("정말로 종료하시겠습니까?");
+            if(result){
+                location.href="/end";
+                return true;
+            }
+             return false;
+        }
     </script>
     
     <style>
@@ -120,7 +128,7 @@
         <br>
         <hr class="hr-div">
         <br>
-        <a href="{% url 'end' %}"><button class="btn-end">종료</button></a>
+        <button class="btn-end" onclick="end_check();">종료</button>
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
         </div>
