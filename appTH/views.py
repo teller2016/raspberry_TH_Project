@@ -55,13 +55,22 @@ def home(request):
 
 def restart(request, word):
     TH = th_model.instance()
+    th_state = TH_state.objects.all()
     TH.setPiDate(word)
+    
+    #backup last data
+    th_state = TH_state.objects.first()
+    conn = pymysql.connect(host='localhost', user='pi', password='' ,db='th_db', charset='utf8')
+    query = 'SELECT run_time_str, humidity, temperature, run_time_date FROM appTH_th_data'
+    df = pd.read_sql_query(query,conn)
+    filename = th_state.start_time.strftime("%Y%m%d_%H%M%S")+".csv"
+    path = "/home/pi/Project/backup/"
+    df.to_csv(path+filename, header=True, index=False)
+    
     TH.setRunState(1) # run_state 2 -> 1
     
     th_list = TH_data.objects.all()
     th_list.delete()
-    
-    th_state = TH_state.objects.all()
     th_state.delete()
     
     new_state = TH_state()
@@ -86,6 +95,7 @@ def end(request):
     th_update.save()
     
     os.system('sudo pkill -9 -ef th_run')
+
     TH.setRunState(2) # run_state 1 -> 2
     return redirect('home')
 
