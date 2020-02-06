@@ -5,6 +5,7 @@ body{
 	height: 100%;
 	top: 0;
 	left: 0;
+	font-family: "돋움"
 }
 
 button {
@@ -50,7 +51,7 @@ input{
 	color: #fff;
 	font-size:11px;
 	text-align: center;
-	margin-top:7px;
+	margin-top:8px;
 }
 
 .main-title-container{
