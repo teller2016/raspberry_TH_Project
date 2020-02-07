@@ -49,9 +49,18 @@ def home(request):
         if th_state and th_update:
             th_state.end_time = th_update.run_time_date
             th_state.save()
-
+    
+    num = th_state.run_id
+    th_list_mini = TH_data.objects.all().order_by('id')
+    num_max = TH_data.objects.last()
+    if num < 20:
+        th_list_mini = TH_data.objects.all().order_by('id')[:40]
+    elif TH_data.objects.filter(run_id=num+20).exists() == False and num_max.run_id > 40:
+        th_list_mini = TH_data.objects.all().order_by('id')[num_max.run_id-40:num_max.run_id]
+    else:
+        th_list_mini = TH_data.objects.all().order_by('id')[num-20:num+20]
     return render(request,'home.html',{'run_state':run_state, 'th_list':th_list,
-                                       'pi_date':pi_date, 'th_state':th_state})
+                                       'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
 
 def restart(request, word):
     TH = th_model.instance()
@@ -138,7 +147,8 @@ def graph(request):
 
 def result(request):
     th_list = TH_data.objects.all()
-    return render(request, 'result.html', {'th_list':th_list})
+    th_state = TH_state.objects.first()
+    return render(request, 'result.html', {'th_list':th_list, 'th_state':th_state})
 
 
 

@@ -44,6 +44,34 @@
     <p class="graph-title">측정 결과 확인</p>
 </div>
 
+<div class="table-div result">
+<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
+<p class="home-title bt2">측정 결과</p>
+	<table class="table-result">
+		<tr class="tr-bar2">
+			<th><font>no.</font></th>
+			<th><font>경과 시간</font></th>
+			<th><font>습도(%)</font></th>
+			<th><font>온도(°C)</font></th>
+			<th><font>현재 시간</font></th>
+		</tr>
+	{% for th in th_list %}
+        {% if th.run_id == th_state.run_id %}
+        <tr class="peak">
+        {% else %}
+        <tr>
+        {% endif %}
+			<th><font>{{th.run_id}}</font></th>
+			<th><font>{{th.run_time_str}}</font></th>
+			<th><font>{{th.humidity}}</font></th>
+			<th><font>{{th.temperature}}</font></th>
+			<th><font>{{th.run_time_date|date:"H:i:s"}}</font></th>
+		</tr>
+	{% endfor %}
+	</table>
+	<br><br>
+</div>
+<br><br>
 
 </body>
 </html>

@@ -246,8 +246,12 @@
                 <th><font>온도(°C)</font></th>
                 <th><font>현재 시간</font></th>
             </tr>
-        {% for th in th_list %}
+        {% for th in th_list_mini %}
+        {% if th.run_id == th_state.run_id %}
+            <tr class="peak">
+        {% else %}
             <tr>
+        {% endif %}
                 <th><font>{{th.run_id}}</font></th>
                 <th><font>{{th.run_time_str}}</font></th>
                 <th><font>{{th.humidity}}</font></th>

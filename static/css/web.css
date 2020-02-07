@@ -226,6 +226,10 @@ input{
 	width: 120px;
 }
 
+.peak{
+	background-color:#4A74D7;
+}
+
 .button2{
 	margin-top:30px;
 	margin-right: 15px;
