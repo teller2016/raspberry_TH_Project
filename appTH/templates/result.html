@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>우정바이오 온습도계</title>
+    
+    <link href="{% static '/css/web.css' %}" media="(min-width:601px)" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/mobile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
+    
+    <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
+    <script src="{% static 'js/stream_layers.js' %}"></script>
+
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        #chart, svg {
+            margin: 0px;
+            padding: 0px;
+            height: 450px;
+            width: 98%;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
+    <div class="main-title-container">
+	    <h1 class="main-title">감염관리사업부 온습도계</h1>
+    </div>
+</div>
+<a href="{% url 'home' %}"><button class="btn-back"> < </button></a>
+
+<div class="result">
+    <a href="{% url 'result' %}"><button class="btn-re">새로고침</button></a>
+    <p class="graph-title">측정 결과 확인</p>
+</div>
+
+
+</body>
+</html>
+

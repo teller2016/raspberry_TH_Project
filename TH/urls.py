@@ -24,4 +24,5 @@ urlpatterns = [
     path('end', appTH.views.end, name="end"),
     path('th_csv/<word>/', appTH.views.th_csv, name="th_csv"),
     path('graph', appTH.views.graph, name="graph"),
+    path('result', appTH.views.result, name="result"),
 ]

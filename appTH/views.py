@@ -136,7 +136,9 @@ def graph(request):
     th_list = TH_data.objects.all()
     return render(request, 'graph.html', {'th_list':th_list})
 
-
+def result(request):
+    th_list = TH_data.objects.all()
+    return render(request, 'result.html', {'th_list':th_list})
 
 
 

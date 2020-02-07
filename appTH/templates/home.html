@@ -88,13 +88,15 @@
 	</div>
 	<div class="content-container">
 		<div class="pi-select">
+        <p class="home-title">온습도계 선택</p>
 		<a href="http://192.168.243.13:8000/"><button class="btn-me">13번</button></a>
 		<a href="http://192.168.243.26:8000/"><button>26번</button></a>
 		<a href="http://192.168.243.27:8000/"><button>27번</button></a>
 		</div>
-		
-		<p class="home-title">측정 상태 요약</p>
-
+        <br>
+        <div class="content-summary">
+        <a href="{% url 'result' %}"><button class="button2">자세히</button></a>
+		<p class="home-title bt1">측정 상태 요약</p>
         <p class="time-title">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
         {% if run_state == 2 %}
         <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
@@ -120,7 +122,9 @@
                 <th>{{th_state.max_hum_time|date:"H:i:s"}}</th>
             </tr>
         </table>
-  
+        <br>
+        </div>
+        <br>
 		<div class="pi-state">
         {% if run_state == 1 %}
         <p>온습도계 실행 상태: <strong style="color:red">실행중</strong> </p>
@@ -232,8 +236,8 @@
     <br><br><br><br>
 	</div>
     <div class="table-div">
-	<button class="button2" onclick="csv_name();">CSV파일 저장</button>
-    <p class="home-title bt2">측정 결과 확인</p>
+	<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
+    <p class="home-title bt2">측정 결과 미리보기</p>
         <table class="table-result">
             <tr class="tr-bar2">
                 <th><font>no.</font></th>
