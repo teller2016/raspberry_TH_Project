@@ -1,4 +1,5 @@
 body{
+	font-weight:normal;
 	position: absolute;
 	text-align: center;
 	width: 100%;
@@ -16,17 +17,16 @@ body{
 }
 
 .content-summary{
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
+	width: 800px;
+	margin: 4px;
+	padding: 5px 10px 10px 10px;
+	box-shadow: 0px 0px 4px 0px #00000029;
+	background-color:#F6F6F6;
+	border-radius:2px;
+	border:1px solid #F6F6F6;
 	display:inline-block;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
+	text-shadow:0px 1px 0px #F6F6F6;
 }
 
 .content-container{
@@ -100,7 +100,6 @@ body{
 	background-color:#4A74D7;
 	border:1px solid #4A74D7;
 	color:#ffffff;
-	text-shadow:0px 1px 0px #4A74D7;
 }
 
 .btn-re{
@@ -109,7 +108,6 @@ body{
 }
 
 button {
-	font-weight: bold;
 	margin: 4px;
 	box-shadow: 0px 0px 4px 0px #00000029;
 	background-color:#F6F6F6;
@@ -121,7 +119,6 @@ button {
 	font-family:Arial;
 	font-size:17px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #F6F6F6;
 	width: 140px;
 	height: 50px;
 }
@@ -133,23 +130,22 @@ button {
 }
 
 .home-title-mini{
-	font-weight: bold;
+	font-weight:normal;
 	font-size: 18px;
 	margin-top: 30px;
 }
 
 .time-title{
-	font-weight: bold;
 	font-size: 18px;
 	margin-top: 15px;
 	color: #949494;
 }
 
 .table-th{
-	width: 900px;
-	height: 150px;
-	font-size: 22px;
-	border: 1px solid #a8a8a8;
+	width: 680px;
+	height: 120px;
+	font-size: 18px;
+	border: 1px solid #949494;
 	border-collapse: collapse;
 	margin: 0 auto;
 }
@@ -180,17 +176,9 @@ button {
 	border-collapse: collapse;
 }
 
-.table-line{
-	clear:both;
-	height:80px;
-	width:0.1px;
-	border: 0.1px solid #a8a8a8;
-	background:#928a8a;
-}
-
 .pi-state{
 	float:right;
-	font-weight: bold;
+	font-weight:normal;
 	font-size: 16px;
 	background: #F6F6F6;
 	width: 250px;
@@ -199,11 +187,10 @@ button {
 }
 
 .btn-end{
-	box-shadow: 0px 0px 4px 0px #4A74D7;
-	background-color:#4A74D7;
-	border:1px solid #4A74D7;
+	box-shadow: 0px 0px 4px 0px #FF4765;
+	background-color:#FF4765;
+	border:1px solid #FF4765;
 	color:#ffffff;
-	text-shadow:0px 1px 0px #4A74D7;
 	height: 80px;
 	width: 200px;
 }
@@ -213,7 +200,6 @@ button {
 	background-color:#4A74D7;
 	border:1px solid #4A74D7;
 	color:#ffffff;
-	text-shadow:0px 1px 0px #4A74D7;
 	height: 70px;
 	width: 80px;
 }
@@ -227,7 +213,7 @@ input{
 }
 
 .peak{
-	background-color:#4A74D7;
+	background-color: #ffee00;
 }
 
 .button2{
@@ -235,7 +221,7 @@ input{
 	margin-right: 15px;
 	float:right;
 	font-size: 12px;
-	width: 100px;
+	width: 110px;
 	height: 30px;
 	color:#ffffff;
 	box-shadow: 0px 0px 2px 0px #4A74D7;
@@ -248,7 +234,7 @@ input{
 }
 
 .bt2{
-	margin-left: 100px;
+	margin-left: 125px;
 }
 
 .table-div{
@@ -260,4 +246,16 @@ input{
 .graph-div{
 	margin: 0 auto;
 	width: 700px;
+}
+
+th{
+	font-weight:bold;
+}
+
+td{
+	font-weight:normal;
+}
+
+.ver-line{
+	border: 1px solid #a8a8a8;
 }

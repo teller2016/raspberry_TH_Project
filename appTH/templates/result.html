@@ -34,7 +34,7 @@
 <div class="header">
     <div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
     <div class="main-title-container">
-	    <h1 class="main-title">감염관리사업부 온습도계</h1>
+	    <h1 class="main-title">우정바이오 무선 온습도계</h1>
     </div>
 </div>
 <a href="{% url 'home' %}"><button class="btn-back"> < </button></a>
@@ -61,11 +61,11 @@
         {% else %}
         <tr>
         {% endif %}
-			<th><font>{{th.run_id}}</font></th>
-			<th><font>{{th.run_time_str}}</font></th>
-			<th><font>{{th.humidity}}</font></th>
-			<th><font>{{th.temperature}}</font></th>
-			<th><font>{{th.run_time_date|date:"H:i:s"}}</font></th>
+			<td><font>{{th.run_id}}</font></td>
+			<td><font>{{th.run_time_str}}</font></td>
+			<td><font>{{th.humidity}}</font></td>
+			<td><font>{{th.temperature}}</font></td>
+			<td><font>{{th.run_time_date|date:"H:i:s"}}</font></td>
 		</tr>
 	{% endfor %}
 	</table>

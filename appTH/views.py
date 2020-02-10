@@ -24,11 +24,9 @@ def home(request):
     TH = th_model.instance()
     run_state = TH.getRunState()
     pi_date = TH.getPiDate() 
-    
-    # 순으로 지정
+
     th_list = TH_data.objects.all().order_by('-id')
     th_state = TH_state.objects.first()
-    # datafield update하는 코드 추가하기(상태반영해서 업데이트할 것 - 실행중일때만)
 
     if run_state == 1:
     # Last id remember
@@ -53,7 +51,7 @@ def home(request):
     num = th_state.run_id
     th_list_mini = TH_data.objects.all().order_by('id')
     num_max = TH_data.objects.last()
-    if num < 20:
+    if num < 20 or num_max.run_id < 40:
         th_list_mini = TH_data.objects.all().order_by('id')[:40]
     elif TH_data.objects.filter(run_id=num+20).exists() == False and num_max.run_id > 40:
         th_list_mini = TH_data.objects.all().order_by('id')[num_max.run_id-40:num_max.run_id]
@@ -146,8 +144,32 @@ def graph(request):
     return render(request, 'graph.html', {'th_list':th_list})
 
 def result(request):
-    th_list = TH_data.objects.all()
+    TH = th_model.instance()
+    run_state = TH.getRunState()
+    pi_date = TH.getPiDate()
+    
+    th_list = TH_data.objects.all().order_by('-id')
     th_state = TH_state.objects.first()
+
+    if run_state == 1:
+    # Last id remember
+        for th_update in th_list:
+            if th_update.run_id > th_state.last_run_id - 2:
+                th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
+                th_update.save()
+                if th_update.humidity > th_state.max_hum:
+                    th_state.run_id = th_update.run_id
+                    th_state.run_time_str = th_update.run_time_str
+                    th_state.max_hum = th_update.humidity
+                    th_state.max_hum_temp = th_update.temperature
+                    th_state.max_hum_time = th_update.run_time_date
+                th_state.last_run_id = th_update.run_id
+                th_state.save()     
+    else:
+        th_update = TH_data.objects.last()
+        if th_state and th_update:
+            th_state.end_time = th_update.run_time_date
+            th_state.save()
     return render(request, 'result.html', {'th_list':th_list, 'th_state':th_state})
 
 

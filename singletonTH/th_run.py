@@ -40,12 +40,13 @@ try :
        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
        if humidity is not None and temperature is not None and humidity < 120 :
            print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
-           time.sleep(9)
+           time.sleep(30)
            end=time.time()
            cur.execute(sql,
                        (count,end-start,sec2time(end-start, 0),round(temperature,3),round(humidity,3)))
            conn.commit()
            count = count + 1
+                
            
 except KeyboardInterrupt:
    exit()
