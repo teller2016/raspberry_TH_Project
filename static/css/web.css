@@ -160,7 +160,7 @@ button {
 	width: 600px;
 	height: 120px;
 	font-size: 16px;
-	border: 2px solid #a8a8a8;
+	border: 0px solid #a8a8a8;
 	border-collapse: collapse;
 	margin: 0 auto;
 }
