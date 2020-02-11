@@ -143,11 +143,12 @@ button {
 
 .table-th{
 	width: 680px;
-	height: 120px;
+	height: 100px;
 	font-size: 18px;
-	border: 1px solid #949494;
+	border: 2px solid #949494;
 	border-collapse: collapse;
 	margin: 0 auto;
+	background: #ffffff;
 }
 
 .tr-bar{
@@ -157,9 +158,9 @@ button {
 
 .table-result{
 	width: 600px;
-	height: 150px;
+	height: 120px;
 	font-size: 16px;
-	border: 0px solid #a8a8a8;
+	border: 2px solid #a8a8a8;
 	border-collapse: collapse;
 	margin: 0 auto;
 }

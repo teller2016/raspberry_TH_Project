@@ -5,11 +5,9 @@ body{
 	height: 100%;
 	top: 0;
 	left: 0;
-	font-family: "돋움"
 }
 
 button {
-	font-weight: bold;
 	margin: 4px;
 	box-shadow: 0px 0px 4px 0px #00000029;
 	background-color:#F6F6F6;
@@ -81,7 +79,6 @@ input{
 	background-color:#4A74D7;
 	border:1px solid #4A74D7;
 	color:#ffffff;
-	text-shadow:0px 1px 0px #4A74D7;
 }
 
 .home-title{
@@ -91,7 +88,6 @@ input{
 }
 
 .time-title{
-	font-weight: bold;
 	font-size: 13px;
 	margin-top: -2px;
 	color: #949494;
@@ -105,11 +101,12 @@ input{
 
 .table-th{
 	width: 320px;
-	height: 70px;
+	height: 60px;
 	font-size: 12px;
-	border: 1px solid #a8a8a8;
+	border: 2px solid #a8a8a8;
 	border-collapse: collapse;
 	margin: 0 auto;
+	background: #ffffff;
 }
 
 .tr-bar{
@@ -146,18 +143,16 @@ input{
 	border:1px solid #4A74D7;
 	color:#ffffff;
 	font-size: 14px;
-	text-shadow:0px 1px 0px #4A74D7;
 	height: 70px;
 	width: 80px;
 }
 
 .btn-end{
-	box-shadow: 0px 0px 4px 0px #4A74D7;
-	background-color:#4A74D7;
-	border:1px solid #4A74D7;
+	box-shadow: 0px 0px 4px 0px #FF4765;
+	background-color:#FF4765;
+	border:1px solid #FF4765;
 	color:#ffffff;
 	font-size: 14px;
-	text-shadow:0px 1px 0px #4A74D7;
 	height: 80px;
 	width: 160px;
 }
@@ -176,6 +171,11 @@ input{
 	border:1px solid #4A74D7;
 }
 
+.bt1{
+	margin-left: 85px;
+}
+
+
 .bt2{
 	margin-left: 80px;
 }
@@ -187,7 +187,7 @@ input{
 }
 
 .table-result{
-	width: 300px;
+	width: 320px;
 	height: 150px;
 	font-size: 11px;
 	border: 0px solid #a8a8a8;
@@ -229,3 +229,23 @@ input{
 
 
 .result{clear:both;}
+
+.content-summary{
+	width: 360px;
+	margin: 4px;
+	padding: 5px 10px 10px 10px;
+	box-shadow: 0px 0px 4px 0px #00000029;
+	background-color:#F6F6F6;
+	border-radius:2px;
+	border:1px solid #F6F6F6;
+	display:inline-block;
+	text-decoration:none;
+}
+
+.ver-line{
+	border: 1px solid #a8a8a8;
+}
+
+.peak{
+	background-color: #ffee00;
+}
