@@ -33,21 +33,34 @@ conn= pymysql.connect(host="localhost",
 pin = 4     
 start = time.time()
 count = 1
+max_hum = 0
 try :
-   with conn.cursor() as cur :
-    sql="INSERT INTO appTH_th_data (run_id, run_time, run_time_str, temperature, humidity) VALUES(%s,%s,%s,%s,%s)"
-    while True:
-       humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-       if humidity is not None and temperature is not None and humidity < 120 :
-           print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
-           time.sleep(30)
-           end=time.time()
-           cur.execute(sql,
-                       (count,end-start,sec2time(end-start, 0),round(temperature,3),round(humidity,3)))
-           conn.commit()
-           count = count + 1
+    with conn.cursor() as cur :
+        sql="INSERT INTO appTH_th_data (run_id, run_time, run_time_str, run_time_date, temperature, humidity) VALUES(%s,%s,%s,%s,%s,%s)"
+        start_sql = "SELECT start_time FROM appTH_th_state"
+        max_hum_sql = "UPDATE appTH_th_state SET run_id=%s, run_time_str=%s, max_hum_time=%s, max_hum=%s, max_hum_temp=%s"
+        cur.execute(start_sql)
+        start_date_res = cur.fetchall()
+        while True:
+           humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+           if humidity is not None and temperature is not None and humidity < 120 :
+               print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
+               end=time.time()
+               runtime = end-start
+               runtimedate = start_date_res[0][0] + datetime.timedelta(seconds=runtime)
+               cur.execute(sql,
+                           (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,3),round(humidity,3)))
+               conn.commit()
+               # max database update
+               if max_hum < round(humidity,3):
+                   max_hum = round(humidity,3)
+                   cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
+                   conn.commit()
+               count = count + 1
+               time.sleep(9)
+               if runtime > 86400:
+                   os.system('sudo reboot')
                 
-           
 except KeyboardInterrupt:
    exit()
 finally :

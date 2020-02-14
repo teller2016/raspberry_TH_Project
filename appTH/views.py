@@ -28,21 +28,7 @@ def home(request):
     th_list = TH_data.objects.all().order_by('-id')
     th_state = TH_state.objects.first()
 
-    if run_state == 1:
-    # Last id remember
-        for th_update in th_list:
-            if th_update.run_id > th_state.last_run_id - 2:
-                th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
-                th_update.save()
-                if th_update.humidity > th_state.max_hum:
-                    th_state.run_id = th_update.run_id
-                    th_state.run_time_str = th_update.run_time_str
-                    th_state.max_hum = th_update.humidity
-                    th_state.max_hum_temp = th_update.temperature
-                    th_state.max_hum_time = th_update.run_time_date
-                th_state.last_run_id = th_update.run_id
-                th_state.save()     
-    else:
+    if run_state == 2:
         th_update = TH_data.objects.last()
         if th_state and th_update:
             th_state.end_time = th_update.run_time_date
@@ -90,6 +76,7 @@ def restart(request, word):
     new_state.run_time_str = "-"
     new_state.save()
     
+    conn.close()
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py &')
     return redirect('home')
 
@@ -150,26 +137,7 @@ def result(request):
     
     th_list = TH_data.objects.all().order_by('-id')
     th_state = TH_state.objects.first()
-
-    if run_state == 1:
-    # Last id remember
-        for th_update in th_list:
-            if th_update.run_id > th_state.last_run_id - 2:
-                th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
-                th_update.save()
-                if th_update.humidity > th_state.max_hum:
-                    th_state.run_id = th_update.run_id
-                    th_state.run_time_str = th_update.run_time_str
-                    th_state.max_hum = th_update.humidity
-                    th_state.max_hum_temp = th_update.temperature
-                    th_state.max_hum_time = th_update.run_time_date
-                th_state.last_run_id = th_update.run_id
-                th_state.save()     
-    else:
-        th_update = TH_data.objects.last()
-        if th_state and th_update:
-            th_state.end_time = th_update.run_time_date
-            th_state.save()
+            
     return render(request, 'result.html', {'th_list':th_list, 'th_state':th_state})
 
 
