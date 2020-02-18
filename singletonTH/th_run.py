@@ -27,7 +27,7 @@ pymysql.install_as_MySQLdb()
 sensor = Adafruit_DHT.DHT22
 conn= pymysql.connect(host="localhost",
                       user="pi",
-                      passwd="",
+                      passwd="8302",
                       db="th_db")
 
 pin = 4     

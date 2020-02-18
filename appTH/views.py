@@ -8,7 +8,6 @@ import Adafruit_DHT
 import pymysql
 import csv
 from django.utils.encoding import smart_str
-import pandas as pd
 from .models import *
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from TH_Project.singletonTH.th_main import th_model
