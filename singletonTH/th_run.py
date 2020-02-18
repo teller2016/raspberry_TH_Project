@@ -57,7 +57,7 @@ try :
                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
                    conn.commit()
                count = count + 1
-               time.sleep(9)
+               time.sleep(29)
                if runtime > 86400:
                    os.system('sudo reboot')
                 
