@@ -46,7 +46,7 @@ try :
         cur.execute(start_sql)
         start_date_res = cur.fetchall()
         
-        
+        #th_state에 데이터가 없을 경우 INSERT한다
         if start_date_res == ():
             print('th_state Data is Empty! - Creating Default th_state Data')
             now = datetime.date.today()
@@ -63,7 +63,6 @@ try :
         #conn.commit()
         #print(datetime.date.today())
         #now = datetime.date.today()
-        #print(start_date_res[0][0])
 
         while True:
            humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
@@ -71,10 +70,12 @@ try :
                print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
                end=time.time() #end = 현재 시간
                runtime = end-start #진행한 시간 = 현재시간 - 시작시간
-               if start_date_res != ():
-                   # timeDelta() = 두 시간의 차이를 보여준다? (진행한 시간)
-                   # th_state에 속한 가장 최신 시간에, 진행한 시간을 더해준다.
-                   runtimedate = start_date_res[0][0] + datetime.timedelta(seconds=runtime)
+               
+               # timeDelta() = 두 시간의 차이를 보여준다? (진행한 시간)
+               # th_state에 속한 가장 최신 시간에, 진행한 시간을 더해준다.
+               runtimedate = start_date_res[0][0] + datetime.timedelta(seconds=runtime)
+               
+            
                cur.execute(sql,
                            (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,3),round(humidity,3)))
                conn.commit()
