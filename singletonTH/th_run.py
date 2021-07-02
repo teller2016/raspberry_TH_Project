@@ -25,14 +25,18 @@ pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
 sensor = Adafruit_DHT.DHT22
+#.connect로 MySQL에 연결
+# 호스트명, 포트, 로그인, 암호, 접속할 DB
 conn= pymysql.connect(host="localhost",
                       user="pi",
                       passwd="8302",
                       db="th_db")
 
+#4번 출력핀
 pin = 4     
 start = time.time()
 count = 1
+#최대 습도
 max_hum = 0
 try :
     with conn.cursor() as cur :
@@ -41,23 +45,47 @@ try :
         max_hum_sql = "UPDATE appTH_th_state SET run_id=%s, run_time_str=%s, max_hum_time=%s, max_hum=%s, max_hum_temp=%s"
         cur.execute(start_sql)
         start_date_res = cur.fetchall()
+        
+        
+        if start_date_res == ():
+            print('th_state Data is Empty! - Creating Default th_state Data')
+            now = datetime.date.today()
+            new_state_sql = "INSERT INTO appTH_th_state (run_id, run_time_str, last_run_id, start_time, end_time, max_hum_time, max_hum, max_hum_temp) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+            cur.execute(new_state_sql,
+                        (0, "00:00:00", 0,
+                         now, now, now,
+                         0, 0))
+            conn.commit()
+            cur.execute(start_sql)
+            start_date_res = cur.fetchall()
+                         
+        #cur.execute("DELETE FROM appTH_th_data")
+        #conn.commit()
+        #print(datetime.date.today())
+        #now = datetime.date.today()
+        #print(start_date_res[0][0])
+
         while True:
            humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
            if humidity is not None and temperature is not None and humidity < 120 :
                print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
-               end=time.time()
-               runtime = end-start
-               runtimedate = start_date_res[0][0] + datetime.timedelta(seconds=runtime)
+               end=time.time() #end = 현재 시간
+               runtime = end-start #진행한 시간 = 현재시간 - 시작시간
+               if start_date_res != ():
+                   # timeDelta() = 두 시간의 차이를 보여준다? (진행한 시간)
+                   # th_state에 속한 가장 최신 시간에, 진행한 시간을 더해준다.
+                   runtimedate = start_date_res[0][0] + datetime.timedelta(seconds=runtime)
                cur.execute(sql,
                            (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,3),round(humidity,3)))
                conn.commit()
                # max database update
                if max_hum < round(humidity,3):
+                   print('Max Humid value appeared!!')
                    max_hum = round(humidity,3)
                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
                    conn.commit()
                count = count + 1
-               time.sleep(29)
+               time.sleep(5)
                if runtime > 86400:
                    os.system('sudo reboot')
                 
