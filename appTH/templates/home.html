@@ -4,9 +4,12 @@
   
 <head>
     <meta charset="utf-8">
+    
     {% if run_state == 1 %}
+    <!--    실행중이면 30초 마다 페이지 fresh를 한다.-->
     <meta http-equiv="refresh" content="30;url=">
     {% endif %}
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
     <link href="{% static '/css/web.css' %}" media="(min-width:600px)" rel="stylesheet" type="text/css">
