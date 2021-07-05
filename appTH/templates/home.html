@@ -10,6 +10,7 @@
     <meta http-equiv="refresh" content="30;url=">
     {% endif %}
     
+    <!--    브라우저 너비를 장치 너비에 맞추어 표시함-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
     <link href="{% static '/css/web.css' %}" media="(min-width:600px)" rel="stylesheet" type="text/css">
@@ -92,7 +93,7 @@
 	<div class="content-container">
 		<div class="pi-select">
         <p class="home-title">온습도계 선택</p>
-		<a href="http://192.168.243.13:8000/"><button class="btn-me">13번</button></a>
+		<a href="http://192.168.243.1:8000/"><button class="btn-me">1번</button></a>
 		<a href="http://192.168.243.26:8000/"><button>26번</button></a>
 		<a href="http://192.168.243.27:8000/"><button>27번</button></a>
 		</div>
@@ -101,7 +102,9 @@
         <a href="{% url 'result' %}"><button class="button2">전체 데이터 보기</button></a>
 		<p class="home-title bt1">측정 상태 요약</p>
         <p class="time-title">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
+        
         {% if run_state == 2 %}
+        <!--    측정이 종료되었을 시 종료시간 표시-->
         <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
         {% endif %}
 
@@ -124,14 +127,18 @@
         <br>
         </div>
         <br>
+        
 		<div class="pi-state">
         {% if run_state == 1 %}
         <p>온습도계 실행 상태: <strong style="color:#FF4765">실행중</strong> </p>
         </div>
+        
         <br>
         <hr class="hr-div">
         <br>
+        
         <button class="btn-end" onclick="end_check();">종료</button>
+        
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
         </div>
@@ -168,6 +175,8 @@
            </tr>
         </table>
         {% endif %}
+        
+        
     <div class="graph-div">
     <br><br>
     <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
@@ -186,6 +195,8 @@
         var dataList = new Array();
         var dataList2 = new Array();
         
+        // 그래프에 x,y 데이터 할당 (x = 진행시간, y = 온도 or 습도)
+        // th_list: th_data 전체 데이터
         {% for th in th_list %}
             var data = new Object() ;
             data.x = {{th.run_time}}
@@ -246,10 +257,14 @@
                 <th><font>현재 시간</font></th>
             </tr>
         {% for th in th_list_mini %}
+        
         {% if th.run_id == th_state.run_id %}
+        <!--th_state랑 run_id가 같은 데이터의 경우 노란색으로 하이라이트-->
             <tr class="peak">
+            
         {% else %}
             <tr>
+            
         {% endif %}
                 <td><font>{{th.run_id}}</font></td>
                 <td><font>{{th.run_time_str}}</font></td>
@@ -257,6 +272,7 @@
                 <td><font>{{th.temperature}}</font></td>
                 <td><font>{{th.run_time_date|date:"H:i:s"}}</font></td>
             </tr>
+            
         {% endfor %}
         </table>
         <br><br>
