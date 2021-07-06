@@ -168,6 +168,8 @@
         <br>
         
 		<div class="pi-state">
+		
+		
         {% if run_state == 1 %}
         <p>온습도계 실행 상태: <strong style="color:#FF4765">실행중</strong> </p>
         </div>
@@ -176,7 +178,24 @@
         <hr class="hr-div">
         <br>
         
-        <button class="btn-end" onclick="end_check();">종료</button>
+        <table class="table-start">
+           <tr>
+              <td>날짜</td>
+              <td>
+                <span id="cur_date" style="color:gray;">date</span>
+              </td>
+              <td rowspan="3"><button class="btn-end" onclick="end_check();">종료</button></td>
+           </tr>
+           <tr><td colspan="2"><hr></td></tr>
+           <tr>
+              <td>시간</td>
+              <td>
+                <span id="cur_time" style="color:gray; padding:10px;">time</span>
+              </td>
+           </tr>
+        </table>
+        
+        
         
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
@@ -203,6 +222,9 @@
            </tr>
         </table>
         
+        
+        {% endif %}
+        
         <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");
         let currentTime = document.getElementById("cur_time");
@@ -215,7 +237,6 @@
         clock();
         setInterval(clock,1000);
         </script>
-        {% endif %}
         
         
     <div class="graph-div">

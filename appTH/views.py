@@ -48,14 +48,16 @@ def home(request):
             th_state.save() #값 수정후 저장
     
     num = th_state.run_id #th_state의 run_id값
-    th_list_mini = TH_data.objects.all().order_by('id')
-    num_max = TH_data.objects.last() #가장 마지막에 측정된 th_data 데이터
-    if num < 20 or num_max.run_id < 40: #th_state의 run_id값이 20미만 || 가장 최근 측정한 데이터가 40개 이하일때
-        th_list_mini = TH_data.objects.all().order_by('id')[:40] # 오래된 데이터순으로 정렬하여, 40개 까지만 th_list_mini에 할당
-    elif TH_data.objects.filter(run_id=num+20).exists() == False and num_max.run_id > 40: # 전체 데이터에서? th_state의 run_id + 20에 해당하는 데이터가 없고 || 측정중인 데이터의 개수가 40개가 넘어갈 경우
-        th_list_mini = TH_data.objects.all().order_by('id')[num_max.run_id-40:num_max.run_id] # 40개 이후의 데이터들을 th_list_mini에 할당
-    else:
-        th_list_mini = TH_data.objects.all().order_by('id')[num-20:num+20] # 이전 데이터랑 같이 할당???
+    th_list_mini = TH_data.objects.all().order_by('-id')[:40]
+    
+    #num_max = TH_data.objects.last() #가장 마지막에 측정된 th_data 데이터
+    #if num < 20 or num_max.run_id < 40: #th_state의 run_id값이 20미만 || 가장 최근 측정한 데이터가 40개 이하일때
+    #    th_list_mini = TH_data.objects.all().order_by('id')[:40] # 오래된 데이터순으로 정렬하여, 40개 까지만 th_list_mini에 할당
+    #elif TH_data.objects.filter(run_id=num+20).exists() == False and num_max.run_id > 40: # 전체 데이터에서? th_state의 run_id + 20에 해당하는 데이터가 없고 || 측정중인 데이터의 개수가 40개가 넘어갈 경우
+    #    th_list_mini = TH_data.objects.all().order_by('id')[num_max.run_id-40:num_max.run_id] # 40개 이후의 데이터들을 th_list_mini에 할당
+    #else:
+    #    th_list_mini = TH_data.objects.all().order_by('id')[num-20:num+20] 
+    
     # run_state: 현재 pi의 진행시간
     # th_list: 가장 최근 데이터부터 정렬된 th_data
     # pi_date: 라즈베리파이의 현재시간?
