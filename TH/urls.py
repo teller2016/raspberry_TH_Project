@@ -20,7 +20,7 @@ import appTH.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', appTH.views.home, name="home"),
-    path('restart/<word>', appTH.views.restart, name="restart"),
+    path('restart/<word>/<second>', appTH.views.restart, name="restart"),
     path('end', appTH.views.end, name="end"),
     path('th_csv/<word>/', appTH.views.th_csv, name="th_csv"),
     path('graph', appTH.views.graph, name="graph"),

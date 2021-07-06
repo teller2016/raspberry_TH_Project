@@ -66,7 +66,7 @@ def home(request):
     return render(request,'home.html',{'run_state':run_state, 'th_list':th_list,
                                        'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
 
-def restart(request, word): #word: ex> "2021-07-06 17:13:00"
+def restart(request, word, second): #word: ex> "2021-07-06 17:13:00" // second: repeat time
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
     th_state = TH_state.objects.all() #th_state 데이터 테이블 전체 불러옴
     TH.setPiDate(word) #라즈베리파이 정보 객체 pi_date값 할당
@@ -100,7 +100,7 @@ def restart(request, word): #word: ex> "2021-07-06 17:13:00"
     new_state.save()
     
     conn.close()
-    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py &')
+    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
     return redirect('home')
 
 def end(request):

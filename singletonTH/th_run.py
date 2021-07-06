@@ -46,6 +46,9 @@ try :
         cur.execute(start_sql)
         start_date_res = cur.fetchall()
         
+        sleepTime = int(sys.argv[1])
+        print(sleepTime)
+        
         #th_state에 데이터가 없을 경우 INSERT한다
         if start_date_res == ():
             print('th_state Data is Empty! - Creating Default th_state Data')
@@ -58,6 +61,7 @@ try :
             conn.commit()
             cur.execute(start_sql)
             start_date_res = cur.fetchall()
+            
                          
         #cur.execute("DELETE FROM appTH_th_data")
         #conn.commit()
@@ -86,7 +90,7 @@ try :
                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
                    conn.commit()
                count = count + 1
-               time.sleep(5)
+               time.sleep(sleepTime)
                if runtime > 86400:
                    os.system('sudo reboot')
                 

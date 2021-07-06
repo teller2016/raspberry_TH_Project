@@ -7,7 +7,7 @@
     
     {% if run_state == 1 %}
     <!--    실행중이면 30초 마다 페이지 fresh를 한다.-->
-    <meta http-equiv="refresh" content="5;url=">
+    <meta http-equiv="refresh" content="5";url=">
     {% endif %}
     
     <!--    브라우저 너비를 장치 너비에 맞추어 표시함-->
@@ -55,7 +55,9 @@
                 console.log(dateAndTime);
                 //dateAndTime: ex> "2021-07-06 17:13:00"
                 
-                location.href="/restart/"+dateAndTime;
+                let second = document.getElementById('cycle').value;
+                
+                location.href="/restart/" + dateAndTime + "/" + second;
                 return true;
 
             }
@@ -70,6 +72,7 @@
             }
              return false;
         }
+        
         
         function getDate(){
             let time = new Date();
@@ -103,6 +106,8 @@
                 
             return `${hours}:${minutes}:${seconds}`;
         }
+        
+        
         
     </script>
     
@@ -204,6 +209,16 @@
         <hr class="hr-div">
         <br>
         
+        <script type="text/javascript">
+              function setCycle(){
+                  let cycle = document.getElementById('cycle');
+                  
+                  let cycleLabel = document.getElementById('cycleLabel');
+                  cycleLabel.innerHTML = cycle.value+'초';
+                           
+                  }
+                   
+        </script>
         
         <table class="table-start">
            <tr>
@@ -211,9 +226,24 @@
               <td>
                 <span id="cur_date" style="color:gray;">date</span>
               </td>
+              
+              <td>
+                  측정 주기
+              </td>  
+              
               <td rowspan="3"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
            </tr>
-           <tr><td colspan="2"><hr></td></tr>
+           
+           <tr>
+               <td colspan="2"><hr></td>
+               <td rowspan="2">
+                   
+                  <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+                  <label for="cycle" id="cycleLabel">30초</label>
+              
+              </td>   
+           </tr>
+           
            <tr>
               <td>시간</td>
               <td>
