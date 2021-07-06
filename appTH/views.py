@@ -15,11 +15,19 @@ from TH_Project.singletonTH.th_main import th_model
 import random
 import datetime
 import time
-
+import json
 import pandas as pd
+
+from django.http import JsonResponse
 
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
+
+
+def test(request):
+    jsonObject = json.loads(request.body)
+    print(jsonObject.get('title'))
+    return JsonResponse(jsonObject)
 
 def home(request):
     TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
