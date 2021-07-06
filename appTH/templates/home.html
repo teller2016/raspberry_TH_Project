@@ -146,18 +146,13 @@
         <br>
         <hr class="hr-div">
         <br>
+        
+        
         <table class="table-start">
            <tr>
               <td>날짜</td>
               <td>
-                <input id="datetimepicker" type="text" value="" placeholder="YYYY-MM-DD"/>
-                <script type="text/javascript">
-                    jQuery('#datetimepicker').datetimepicker({
-                      lang:'ko',
-                      format:'Y-m-d',
-                      timepicker:false,
-                     });
-                </script>
+                <span id="cur_date" style="color:gray;">date</span>
               </td>
               <td rowspan="3"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
            </tr>
@@ -165,16 +160,44 @@
            <tr>
               <td>시간</td>
               <td>
-                <input id="timepicker" type="text" name="timepicker"/>
-                <script>
-                    var options = {
-                        twentyFour: true,
-                        secondsInterval: 1,};
-                    jQuery('#timepicker').wickedpicker(options);
-                </script>
+                <span id="cur_time" style="color:gray; padding:10px;">time</span>
               </td>
            </tr>
         </table>
+        
+        <script type="text/javascript">
+        let currentDate = document.getElementById("cur_date");
+        let currentTime = document.getElementById("cur_time");
+        function clock(){
+            let time = new Date();
+
+            let year = time.getFullYear();
+            let month = '' + (time.getMonth()+1);
+            let date = '' + time.getDate();
+            
+            if(month.length<2)
+                month = '0' + month;
+            if(date.length<2)
+                date='0'+date;
+            
+            
+            let hours = '' + time.getHours();
+            let minutes = '' + time.getMinutes();
+            let seconds = '' + time.getSeconds();
+            
+            if(hours.length<2)
+                hours = '0'+hours;
+            if(minutes.length<2)
+                minutes = '0'+minutes;
+            if(seconds.length<2)
+                seconds = '0'+seconds;
+           
+           currentDate.innerText = `${year}/${month}/${date}`;
+           currentTime.innerText = `${hours}:${minutes}:${seconds}`;
+        }
+        clock();
+        setInterval(clock,1000);
+        </script>
         {% endif %}
         
         

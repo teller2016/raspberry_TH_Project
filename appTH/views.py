@@ -29,8 +29,18 @@ def home(request):
     th_list = TH_data.objects.all().order_by('-id') # th_data를 id 내림차순으로 정렬 (가장 최근 데이터부터 정렬)
     th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
 
-    #print(th_list)
-
+    #print(th_state)
+    if th_state is None:
+        th_state = TH_state()
+        th_state.last_run_id = 0
+        th_state.start_time = TH.getPiDate()
+        th_state.end_time = TH.getPiDate()
+        th_state.max_hum_time = TH.getPiDate()
+        th_state.max_hum = 0
+        th_state.max_hum_temp = 0
+        th_state.run_time_str = "-"
+        th_state.save()
+    
     if run_state == 2:
         th_update = TH_data.objects.last() #가장 마지막에 측정된 데이터 불러옴
         if th_state and th_update:
