@@ -16,11 +16,13 @@ import random
 import datetime
 import time
 
+import pandas as pd
+
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
 def home(request):
-    TH = th_model.instance() #th_model의 인스턴스 생성?
+    TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
     run_state = TH.getRunState() #th_model의 getRunState()메소드... run_state값 반환
     pi_date = TH.getPiDate() # pi_date값 반환 (현재 시간?)
 
@@ -52,26 +54,29 @@ def home(request):
     return render(request,'home.html',{'run_state':run_state, 'th_list':th_list,
                                        'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
 
-def restart(request, word):
-    TH = th_model.instance()
-    th_state = TH_state.objects.all()
-    TH.setPiDate(word)
+def restart(request, word): #word: ex> "2021-07-06 17:13:00"
+    TH = th_model.instance() #라즈베리파이 정보 객체 생성
+    th_state = TH_state.objects.all() #th_state 데이터 테이블 전체 불러옴
+    TH.setPiDate(word) #라즈베리파이 정보 객체 pi_date값 할당
     
     #backup last data
     th_state = TH_state.objects.first()
-    conn = pymysql.connect(host='localhost', user='pi', password='' ,db='th_db', charset='utf8')
-    query = 'SELECT run_time_str, humidity, temperature, run_time_date FROM appTH_th_data'
-    df = pd.read_sql_query(query,conn)
-    filename = th_state.start_time.strftime("%Y%m%d_%H%M%S")+".csv"
-    path = "/home/pi/Project/backup/"
-    df.to_csv(path+filename, header=True, index=False)
+    conn = pymysql.connect(host='localhost', user='pi', password='8302' ,db='th_db', charset='utf8')
+    query = 'SELECT run_time_str, humidity, temperature, run_time_date FROM appTH_th_data' # th_data 전체 데이터 쿼리
+    df = pd.read_sql_query(query,conn) # 쿼리 요청에 대한 데이터를 pandas dataframe으로 가져온다
+    filename = th_state.start_time.strftime("%Y%m%d_%H%M%S")+".csv" #엑셀 파일이름 지정
+    path = "/home/pi/Project/backup/" # 엑셀 파일 저장 경로
+    df.to_csv(path+filename, header=True, index=False) # dataframe을 csv 파일로 내보내기
     
+    # 1: 온습도계 실행상태
+    # 2: 온습도계 종료상태
     TH.setRunState(1) # run_state 2 -> 1
     
-    th_list = TH_data.objects.all()
-    th_list.delete()
-    th_state.delete()
+    th_list = TH_data.objects.all() # th_data 데이터 테이블 전체 불러옴
+    th_list.delete() # th_data 전체 삭제
+    th_state.delete() # th_state 삭제
     
+    # th_state 새로 생성하고 값 초기화 진행
     new_state = TH_state()
     new_state.last_run_id = 0
     new_state.start_time = TH.getPiDate()
@@ -133,7 +138,7 @@ def th_csv(request, word):
     return response
 
 def graph(request):
-    th_list = TH_data.objects.all()
+    th_list = TH_data.objects.all() #th_data 데이터 전체 할당
     return render(request, 'graph.html', {'th_list':th_list})
 
 def result(request):
@@ -141,8 +146,8 @@ def result(request):
     run_state = TH.getRunState()
     pi_date = TH.getPiDate()
     
-    th_list = TH_data.objects.all().order_by('-id')
-    th_state = TH_state.objects.first()
+    th_list = TH_data.objects.all().order_by('-id') #th_data의 가장 최신 데이터부터 정렬하여 할당
+    th_state = TH_state.objects.first() #th_state의 데이터 할당
             
     return render(request, 'result.html', {'th_list':th_list, 'th_state':th_state})
 

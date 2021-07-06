@@ -7,7 +7,7 @@
     
     {% if run_state == 1 %}
     <!--    실행중이면 30초 마다 페이지 fresh를 한다.-->
-    <meta http-equiv="refresh" content="30;url=">
+    <meta http-equiv="refresh" content="5;url=">
     {% endif %}
     
     <!--    브라우저 너비를 장치 너비에 맞추어 표시함-->
@@ -51,6 +51,7 @@
                     document.getElementById("datetimepicker").focus();
                 } else {
                     var userInput = userInput_date + " " + userInput_time.replaceAll(" ","")+":00";
+                    //userInput: ex> "2021-07-06 17:13:00"
                     location.href="/restart/"+userInput;
                     return true;
                 }
