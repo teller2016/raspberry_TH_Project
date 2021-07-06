@@ -47,7 +47,7 @@ try :
         start_date_res = cur.fetchall()
         
         sleepTime = int(sys.argv[1])
-        print(sleepTime)
+        #print(sleepTime)
         
         #th_state에 데이터가 없을 경우 INSERT한다
         if start_date_res == ():

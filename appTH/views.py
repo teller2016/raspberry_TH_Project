@@ -50,6 +50,7 @@ def home(request):
     num = th_state.run_id #th_state의 run_id값
     th_list_mini = TH_data.objects.all().order_by('-id')[:40]
     
+    
     #num_max = TH_data.objects.last() #가장 마지막에 측정된 th_data 데이터
     #if num < 20 or num_max.run_id < 40: #th_state의 run_id값이 20미만 || 가장 최근 측정한 데이터가 40개 이하일때
     #    th_list_mini = TH_data.objects.all().order_by('id')[:40] # 오래된 데이터순으로 정렬하여, 40개 까지만 th_list_mini에 할당

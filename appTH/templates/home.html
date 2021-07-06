@@ -152,13 +152,17 @@
         <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
         {% endif %}
 
+        {% if th_state.run_id == 0 %}
+        <p class="time-title">No Data</p>
+        
+        {% else %}
         <table class="table-th">
             <tr class="tr-bar">
                 <th class="ver-line"><font>NO.</font></th>
                 <th class="ver-line"><font>경과 시간</font></th>
                 <th class="ver-line"><font>최대 습도(%)</font></th>
                 <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>현재 시간</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
             </tr>
             <tr>
                 <td class="ver-line">{{th_state.run_id}}</td>
@@ -168,6 +172,33 @@
                 <td class="ver-line">{{th_state.max_hum_time|date:"H:i:s"}}</td>
             </tr>
         </table>
+        {% endif %}
+        
+        <br>
+        <p class="home-title">현재 수치</p>
+        
+        {% if not th_list_mini %}
+        <p class="time-title">No Data</p>
+        
+        {% else %}
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr>
+                <td class="ver-line">{{th_list_mini.0.run_id}}</td>
+                <td class="ver-line">{{th_list_mini.0.run_time_str}}</td>
+                <td class="ver-line">{{th_list_mini.0.humidity}}</td>
+                <td class="ver-line">{{th_list_mini.0.temperature}}</td>
+                <td class="ver-line">{{th_list_mini.0.run_time_date|date:"H:i:s"}}</td>
+            </tr>
+        </table>
+        {% endif %}
+        
         <br>
         </div>
         <br>

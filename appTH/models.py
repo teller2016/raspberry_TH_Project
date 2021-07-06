@@ -11,7 +11,7 @@ class TH_data(models.Model):
     humidity = models.FloatField() # 습도값
 
 class TH_state(models.Model):
-    run_id = models.IntegerField(default = 1) # 저장된 run_id
+    run_id = models.IntegerField(default = 0) # 저장된 run_id
     run_time_str = models.CharField(max_length=10) #(문자열) 기록이 진행된 초 (ex. 00:00:XX)
     last_run_id = models.IntegerField() # ??? 변경되기 이전의 run_id값
     start_time = models.DateTimeField(default=datetime.now, blank=True) # 시작 시간 (날짜 + 시간)
