@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 import appTH.views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', appTH.views.home, name="home"),
@@ -25,4 +26,7 @@ urlpatterns = [
     path('th_csv/<word>/', appTH.views.th_csv, name="th_csv"),
     path('graph', appTH.views.graph, name="graph"),
     path('result', appTH.views.result, name="result"),
+    
+    path('getThData/', appTH.views.getThData, name="getThData"),
+    path('getThState/', appTH.views.getThState, name="getThState")
 ]

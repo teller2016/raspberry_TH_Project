@@ -15,11 +15,34 @@ from TH_Project.singletonTH.th_main import th_model
 import random
 import datetime
 import time
-
+import json
 import pandas as pd
+
+from django.http import JsonResponse
+from django.core import serializers
+from django.http import HttpResponse
 
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
+
+def getThData(request):
+
+    th_list = TH_data.objects.all().order_by('-id') # th_data를 id 내림차순으로 정렬 (가장 최근 데이터부터 정렬)
+    th_list_mini = TH_data.objects.all().order_by('-id')[:40]
+    
+    #print(list(th_list_mini))
+    data = serializers.serialize('json', th_list_mini)
+    
+    return HttpResponse(data, content_type='text/json-commnet-filtered')
+    
+def getThState(request):
+
+    th_state = TH_state.objects.all()
+    
+    data = serializers.serialize('json', th_state)
+
+    return HttpResponse(data, content_type='text/json-commnet-filtered')
+
 
 def home(request):
     TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
@@ -29,7 +52,7 @@ def home(request):
     th_list = TH_data.objects.all().order_by('-id') # th_data를 id 내림차순으로 정렬 (가장 최근 데이터부터 정렬)
     th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
 
-    #print(th_state)
+    # create new th_state when there is no data (*prevent error)
     if th_state is None:
         th_state = TH_state()
         th_state.last_run_id = 0
