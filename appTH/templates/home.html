@@ -7,7 +7,7 @@
     
     {% if run_state == 1 %}
     <!--    실행중이면 30초 마다 페이지 fresh를 한다.-->
-    <meta http-equiv="refresh" content="5";url=">
+    <!--    <meta http-equiv="refresh" content="5;url=">-->
     {% endif %}
     
     <!--    브라우저 너비를 장치 너비에 맞추어 표시함-->
@@ -318,10 +318,11 @@
                             }
                         });
                         });
+                        
+              
+             
         </script>
-
-
-
+        
         
         
         <script type="text/javascript">
@@ -333,8 +334,39 @@
            currentDate.innerText = getDate();
            currentTime.innerText = getTime();
         }
+        
+        function refreshData(){
+            
+                console.log("Refresh Data Called!!");
+                let param = {
+                            'title' : 'refresh',
+                           
+                            }
+                $.ajax({
+                            url: '{% url 'refreshData' %}',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            success:function(data){
+                                console.log(data);
+                                
+                                
+                                
+                            },
+                            error: function(){
+                                console.log('Ajax refresh Error!!');
+                            }
+                        });
+            
+            }
+        
         clock();
         setInterval(clock,1000);
+        
+        refreshData();
+        if( {{run_state}} == 1)
+            setInterval(refreshData, 4000); // refresh every x seconds
         </script>
         
         

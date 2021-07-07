@@ -19,10 +19,31 @@ import json
 import pandas as pd
 
 from django.http import JsonResponse
+from django.core import serializers
+from django.http import HttpResponse
 
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
+def refreshData(request):
+
+    th_list = TH_data.objects.all().order_by('-id') # th_data를 id 내림차순으로 정렬 (가장 최근 데이터부터 정렬)
+    th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
+    
+    num = th_state.run_id #th_state의 run_id값
+    th_list_mini = TH_data.objects.all().order_by('-id')[:40]
+    
+    #print(list(th_list_mini))
+    data = serializers.serialize('json', th_list_mini)
+    
+    return HttpResponse(data, content_type='text/json-commnet-filtered')
+    # run_state: 현재 pi의 진행시간
+    # th_list: 가장 최근 데이터부터 정렬된 th_data
+    # pi_date: 라즈베리파이의 현재시간?
+    # th_state: th_state 데이터
+    # th_state_mini: th_data의 가장 최신 40개?의 데이터
+    #return render(request,'home.html',{'th_list':th_list,
+    #                                   'th_state':th_state, 'th_list_mini':th_list_mini})
 
 def test(request):
     jsonObject = json.loads(request.body)
@@ -37,7 +58,7 @@ def home(request):
     th_list = TH_data.objects.all().order_by('-id') # th_data를 id 내림차순으로 정렬 (가장 최근 데이터부터 정렬)
     th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
 
-    #print(th_state)
+    # create new th_state when there is no data (*prevent error)
     if th_state is None:
         th_state = TH_state()
         th_state.last_run_id = 0

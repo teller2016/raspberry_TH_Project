@@ -28,4 +28,6 @@ urlpatterns = [
     path('result', appTH.views.result, name="result"),
     
     path('test/', appTH.views.test, name="test"),
+    
+    path('refreshData/', appTH.views.refreshData, name="refreshData"),
 ]
