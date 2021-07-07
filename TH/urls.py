@@ -29,5 +29,6 @@ urlpatterns = [
     
     path('test/', appTH.views.test, name="test"),
     
-    path('refreshData/', appTH.views.refreshData, name="refreshData"),
+    path('getThData/', appTH.views.getThData, name="getThData"),
+    path('getThState/', appTH.views.getThState, name="getThState")
 ]

@@ -152,10 +152,8 @@
         <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
         {% endif %}
 
-        {% if th_state.run_id == 0 %}
-        <p class="time-title">No Data</p>
         
-        {% else %}
+        
         <table class="table-th">
             <tr class="tr-bar">
                 <th class="ver-line"><font>NO.</font></th>
@@ -164,15 +162,13 @@
                 <th class="ver-line"><font>온도(°C)</font></th>
                 <th class="ver-line"><font>측정 시간</font></th>
             </tr>
-            <tr>
-                <td class="ver-line">{{th_state.run_id}}</td>
-                <td class="ver-line">{{th_state.run_time_str}}</td>
-                <td class="ver-line">{{th_state.max_hum}}</td>
-                <td class="ver-line">{{th_state.max_hum_temp}}</td>
-                <td class="ver-line">{{th_state.max_hum_time|date:"H:i:s"}}</td>
+            <tr id="cur_state">
+                
             </tr>
         </table>
-        {% endif %}
+        
+        
+        
         
         <br>
         <p class="home-title">현재 수치</p>
@@ -329,16 +325,15 @@
            currentDate.innerText = getDate();
            currentTime.innerText = getTime();
         }
+        clock();
+        setInterval(clock,1000);
         
-        function refreshData(){
-            
-                console.log("Refresh Data Called!!");
-                let param = {
-                            'title' : 'refresh',
-                           
-                            }
+        
+        
+        function getThData(){
+                
                 $.ajax({
-                            url: '{% url 'refreshData' %}',
+                            url: '{% url 'getThData' %}',
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'
@@ -356,23 +351,47 @@
                                     "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.run_time_date.split("T")[1].split("Z")[0] + "</td>" 
                                 )
-                                
-                                
-                                
                             },
                             error: function(){
-                                console.log('Ajax refresh Error!!');
+                                console.log('Ajax getThData Error!!');
+                            }
+                        });
+            
+            }
+            
+            function getThState(){
+                
+                $.ajax({
+                            url: '{% url 'getThState' %}',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            success:function(data){
+
+                               $('#cur_state').empty();
+                                
+                                $('#cur_state').append(
+                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum_time.split("T")[1].split("Z")[0] + "</td>" 
+                                )
+                            },
+                            error: function(){
+                                console.log('Ajax getThState Error!!');
                             }
                         });
             
             }
         
-        clock();
-        setInterval(clock,1000);
         
-        refreshData();
+        getThState();
+        getThData();
         if( {{run_state}} == 1)
             setInterval(refreshData, 1000); // refresh every x seconds
+            
         </script>
         
         
