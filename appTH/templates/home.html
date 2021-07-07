@@ -401,9 +401,23 @@
             
             }
             
+            function getAllThData(){
+                $.ajax({
+                    url: '{% url 'getAllThData' %}',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){
+                        console.log(data);
+                    }
+                })
+            }
+            
             function refreshData(){
                 getThState();
                 getThData();
+                getAllThData();
             }
         
         

@@ -28,5 +28,6 @@ urlpatterns = [
     path('result', appTH.views.result, name="result"),
     
     path('getThData/', appTH.views.getThData, name="getThData"),
-    path('getThState/', appTH.views.getThState, name="getThState")
+    path('getThState/', appTH.views.getThState, name="getThState"),
+    path('getAllThData/', appTH.views.getAllThData, name="getAllThData")
 ]
