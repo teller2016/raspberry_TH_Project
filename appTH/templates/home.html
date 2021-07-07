@@ -316,12 +316,22 @@
                                 )
                                 
                                 
-                                while($('#table_data').length >1){
-                                    $('#table_data').deleteRow(1);
-                                    }
+                                //while($('#table_data').length >1){
+                                 //   $('#table_data').deleteRow(1);
+                                 //   }
+                                 $('#table_data').empty();
                                     
                                 //console.log($('#state_id').html());
                                 let state_run_id = $('#state_id').html();
+                                let table_head_html =
+                                    "<tr class='tr-bar2'>" +
+                                    "<th><font>no.</font></th>" +
+                                    "<th><font>경과 시간</font></th>" +
+                                    "<th><font>습도(%)</font></th>" +
+                                    "<th><font>온도(°C)</font></th>" +
+                                    "<th><font>현재 시간</font></th>" +
+                                    "</tr>"
+                                $('#table_data').append( table_head_html )
                                 
                                 $.each(data, function(key, value){
                                 
@@ -476,13 +486,7 @@
 	<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
     <p class="home-title bt2">측정 결과 미리보기</p>
         <table class="table-result" id="table_data">
-            <tr class="tr-bar2">
-                <th><font>no.</font></th>
-                <th><font>경과 시간</font></th>
-                <th><font>습도(%)</font></th>
-                <th><font>온도(°C)</font></th>
-                <th><font>현재 시간</font></th>
-            </tr>
+            
         
         
         </table>
