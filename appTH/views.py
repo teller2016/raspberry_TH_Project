@@ -44,11 +44,6 @@ def getThState(request):
     return HttpResponse(data, content_type='text/json-commnet-filtered')
 
 
-def test(request):
-    jsonObject = json.loads(request.body)
-    print(jsonObject.get('title'))
-    return JsonResponse(jsonObject)
-
 def home(request):
     TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
     run_state = TH.getRunState() #th_model의 getRunState()메소드... run_state값 반환

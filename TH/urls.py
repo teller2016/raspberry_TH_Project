@@ -27,8 +27,6 @@ urlpatterns = [
     path('graph', appTH.views.graph, name="graph"),
     path('result', appTH.views.result, name="result"),
     
-    path('test/', appTH.views.test, name="test"),
-    
     path('getThData/', appTH.views.getThData, name="getThData"),
     path('getThState/', appTH.views.getThState, name="getThState")
 ]
