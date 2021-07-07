@@ -305,8 +305,6 @@
                                 },
                             success:function(data){
                                 
-                                
-                                
                                 $('#cur_value').empty();
                                 
                                 $('#cur_value').append(
@@ -316,6 +314,45 @@
                                     "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.run_time_date.split("T")[1].split("Z")[0] + "</td>" 
                                 )
+                                
+                                
+                                while($('#table_data').length >1){
+                                    $('#table_data').deleteRow(1);
+                                    }
+                                    
+                                //console.log($('#state_id').html());
+                                let state_run_id = $('#state_id').html();
+                                
+                                $.each(data, function(key, value){
+                                
+                                    let run_id = value.fields.run_id;
+                                    let run_time_str = value.fields.run_time_str;
+                                    let humidity = value.fields.humidity;
+                                    let temperature = value.fields.temperature;
+                                    let run_time_date = value.fields.run_time_date;
+                                    
+                                    let tr_html = '';
+                                    
+                                    if( run_id == state_run_id)
+                                        tr_html = "<tr class='peak'>";
+                                    else
+                                        tr_html = "<tr>";
+                                   
+                                        
+                                    $('#table_data').append( tr_html +
+                                        "<td><font>" + run_id + "</font></td>" +
+                                        "<td><font>" + run_time_str + "</font></td>" +
+                                        "<td><font>" + humidity + "</font></td>" +
+                                        "<td><font>" + temperature + "</font></td>" +
+                                        "<td><font>" + run_time_date.split("T")[1].split("Z")[0] + "</font></td>" +
+                                        "</tr>"
+                                    );
+                                
+                                });
+                                
+                                
+                                
+                                
                             },
                             error: function(){
                                 console.log('Ajax getThData Error!!');
@@ -337,12 +374,15 @@
                                $('#cur_state').empty();
                                 
                                 $('#cur_state').append(
-                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.max_hum_time.split("T")[1].split("Z")[0] + "</td>" 
                                 )
+                                
+                                
+                                
                             },
                             error: function(){
                                 console.log('Ajax getThState Error!!');
@@ -435,7 +475,7 @@
     <div class="table-div">
 	<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
     <p class="home-title bt2">측정 결과 미리보기</p>
-        <table class="table-result">
+        <table class="table-result" id="table_data">
             <tr class="tr-bar2">
                 <th><font>no.</font></th>
                 <th><font>경과 시간</font></th>
@@ -443,24 +483,8 @@
                 <th><font>온도(°C)</font></th>
                 <th><font>현재 시간</font></th>
             </tr>
-        {% for th in th_list_mini %}
         
-        {% if th.run_id == th_state.run_id %}
-        <!--th_state랑 run_id가 같은 데이터의 경우 노란색으로 하이라이트-->
-            <tr class="peak">
-            
-        {% else %}
-            <tr>
-            
-        {% endif %}
-                <td><font>{{th.run_id}}</font></td>
-                <td><font>{{th.run_time_str}}</font></td>
-                <td><font>{{th.humidity}}</font></td>
-                <td><font>{{th.temperature}}</font></td>
-                <td><font>{{th.run_time_date|date:"H:i:s"}}</font></td>
-            </tr>
-            
-        {% endfor %}
+        
         </table>
         <br><br>
     </div>
