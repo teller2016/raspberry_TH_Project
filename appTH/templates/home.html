@@ -176,11 +176,10 @@
         
         <br>
         <p class="home-title">현재 수치</p>
+       
         
-        {% if not th_list_mini %}
-        <p class="time-title">No Data</p>
         
-        {% else %}
+        
         <table class="table-th">
             <tr class="tr-bar">
                 <th class="ver-line"><font>NO.</font></th>
@@ -189,15 +188,11 @@
                 <th class="ver-line"><font>온도(°C)</font></th>
                 <th class="ver-line"><font>측정 시간</font></th>
             </tr>
-            <tr>
-                <td class="ver-line">{{th_list_mini.0.run_id}}</td>
-                <td class="ver-line">{{th_list_mini.0.run_time_str}}</td>
-                <td class="ver-line">{{th_list_mini.0.humidity}}</td>
-                <td class="ver-line">{{th_list_mini.0.temperature}}</td>
-                <td class="ver-line">{{th_list_mini.0.run_time_date|date:"H:i:s"}}</td>
+            <tr id="cur_value">
+                
             </tr>
         </table>
-        {% endif %}
+        
         
         <br>
         </div>
@@ -349,7 +344,18 @@
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
-                                console.log(data);
+                                
+                                
+                                
+                                $('#cur_value').empty();
+                                
+                                $('#cur_value').append(
+                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_date.split("T")[1].split("Z")[0] + "</td>" 
+                                )
                                 
                                 
                                 
@@ -366,7 +372,7 @@
         
         refreshData();
         if( {{run_state}} == 1)
-            setInterval(refreshData, 4000); // refresh every x seconds
+            setInterval(refreshData, 1000); // refresh every x seconds
         </script>
         
         
