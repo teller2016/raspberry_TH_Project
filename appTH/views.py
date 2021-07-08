@@ -179,12 +179,9 @@ def graph(request):
 def result(request):
     TH = th_model.instance()
     run_state = TH.getRunState()
-    pi_date = TH.getPiDate()
     
-    th_list = TH_data.objects.all().order_by('-id') #th_data의 가장 최신 데이터부터 정렬하여 할당
-    th_state = TH_state.objects.first() #th_state의 데이터 할당
             
-    return render(request, 'result.html', {'th_list':th_list, 'th_state':th_state})
+    return render(request, 'result.html', {'run_state':run_state})
 
 
 

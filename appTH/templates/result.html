@@ -28,6 +28,8 @@
             }
         }
     </script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
     <style>
         text {
@@ -61,31 +63,119 @@
 <div class="table-div result">
 <button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
 <p class="home-title bt2">측정 결과</p>
-	<table class="table-result">
-		<tr class="tr-bar2">
-			<th><font>no.</font></th>
-			<th><font>경과 시간</font></th>
-			<th><font>습도(%)</font></th>
-			<th><font>온도(°C)</font></th>
-			<th><font>현재 시간</font></th>
-		</tr>
-	{% for th in th_list %}
-        {% if th.run_id == th_state.run_id %}
-        <tr class="peak">
-        {% else %}
-        <tr>
-        {% endif %}
-			<td><font>{{th.run_id}}</font></td>
-			<td><font>{{th.run_time_str}}</font></td>
-			<td><font>{{th.humidity}}</font></td>
-			<td><font>{{th.temperature}}</font></td>
-			<td><font>{{th.run_time_date|date:"H:i:s"}}</font></td>
-		</tr>
-	{% endfor %}
-	</table>
+
+	<table class="table-result" id="table_data"> </table>
+        
 	<br><br>
 </div>
 <br><br>
+
+<script type="text/javascript">
+        function getHMS(HMS){
+
+            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
+            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
+            
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            
+            return time;
+        }
+        
+        function getThData(){
+                
+                $.ajax({
+                            url: "/getAllThData/",
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            success:function(data){
+                                
+                                $('#cur_value').empty();
+                                
+                                $('#cur_value').append(
+                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>" 
+                                )
+                                
+                                
+                                //while($('#table_data').length >1){
+                                 //   $('#table_data').deleteRow(1);
+                                 //   }
+                                 $('#table_data').empty();
+                                    
+                                //console.log($('#state_id').html());
+                                let state_run_id = $('#state_id').html();
+                                let table_head_html =
+                                    "<tr class='tr-bar2'>" +
+                                    "<th><font>no.</font></th>" +
+                                    "<th><font>경과 시간</font></th>" +
+                                    "<th><font>습도(%)</font></th>" +
+                                    "<th><font>온도(°C)</font></th>" +
+                                    "<th><font>측정 시간</font></th>" +
+                                    "</tr>"
+                                $('#table_data').append( table_head_html )
+                                
+                                $.each(data, function(key, value){
+                                
+                                    let run_id = value.fields.run_id;
+                                    let run_time_str = value.fields.run_time_str;
+                                    let humidity = value.fields.humidity;
+                                    let temperature = value.fields.temperature;
+                                    let run_time_date = value.fields.run_time_date;
+                                    
+                                    let tr_html = '';
+                                    
+                                    if( run_id == state_run_id)
+                                        tr_html = "<tr class='peak'>";
+                                    else
+                                        tr_html = "<tr>";
+                                   
+                                        
+                                    $('#table_data').append( tr_html +
+                                        "<td><font>" + run_id + "</font></td>" +
+                                        "<td><font>" + run_time_str + "</font></td>" +
+                                        "<td><font>" + humidity + "</font></td>" +
+                                        "<td><font>" + temperature + "</font></td>" +
+                                        "<td><font>" + getHMS(run_time_date) + "</font></td>" +
+                                        "</tr>"
+                                    );
+                                
+                                });
+                                
+                                
+                                
+                                
+                            },
+                            error: function(){
+                                console.log('Ajax getThData Error!!');
+                            }
+                        });
+            
+            }
+
+    
+        
+
+        function refreshData(){
+                
+                getThData();
+            }
+        
+        
+        refreshData();
+        if( {{run_state}} == 1)
+            setInterval(refreshData, 2000); // refresh every x seconds
+        
+
+    </script>
 
 </body>
 </html>

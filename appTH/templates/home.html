@@ -27,6 +27,7 @@
     
     <link rel="stylesheet" href="{% static 'wickedpicker/stylesheets/wickedpicker.css' %}">
     <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
@@ -279,9 +280,6 @@
         
         {% endif %}
         
-       
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
         <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");
@@ -359,7 +357,7 @@
                                     "<th><font>경과 시간</font></th>" +
                                     "<th><font>습도(%)</font></th>" +
                                     "<th><font>온도(°C)</font></th>" +
-                                    "<th><font>현재 시간</font></th>" +
+                                    "<th><font>측정 시간</font></th>" +
                                     "</tr>"
                                 $('#table_data').append( table_head_html )
                                 
