@@ -294,6 +294,32 @@
         setInterval(clock,1000);
         
         
+            
+        </script>
+        
+        
+    <div class="graph-div">
+    <br><br>
+    <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
+    <p class="home-title bt2">측정 결과 그래프</p>
+    
+    
+    <div id="chart" class='with-3d-shadow with-transitions'>
+        <svg></svg>
+    </div>
+
+    <script type="text/javascript">
+        function getHMS(HMS){
+            date = new Date(HMS);
+            
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            
+            return time;
+        }
         
         function getThData(){
                 
@@ -312,7 +338,7 @@
                                     "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.run_time_date.split("T")[1].split("Z")[0] + "</td>" 
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>" 
                                 )
                                 
                                 
@@ -354,7 +380,7 @@
                                         "<td><font>" + run_time_str + "</font></td>" +
                                         "<td><font>" + humidity + "</font></td>" +
                                         "<td><font>" + temperature + "</font></td>" +
-                                        "<td><font>" + run_time_date.split("T")[1].split("Z")[0] + "</font></td>" +
+                                        "<td><font>" + getHMS(run_time_date) + "</font></td>" +
                                         "</tr>"
                                     );
                                 
@@ -388,9 +414,8 @@
                                     "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum_time.split("T")[1].split("Z")[0] + "</td>" 
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
                                 )
-                                
                                 
                                 
                             },
@@ -401,83 +426,92 @@
             
             }
             
-            function refreshData(){
+            
+            
+            
+    
+        function getAllThData(){
+                $.ajax({
+                    url: '{% url 'getAllThData' %}',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){
+                        
+                        
+                        nv.addGraph(function() {
+                                        var chart = nv.models.lineChart();
+                                        
+                                        var dataList = new Array();
+                                        var dataList2 = new Array();
+                                        
+                                        $.each(data, function(key, value){
+                                            
+                                            var graph = new Object();
+                                            graph.x = value.fields.run_id;
+                                            graph.y = value.fields.humidity;
+                                            graph.series = 0;
+                                            dataList.push(graph);
+                                            
+                                            var graph2 = new Object();
+                                            graph2.x = value.fields.run_id;
+                                            graph2.y = value.fields.temperature;
+                                            graph2.series = 1;
+                                            dataList2.push(graph2);
+                                            
+                                            })
+                                        var th_data = [
+                                            {
+                                                "key": "습도(%)",
+                                                "color": "#00ace6",
+                                                "values": dataList
+                                             },
+                                             {
+                                                "key": "온도(°C)",
+                                                "color": "#FF4765",
+                                                "values": dataList2
+                                              }
+                                        ]
+                                        
+                                        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+                                        chart.x2Axis.tickFormat(d3.format(',f'));
+
+                                        chart.yDomain([0,100]);
+                                        chart.yTickFormat(d3.format(',.1f'));
+
+                                        chart.useInteractiveGuideline(true);
+
+                                        d3.select('#chart svg')
+                                        .datum(th_data)
+                                        .call(chart);
+
+                                        nv.utils.windowResize(chart.update);
+        
+                                        return chart;
+                                
+                                
+                                    });
+                        
+                        
+                    },
+                    error: function(){
+                        console.log("getAllThData Error occured!!");
+                    }
+                })
+            }
+
+        function refreshData(){
                 getThState();
                 getThData();
+                getAllThData();
             }
         
         
         refreshData();
         if( {{run_state}} == 1)
-            setInterval(refreshData, 1000); // refresh every x seconds
-            
-        </script>
+            setInterval(refreshData, 2000); // refresh every x seconds
         
-        
-    <div class="graph-div">
-    <br><br>
-    <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
-    <p class="home-title bt2">측정 결과 그래프</p>
-    
-    
-    <div id="chart" class='with-3d-shadow with-transitions'>
-        <svg></svg>
-    </div>
-
-    <script type="text/javascript">
-
-        nv.addGraph(function() {
-        var chart = nv.models.lineChart();
-    
-        var dataList = new Array();
-        var dataList2 = new Array();
-        
-        // 그래프에 x,y 데이터 할당 (x = 진행시간, y = 온도 or 습도)
-        // th_list: th_data 전체 데이터
-        {% for th in th_list %}
-            var data = new Object() ;
-            data.x = {{th.run_time}}
-            data.y = {{th.humidity}}
-            data.series = 0
-            dataList.push(data);
-            
-            var data2 = new Object() ;
-            data2.x = {{th.run_time}}
-            data2.y = {{th.temperature}}
-            data2.series = 1
-            dataList2.push(data2);
-        {% endfor %}
-    
-        var th_data = [
-          {
-            "key": "습도(%)",
-            "color": "#00ace6",
-            "values": dataList
-          },
-          {
-            "key": "온도(°C)",
-            "color": "#FF4765",
-            "values": dataList2
-          }
-        ]
-    
-    
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        chart.x2Axis.tickFormat(d3.format(',f'));
-
-        chart.yDomain([0,100]);
-        chart.yTickFormat(d3.format(',.1f'));
-
-        chart.useInteractiveGuideline(true);
-
-        d3.select('#chart svg')
-            .datum(th_data)
-            .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-        });
 
     </script>
     <br><br><br><br>
