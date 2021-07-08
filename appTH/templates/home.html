@@ -171,9 +171,11 @@
         
         
         <br>
+        {% if run_state == 2 %}
+        <p class="home-title">마지막 수치</p>
+        {% else %}
         <p class="home-title">현재 수치</p>
-       
-        
+        {% endif %}
         
         
         <table class="table-th">
@@ -310,7 +312,9 @@
 
     <script type="text/javascript">
         function getHMS(HMS){
-            date = new Date(HMS);
+
+            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
+            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
             
             let hours = ('0' + date.getHours()).slice(-2);
             let minutes = ('0' + date.getMinutes()).slice(-2);
