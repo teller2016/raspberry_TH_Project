@@ -173,14 +173,15 @@ def th_csv(request, word):
     return response
 
 def graph(request):
-    th_list = TH_data.objects.all() #th_data 데이터 전체 할당
-    return render(request, 'graph.html', {'th_list':th_list})
+    TH = th_model.instance()
+    run_state = TH.getRunState()
+    
+    return render(request, 'graph.html', {'run_state':run_state})
 
 def result(request):
     TH = th_model.instance()
     run_state = TH.getRunState()
-    
-            
+          
     return render(request, 'result.html', {'run_state':run_state})
 
 

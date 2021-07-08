@@ -451,13 +451,13 @@
                                         $.each(data, function(key, value){
                                             
                                             var graph = new Object();
-                                            graph.x = value.fields.run_id;
+                                            graph.x = value.fields.run_time;
                                             graph.y = value.fields.humidity;
                                             graph.series = 0;
                                             dataList.push(graph);
                                             
                                             var graph2 = new Object();
-                                            graph2.x = value.fields.run_id;
+                                            graph2.x = value.fields.run_time;
                                             graph2.y = value.fields.temperature;
                                             graph2.series = 1;
                                             dataList2.push(graph2);

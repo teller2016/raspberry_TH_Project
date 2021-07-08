@@ -14,6 +14,8 @@
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
     <script src="{% static 'js/stream_layers.js' %}"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
     <style>
         text {
@@ -51,58 +53,91 @@
 
 <script type="text/javascript">
 
-    nv.addGraph(function() {
-        var chart = nv.models.lineWithFocusChart();
-	
-	var dataList = new Array();
-	var dataList2 = new Array();
-	
-	{% for th in th_list %}
-	    var data = new Object() ;
-	    data.x = {{th.run_time}}
-	    data.y = {{th.humidity}}
-	    data.series = 0
-	    dataList.push(data);
-	    
-	    var data2 = new Object() ;
-	    data2.x = {{th.run_time}}
-	    data2.y = {{th.temperature}}
-	    data2.series = 1
-	    dataList2.push(data2);
-	{% endfor %}
-	
-	var th_data = [
-	  {
-	    "key": "습도(%)",
-	    "color": "#00ace6",
-	    "values": dataList
-	  },
-	  {
-	    "key": "온도(°C)",
-	    "color": "#FF4765",
-	    "values": dataList2
-	  }
-	]
-	
     
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        chart.x2Axis.tickFormat(d3.format(',f'));
+        function getAllThData(){
+                $.ajax({
+                    url: '/getAllThData/',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){
+                        
+                        
+                        nv.addGraph(function() {
+                                        var chart = nv.models.lineWithFocusChart();
+                                        
+                                        var dataList = new Array();
+                                        var dataList2 = new Array();
+                                        
+                                        $.each(data, function(key, value){
+                                            
+                                            var graph = new Object();
+                                            graph.x = value.fields.run_time;
+                                            graph.y = value.fields.humidity;
+                                            graph.series = 0;
+                                            dataList.push(graph);
+                                            
+                                            var graph2 = new Object();
+                                            graph2.x = value.fields.run_time;
+                                            graph2.y = value.fields.temperature;
+                                            graph2.series = 1;
+                                            dataList2.push(graph2);
+                                            
+                                            })
+                                        var th_data = [
+                                            {
+                                                "key": "습도(%)",
+                                                "color": "#00ace6",
+                                                "values": dataList
+                                             },
+                                             {
+                                                "key": "온도(°C)",
+                                                "color": "#FF4765",
+                                                "values": dataList2
+                                              }
+                                        ]
+                                        
+                                        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+                                        chart.x2Axis.tickFormat(d3.format(',f'));
 
-	chart.yDomain([0,100]);
-        chart.yTickFormat(d3.format(',.1f'));
+                                        chart.yDomain([0,100]);
+                                        chart.yTickFormat(d3.format(',.1f'));
 
-        chart.useInteractiveGuideline(true);
+                                        chart.useInteractiveGuideline(true);
 
-        d3.select('#chart svg')
-            .datum(th_data)
-            .call(chart);
+                                        d3.select('#chart svg')
+                                        .datum(th_data)
+                                        .call(chart);
 
-        nv.utils.windowResize(chart.update);
+                                        nv.utils.windowResize(chart.update);
+        
+                                        return chart;
+                                
+                                
+                                    });
+                        
+                        
+                    },
+                    error: function(){
+                        console.log("getAllThData Error occured!!");
+                    }
+                })
+            }
 
-        return chart;
-    });
+        function refreshData(){
+                
+                getAllThData();
+            }
+        
+        
+        refreshData();
+        if( {{run_state}} == 1)
+            setInterval(refreshData, 2000); // refresh every x seconds
+        
 
 </script>
+
 </body>
 </html>
 
