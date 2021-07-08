@@ -332,8 +332,12 @@
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
+                                if(data.length==0)
+                                    return;
                                 
                                 $('#cur_value').empty();
+                                
+                                
                                 
                                 $('#cur_value').append(
                                     "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
@@ -450,11 +454,12 @@
 	  }
 	]
 	
+	
     
         chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
         chart.x2Axis.tickFormat(d3.format(',f'));
 
-	chart.yDomain([0,100]);
+        chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));
 
         
@@ -489,7 +494,7 @@
         function update(data) {
                                         
                                         
-                 var dataList = new Array();
+                                        var dataList = new Array();
                                         var dataList2 = new Array();
                                         
                                         $.each(data, function(key, value){
