@@ -14,6 +14,11 @@
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
     <script src="{% static 'js/stream_layers.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
+    <script src="{% static 'datetimepicker/jquery.js' %}"></script>
+    <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
+    
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
@@ -29,7 +34,7 @@
         }
     </script>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    
 
     <style>
         text {
@@ -74,40 +79,25 @@
 <button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
 <p class="home-title bt2">이전 데이터 조회</p>
 
-    <select name="year" id="select_year" onchange="yearChange(this.options[this.selectedIndex].value)">
-        <option value=""> - 년</option>
-        
-        {% for year in year_list %}
-        <option value="{{year}}"> {{year}} </option>
-        {% endfor %}
-    </select>
+    <input id="datetimepicker_start" type="text" value="" placeholder="YYYY-MM-DD"/>
+    <b> ~ </b>
+    <input id="datetimepicker_end" type="text" value="" placeholder="YYYY-MM-DD"/>
+    <script type="text/javascript">
+        jQuery("#datetimepicker_start").datetimepicker({
+            lang:'ko',
+            format:'Y-m-d',
+            timepicker:false,
+            });
+            
+        jQuery("#datetimepicker_end").datetimepicker({
+            lang:'ko',
+            format:'Y-m-d',
+            timepicker:false,
+            });
+            
+            </script>
     
-    <select name="month" id="select_month">
-        <option value=""> - 월</option>
-        
-        {% for month in month_list %}
-        <option value="{{month}}"> {{month}} </option>
-        {% endfor %}
-        
-    </select>
     
-    <select name="day" id="select_day">
-        <option value=""> - 일</option>
-        
-        {% for day in day_list %}
-        <option value="{{day}}"> {{day}} </option>
-        {% endfor %}
-        
-    </select>
-    
-    <select name="hour" id="select_hour">
-        <option value=""> - 시</option>
-        
-        {% for hour in hour_list %}
-        <option value="{{hour}}"> {{hour}} </option>
-        {% endfor %}
-        
-    </select>
     
     <button class="button3" onclick="getDataByTime();">조회
     </button>
@@ -122,19 +112,33 @@
 
     function getDataByTime(){
         
-        let year = $('#select_year option:selected').val();
-        let month = $('#select_month option:selected').val();
-        let day = $('#select_day option:selected').val();
-        let hour = $('#select_hour option:selected').val();
+        let startTime = document.getElementById("datetimepicker_start").value;
+        let endTime = document.getElementById("datetimepicker_end").value;
         
-        if(year+month+day+hour == '')
-            return;
+        console.log(startTime);
+        console.log(endTime);
+        
+        if(startTime == '' && endTime == ''){
+            alert('날짜를 선택해주세요');
+            return ;
+        }
+        
+        if(startTime != '' && endTime != '')
+            if(startTime > endTime){
+                alert('시작 날짜는 종료 날짜보다 작아야됩니다!');
+                return;
+            }
+        
+
         
         console.log(year);
         
-        //let param = {
-        //'year' : value,
-        //}
+        let param = {
+            'year' : year,
+            'month' : month,
+            'day' : day,
+            'hour' : hour
+        }
         
         $.ajax({
             url: "{% url 'getByTime' %}",

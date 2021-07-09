@@ -224,8 +224,16 @@ def beforeResult(request):
 def getByTime(request):
     jsonObject = json.loads(request.body)
     year = jsonObject.get('year')
+    month = jsonObject.get('month')
+    day = jsonObject.get('day')
+    hour = jsonObject.get('hour')
     
-    csv_list = fnmatch.filter(os.listdir(path), year+"*.csv")
+    print(year)
+    print(month)
+    print(day)
+    print(hour)
+    
+    csv_list = fnmatch.filter(os.listdir(path), "*"+year+"*"+month+"*"+day+"*"+hour+"*.csv")
     print(csv_list)
     
     
