@@ -62,7 +62,31 @@
 
 <div class="table-div result">
 <button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
-<p class="home-title bt2">측정 결과</p>
+<p class="home-title bt2">이전 데이터 조회</p>
+
+    <select name="year" id="select_year">
+        <option value=""> - 년</option>
+        {% for year in year_list %}
+        <option value="{{year}}"> {{year}} </option>
+
+        {% endfor %}
+    </select>
+    
+    <select name="month" id="select_month">
+        <option value=""> - 월</option>
+        
+        
+    </select>
+    
+    <select name="day" id="select_day">
+        <option value=""> - 일</option>
+        
+    </select>
+    
+    <select name="hour" id="select_hour">
+        <option value=""> - 시</option>
+        
+    </select>
 
 	<table class="table-result" id="table_data"> </table>
         
@@ -71,6 +95,7 @@
 <br><br>
 
 <script type="text/javascript">
+
         function getHMS(HMS){
 
             var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)

@@ -18,6 +18,8 @@ import time
 import json
 import pandas as pd
 
+import fnmatch
+
 from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse
@@ -183,22 +185,36 @@ def result(request):
             
     return render(request, 'result.html', {'run_state':run_state})
 
+
 def beforeResult(request):
     
     path = "/home/pi/Project/backup/"
     csv_list = os.listdir(path)
+    #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
     
     print(csv_list)
     
-    with open(path+'20210708_171054.csv', 'r') as f:
-        reader = csv.reader(f)
-        
-        print(reader)
-        
-        for txt in reader:
-            print(txt)
+    year = set()
+    month = set()
+    day = set()
+    hour = set()
+
+    for name in csv_list:#name ex. '20210706_171054.csv'
+        year.add(name[:4])
+        #month.add(name[4:6])
+        #day.add(name[6:8])
+        #hour.add(name[9:11])
+
+    #print(list(year))
+    #with open(path+'20210708_171054.csv', 'r') as f:
+    #    reader = csv.reader(f)
+    #    
+    #    print(reader)
+    #    
+    #    for txt in reader:
+    #        print(txt)
     
-    return render(request, 'beforeResult.html')
+    return render(request, 'beforeResult.html', {'csv_list': csv_list, 'year_list': list(year)})
 
 
 
