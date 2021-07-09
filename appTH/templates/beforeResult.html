@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>우정바이오 온습도계</title>
+    
+    <link href="{% static '/css/web.css' %}" media="(min-width:601px)" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/mobile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
+    
+    <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
+    <script src="{% static 'js/stream_layers.js' %}"></script>
+    <script type="text/javascript">
+        String.prototype.replaceAll = function(org, dest) {
+            return this.split(org).join(dest);
+        }
+        function csv_name(){
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
+            if(userInput == null){
+                alert("취소되었습니다.");
+            } else{
+                alert("다운로드를 시작합니다.");
+                location.href="/th_csv/"+userInput;
+            }
+        }
+    </script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        #chart, svg {
+            margin: 0px;
+            padding: 0px;
+            height: 450px;
+            width: 98%;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
+    <div class="main-title-container">
+	    <h1 class="main-title">우정바이오 무선 온습도계</h1>
+    </div>
+</div>
+<a href="{% url 'home' %}"><button class="btn-back"> < </button></a>
+
+<div class="result">
+    <a href="{% url 'beforeResult' %}"><button class="btn-re">새로고침</button></a>
+    <p class="graph-title">측정 결과 확인</p>
+</div>
+
+<div class="table-div result">
+<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
+<p class="home-title bt2">측정 결과</p>
+
+	<table class="table-result" id="table_data"> </table>
+        
+	<br><br>
+</div>
+<br><br>
+
+<script type="text/javascript">
+        function getHMS(HMS){
+
+            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
+            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
+            
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            
+            return time;
+        }
+        
+        
+    </script>
+
+</body>
+</html>
+
+

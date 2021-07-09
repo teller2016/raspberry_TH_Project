@@ -183,6 +183,9 @@ def result(request):
             
     return render(request, 'result.html', {'run_state':run_state})
 
+def beforeResult(request):
+    
+    return render(request, 'beforeResult.html')
 
 
 
