@@ -258,9 +258,8 @@ def getByTime(request):
             ymd = name[:8]
             if startDate <= ymd and ymd <= endDate:
                 return_list.append(name)
-            
-
+        
     
-    return JsonResponse(return_list, safe=False)
+    return JsonResponse(sorted(return_list), safe=False)
 
 

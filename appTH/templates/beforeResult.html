@@ -101,10 +101,16 @@
     
     <button class="button3" onclick="getDataByTime();">조회
     </button>
+    
+    <table class="table-result" id="table_data"> </table>
+        
+	<br>
 
-	<table class="table-result" id="table_data"> </table>
+	<table class="table-result" id="table_select_data"> </table>
         
 	<br><br>
+	
+	
 </div>
 <br><br>
 
@@ -149,7 +155,47 @@
                 },
             data: JSON.stringify(param),
             success: function(data){
-                console.log(data);
+                
+                $('#table_select_data').empty();
+                let table_head_html =
+                    "<tr class='tr-bar2'>" +
+                    "<th><font>측정 날짜</font></th>" +
+                    "<th><font>측정 시간</font></th>" +
+                    "<th><font>파일명</font></th>" +
+                    "<th><font>조회</font></th>" +
+                    "</tr>";
+                    
+                $('#table_select_data').append( table_head_html )
+
+                data.forEach(function(item){
+                    let date_str = getDate(item);
+                    let time_str = getTime(item);
+                    console.log(time_str);
+                    
+                    $('#table_select_data').append( "<tr>"+
+                        "<td><font>" + date_str + "</font></td>" +
+                        "<td><font>" + time_str + "</font></td>" +
+                        "<td><font>" + item + "</font></td>" +
+                        "<td>button</td>"+
+                        "</tr>"
+                        );
+                                
+                                    
+                                   
+                                   
+                                   
+                        
+                    
+                });
+                                
+                                
+                
+                
+                
+                
+                
+                
+                
             },
             error: function(){
                 console.log('getByYear ERROR!');
@@ -158,20 +204,24 @@
         });
     
     }
+    
+    function getDate(item){    
+        let year = item.slice(0,4);
+        let month = item.slice(4,6);
+        let day = item.slice(6,8);
+        
+        return year+"년/" + month+"월/" + day+"일";
+    }
+    
+    function getTime(item){
+        let hour = item.slice(9,11);
+        let minute = item.slice(11,13);
+        let second = item.slice(13,15);
+        
+        return hour+':'+minute+':'+second;
+    }
 
-        function getHMS(HMS){
-
-            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
-            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
-            
-            let hours = ('0' + date.getHours()).slice(-2);
-            let minutes = ('0' + date.getMinutes()).slice(-2);
-            let seconds = ('0' + date.getSeconds()).slice(-2);
-            
-            let time = hours+':'+minutes+':'+seconds;
-            
-            return time;
-        }
+        
         
         
     </script>
