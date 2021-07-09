@@ -241,31 +241,26 @@ def getByTime(request):
     
     return_list = []
     
-    if startDate is '':
-        print('start is null')
+    if startDate is '': # when startDate is null show ( ~ endDate) data
         for name in csv_list:
             ymd = name[:8]
             if ymd <= endDate:
                 return_list.append(name)
-        print(return_list)
     
-    elif endDate is '':
-        print('end is null')
+    elif endDate is '': # when endDate is null show (startDate ~ ) data
         for name in csv_list:
             ymd = name[:8]
             if ymd >= startDate:
                 return_list.append(name)
-        print(return_list)
     
-    # when start, end time has value
-    for name in csv_list:
-        ymd = name[:8]
-        if startDate <= ymd and ymd <= endDate:
-            return_list.append(name)
-    print(return_list)
-    
-    
-    return JsonResponse(jsonObject)
+    else: # when start, end time has value show (startDate ~ endDate) data
+        for name in csv_list:
+            ymd = name[:8]
+            if startDate <= ymd and ymd <= endDate:
+                return_list.append(name)
+            
 
+    
+    return JsonResponse(return_list, safe=False)
 
 
