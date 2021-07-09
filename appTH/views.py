@@ -237,16 +237,32 @@ def getByTime(request):
     print('start-> ' + startDate)
     print('end-> ' + endDate)
     
+    csv_list = os.listdir(path)
+    
+    return_list = []
+    
     if startDate is '':
         print('start is null')
+        for name in csv_list:
+            ymd = name[:8]
+            if ymd <= endDate:
+                return_list.append(name)
+        print(return_list)
     
     elif endDate is '':
         print('end is null')
-        
+        for name in csv_list:
+            ymd = name[:8]
+            if ymd >= startDate:
+                return_list.append(name)
+        print(return_list)
     
-    
-    #csv_list = fnmatch.filter(os.listdir(path), "*"+year+"*"+month+"*"+day+"*"+hour+"*.csv")
-    #print(csv_list)
+    # when start, end time has value
+    for name in csv_list:
+        ymd = name[:8]
+        if startDate <= ymd and ymd <= endDate:
+            return_list.append(name)
+    print(return_list)
     
     
     return JsonResponse(jsonObject)
