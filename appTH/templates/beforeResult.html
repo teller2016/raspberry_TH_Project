@@ -114,9 +114,7 @@
         
         let startTime = document.getElementById("datetimepicker_start").value;
         let endTime = document.getElementById("datetimepicker_end").value;
-        
-        console.log(startTime);
-        console.log(endTime);
+
         
         if(startTime == '' && endTime == ''){
             alert('날짜를 선택해주세요');
@@ -130,14 +128,17 @@
             }
         
 
-        
-        console.log(year);
+        let startTimeYMD = startTime.split('-');
+        let endTimeYMD = endTime.split('-');
         
         let param = {
-            'year' : year,
-            'month' : month,
-            'day' : day,
-            'hour' : hour
+            'startYear' : startTimeYMD[0],
+            'startMonth' : startTimeYMD[1] || '',
+            'startDay' : startTimeYMD[2] || '',
+            
+            'endYear' : endTimeYMD[0],
+            'endMonth' : endTimeYMD[1] || '',
+            'endDay' : endTimeYMD[2] || '',
         }
         
         $.ajax({
