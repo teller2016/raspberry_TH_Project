@@ -186,9 +186,11 @@ def result(request):
     return render(request, 'result.html', {'run_state':run_state})
 
 
+path = "/home/pi/Project/backup/"
+
 def beforeResult(request):
     
-    path = "/home/pi/Project/backup/"
+    
     csv_list = os.listdir(path)
     #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
     
@@ -201,9 +203,9 @@ def beforeResult(request):
 
     for name in csv_list:#name ex. '20210706_171054.csv'
         year.add(name[:4])
-        #month.add(name[4:6])
-        #day.add(name[6:8])
-        #hour.add(name[9:11])
+        month.add(name[4:6])
+        day.add(name[6:8])
+        hour.add(name[9:11])
 
     #print(list(year))
     #with open(path+'20210708_171054.csv', 'r') as f:
@@ -214,9 +216,20 @@ def beforeResult(request):
     #    for txt in reader:
     #        print(txt)
     
-    return render(request, 'beforeResult.html', {'csv_list': csv_list, 'year_list': list(year)})
+    
+    return render(request, 'beforeResult.html', {'csv_list': csv_list,
+                                                 'year_list': sorted(list(year), key=int), 'month_list':sorted(list(month), key=int),
+                                                 'day_list': sorted(list(day), key=int), 'hour_list':sorted(list(hour), key=int)})
 
-
+def getByTime(request):
+    jsonObject = json.loads(request.body)
+    year = jsonObject.get('year')
+    
+    csv_list = fnmatch.filter(os.listdir(path), year+"*.csv")
+    print(csv_list)
+    
+    
+    return JsonResponse(jsonObject)
 
 
 

@@ -44,6 +44,16 @@
             height: 450px;
             width: 98%;
         }
+        .button3{
+	font-size: 12px;
+	width: 55px;
+	height: 30px;
+	color:#ffffff;
+	box-shadow: 0px 0px 2px 0px #4A74D7;
+	background-color:#4A74D7;
+	border:1px solid #4A74D7;
+}
+        
     </style>
 </head>
 <body>
@@ -64,29 +74,43 @@
 <button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
 <p class="home-title bt2">이전 데이터 조회</p>
 
-    <select name="year" id="select_year">
+    <select name="year" id="select_year" onchange="yearChange(this.options[this.selectedIndex].value)">
         <option value=""> - 년</option>
+        
         {% for year in year_list %}
         <option value="{{year}}"> {{year}} </option>
-
         {% endfor %}
     </select>
     
     <select name="month" id="select_month">
         <option value=""> - 월</option>
         
+        {% for month in month_list %}
+        <option value="{{month}}"> {{month}} </option>
+        {% endfor %}
         
     </select>
     
     <select name="day" id="select_day">
         <option value=""> - 일</option>
         
+        {% for day in day_list %}
+        <option value="{{day}}"> {{day}} </option>
+        {% endfor %}
+        
     </select>
     
     <select name="hour" id="select_hour">
         <option value=""> - 시</option>
         
+        {% for hour in hour_list %}
+        <option value="{{hour}}"> {{hour}} </option>
+        {% endfor %}
+        
     </select>
+    
+    <button class="button3" onclick="getDataByTime();">조회
+    </button>
 
 	<table class="table-result" id="table_data"> </table>
         
@@ -95,6 +119,40 @@
 <br><br>
 
 <script type="text/javascript">
+
+    function getDataByTime(){
+        
+        let year = $('#select_year option:selected').val();
+        let month = $('#select_month option:selected').val();
+        let day = $('#select_day option:selected').val();
+        let hour = $('#select_hour option:selected').val();
+        
+        if(year+month+day+hour == '')
+            return;
+        
+        console.log(year);
+        
+        //let param = {
+        //'year' : value,
+        //}
+        
+        $.ajax({
+            url: "{% url 'getByTime' %}",
+            type: 'POST',
+            headers: {
+                'X-CSRFTOKEN' : '{{ csrf_token }}'
+                },
+            data: JSON.stringify(param),
+            success: function(data){
+                console.log(data)
+            },
+            error: function(){
+                console.log('getByYear ERROR!');
+                }
+                
+        });
+    
+    }
 
         function getHMS(HMS){
 
