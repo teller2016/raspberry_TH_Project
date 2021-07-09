@@ -185,6 +185,19 @@ def result(request):
 
 def beforeResult(request):
     
+    path = "/home/pi/Project/backup/"
+    csv_list = os.listdir(path)
+    
+    print(csv_list)
+    
+    with open(path+'20210708_171054.csv', 'r') as f:
+        reader = csv.reader(f)
+        
+        print(reader)
+        
+        for txt in reader:
+            print(txt)
+    
     return render(request, 'beforeResult.html')
 
 
