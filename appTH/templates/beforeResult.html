@@ -23,13 +23,21 @@
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
         }
-        function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
+        function csv_download(){
+            let csv_name_element = document.getElementById('csv_name');
+            let csv_name = csv_name_element.innerHTML
+            if(csv_name_element == null){
+                alert("먼저 저장할 데이터 조회를 해주세요.");
+                return;
+            }
+             
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)", csv_name.split('.')[0])
             if(userInput == null){
                 alert("취소되었습니다.");
             } else{
+                
                 alert("다운로드를 시작합니다.");
-                location.href="/th_csv/"+userInput;
+                location.href="/save_csv/"+userInput+"/"+csv_name;
             }
         }
     </script>
@@ -86,7 +94,7 @@
 </div>
 
 <div class="table-div result">
-<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
+<button class="button2" onclick="csv_download();">엑셀 파일 저장</button>
 <p class="home-title bt2">이전 데이터 조회</p>
 
     <input id="datetimepicker_start" type="text" value="" placeholder="YYYY-MM-DD"/>
@@ -126,7 +134,7 @@
 
 <script type="text/javascript">
 
-    function getDataByTime(){
+    function getDataByTime(){ //ajax call ( get csv file name list)
         
         let startTime = document.getElementById("datetimepicker_start").value;
         let endTime = document.getElementById("datetimepicker_end").value;
@@ -208,7 +216,7 @@
     
     }
     
-    function getDataByName(name){
+    function getDataByName(name){ // ajax call ( get csv file data )
         
         
         let param = {
@@ -237,7 +245,7 @@
         
     }
     
-    function getDate(item){    
+    function getDate(item){    // change date format
         let year = item.slice(0,4);
         let month = item.slice(4,6);
         let day = item.slice(6,8);
@@ -245,7 +253,7 @@
         return year+"년/" + month+"월/" + day+"일";
     }
     
-    function getTime(item){
+    function getTime(item){ // change time format
         let hour = item.slice(9,11);
         let minute = item.slice(11,13);
         let second = item.slice(13,15);

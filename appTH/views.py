@@ -24,22 +24,24 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse
 
+from wsgiref.util import FileWrapper
+
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
-def getThData(request):
+def getThData(request): # ajax call (get 40 current data for Table)
     th_list_mini = TH_data.objects.all().order_by('-id')[:40]
     data = serializers.serialize('json', th_list_mini)
     
     return HttpResponse(data, content_type='text/json-commnet-filtered')
     
-def getThState(request):
+def getThState(request): # ajax call (get th_state data to show max data)
     th_state = TH_state.objects.all() 
     data = serializers.serialize('json', th_state)
 
     return HttpResponse(data, content_type='text/json-commnet-filtered')
 
-def getAllThData(request):
+def getAllThData(request): # ajax call (get all th_data for All data table)
     th_list = TH_data.objects.all().order_by('-id')
     data = serializers.serialize('json', th_list)
     
@@ -174,47 +176,27 @@ def th_csv(request, word):
             ])
     return response
 
-def graph(request):
+def graph(request): # ajax call (get all th_data, used for graph)
     th_list = TH_data.objects.all() #th_data 데이터 전체 할당
     return render(request, 'graph.html', {'th_list':th_list})
 
-def result(request):
+def result(request): # ajax call
     TH = th_model.instance()
     run_state = TH.getRunState()
     
             
     return render(request, 'result.html', {'run_state':run_state})
 
+# backup files path in local
+path = "/home/pi/Project/backup/" 
 
-path = "/home/pi/Project/backup/"
+def beforeResult(request): # return 'beforeResult' page
 
-def beforeResult(request):
-    
-    
-    csv_list = os.listdir(path)
     #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
-    
-    print(csv_list)
-    
-    year = set()
-    month = set()
-    day = set()
-    hour = set()
 
-    for name in csv_list:#name ex. '20210706_171054.csv'
-        year.add(name[:4])
-        month.add(name[4:6])
-        day.add(name[6:8])
-        hour.add(name[9:11])
+    return render(request, 'beforeResult.html')
 
-    
-    
-    
-    return render(request, 'beforeResult.html', {'csv_list': csv_list,
-                                                 'year_list': sorted(list(year), key=int), 'month_list':sorted(list(month), key=int),
-                                                 'day_list': sorted(list(day), key=int), 'hour_list':sorted(list(hour), key=int)})
-
-def getByTime(request):
+def getByTime(request): # ajax call ( return all csv file name which are in date range )
     jsonObject = json.loads(request.body)
     startYear = jsonObject.get('startYear')
     startMonth = jsonObject.get('startMonth')
@@ -255,7 +237,7 @@ def getByTime(request):
     
     return JsonResponse(sorted(return_list), safe=False)
 
-def getDataByName(request):
+def getDataByName(request): # ajax call ( return data table that matches the csv file name )
     jsonObject = json.loads(request.body)
     csv_name = jsonObject.get('csv_name')
     
@@ -265,9 +247,13 @@ def getDataByName(request):
                     "<th><font>온도(°C)</font></th>" + \
                     "<th><font>측정 시간</font></th>" + \
                     "</tr>"
-
+    
+    bottom = "<tr style='border-top: 1px solid #a8a8a8;'><td colspan='1'><font style='font-weight:bold'>Current File:</td>" + \
+             "<td colspan='3'><font id='csv_name' style='font-weight:bold'>"+csv_name+"</td></tr>"
+    
     table_html = ""
     
+    # read csv file from the local
     with open(path+csv_name, 'r') as f:
         fullData = csv.reader(f)
         next(fullData) # skip first row of csv data
@@ -279,14 +265,28 @@ def getDataByName(request):
                             "<td><font>" + row[3][:19] + "</font></td>" + \
                             "</tr>"
             
+    # notify "No data" when data is empty        
     if table_html == "":
-        table_html = head+ "<tr><td colspan='4'><font>No Data</font></td></tr>"
+        table_html = head+ "<tr><td colspan='4'><font style='font-weight:bold'>No Data</font></td></tr>"
     else:
         table_html = head + table_html
     
-    print(table_html)
+    table_html += bottom
     
     return HttpResponse(table_html)
+
+def save_csv(request, saveName, csvName): # save request from before Data lookup
+    
+    
+    wrapper = FileWrapper(open(path+csvName))
+    
+    # response content type
+    response = HttpResponse(wrapper, content_type='text/csv')
+    #decide the file name
+    response['Content-Disposition'] = 'attachment; filename="'+saveName+'.csv"'
+
+    
+    return response
 
 
 
