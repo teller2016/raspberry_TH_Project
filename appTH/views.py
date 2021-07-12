@@ -24,6 +24,8 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse
 
+from wsgiref.util import FileWrapper
+
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
@@ -247,7 +249,7 @@ def getDataByName(request): # ajax call ( return data table that matches the csv
                     "</tr>"
     
     bottom = "<tr style='border-top: 1px solid #a8a8a8;'><td colspan='1'><font style='font-weight:bold'>Current File:</td>" + \
-             "<td colspan='3'><font style='font-weight:bold'>"+csv_name+"</td></tr>"
+             "<td colspan='3'><font id='csv_name' style='font-weight:bold'>"+csv_name+"</td></tr>"
     
     table_html = ""
     
@@ -272,6 +274,19 @@ def getDataByName(request): # ajax call ( return data table that matches the csv
     table_html += bottom
     
     return HttpResponse(table_html)
+
+def save_csv(request, saveName, csvName): # save request from before Data lookup
+    
+    
+    wrapper = FileWrapper(open(path+csvName))
+    
+    # response content type
+    response = HttpResponse(wrapper, content_type='text/csv')
+    #decide the file name
+    response['Content-Disposition'] = 'attachment; filename="'+saveName+'.csv"'
+
+    
+    return response
 
 
 
