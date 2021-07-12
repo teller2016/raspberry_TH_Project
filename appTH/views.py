@@ -207,14 +207,7 @@ def beforeResult(request):
         day.add(name[6:8])
         hour.add(name[9:11])
 
-    #print(list(year))
-    #with open(path+'20210708_171054.csv', 'r') as f:
-    #    reader = csv.reader(f)
-    #    
-    #    print(reader)
-    #    
-    #    for txt in reader:
-    #        print(txt)
+    
     
     
     return render(request, 'beforeResult.html', {'csv_list': csv_list,
@@ -266,7 +259,26 @@ def getDataByName(request):
     jsonObject = json.loads(request.body)
     csv_name = jsonObject.get('csv_name')
     
-    print(csv_name)
+    table_html = "<tr class='tr-bar2'>" + \
+                    "<th><font>경과 시간</font></th>" + \
+                    "<th><font>습도(%)</font></th>" + \
+                    "<th><font>온도(°C)</font></th>" + \
+                    "<th><font>측정 시간</font></th>" + \
+                    "</tr>"
+
     
-    return
+    with open(path+csv_name, 'r') as f:
+        fullData = csv.reader(f)
+        next(fullData) # skip first row of csv data
+        for row in fullData:
+            table_html += "<tr>"+ \
+                            "<td><font>" + row[0] + "</font></td>" + \
+                            "<td><font>" + row[1] + "</font></td>" + \
+                            "<td><font>" + row[2] + "</font></td>" + \
+                            "<td><font>" + row[3] + "</font></td>" + \
+                            "</tr>"
+    
+    return HttpResponse(table_html)
+
+
 

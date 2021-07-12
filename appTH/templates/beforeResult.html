@@ -219,32 +219,9 @@
             success: function(data){
                 
                 $('#table_data').empty();
-                let table_head_html =
-                    "<tr class='tr-bar2'>" +
-                    "<th><font>측정 날짜</font></th>" +
-                    "<th><font>측정 시간</font></th>" +
-                    "<th><font>파일명</font></th>" +
-                    "<th><font>조회</font></th>" +
-                    "</tr>";
-                    
-                $('#table_data').append( table_head_html )
-
-                data.forEach(function(item){
-                    let date_str = getDate(item);
-                    let time_str = getTime(item);
-                    
-                    $('#table_data').append( "<tr>"+
-                        "<td><font>" + date_str + "</font></td>" +
-                        "<td><font>" + time_str + "</font></td>" +
-                        "<td><font>" + item + "</font></td>" +
-                        "<td>"+
-                        '<button class="button4" onclick="getDataByName(\'' + item + '\')">조회</button>' +
-                        
-                        "</td>"+
-                        "</tr>"
-                        );
-                }); 
                 
+                $('#table_data').append( data )
+
             },
             error: function(){
                 console.log('getDataByName ERROR!');
