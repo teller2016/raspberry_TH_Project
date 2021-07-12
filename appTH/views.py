@@ -185,34 +185,18 @@ def result(request):
             
     return render(request, 'result.html', {'run_state':run_state})
 
-
-path = "/home/pi/Project/backup/"
+# backup files path in local
+path = "/home/pi/Project/backup/" 
 
 def beforeResult(request):
     
-    
+    # get all csv file names from backup folder
     csv_list = os.listdir(path)
+    
     #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
     
-    print(csv_list)
     
-    year = set()
-    month = set()
-    day = set()
-    hour = set()
-
-    for name in csv_list:#name ex. '20210706_171054.csv'
-        year.add(name[:4])
-        month.add(name[4:6])
-        day.add(name[6:8])
-        hour.add(name[9:11])
-
-    
-    
-    
-    return render(request, 'beforeResult.html', {'csv_list': csv_list,
-                                                 'year_list': sorted(list(year), key=int), 'month_list':sorted(list(month), key=int),
-                                                 'day_list': sorted(list(day), key=int), 'hour_list':sorted(list(hour), key=int)})
+    return render(request, 'beforeResult.html', {'csv_list': csv_list,})
 
 def getByTime(request):
     jsonObject = json.loads(request.body)
@@ -265,9 +249,13 @@ def getDataByName(request):
                     "<th><font>온도(°C)</font></th>" + \
                     "<th><font>측정 시간</font></th>" + \
                     "</tr>"
-
+    
+    bottom = "<tr style='border-top: 1px solid #a8a8a8;'><td colspan='1'><font style='font-weight:bold'>Current File:</td>" + \
+             "<td colspan='3'><font style='font-weight:bold'>"+csv_name+"</td></tr>"
+    
     table_html = ""
     
+    # read csv file from the local
     with open(path+csv_name, 'r') as f:
         fullData = csv.reader(f)
         next(fullData) # skip first row of csv data
@@ -279,12 +267,13 @@ def getDataByName(request):
                             "<td><font>" + row[3][:19] + "</font></td>" + \
                             "</tr>"
             
+    # notify "No data" when data is empty        
     if table_html == "":
-        table_html = head+ "<tr><td colspan='4'><font>No Data</font></td></tr>"
+        table_html = head+ "<tr><td colspan='4'><font style='font-weight:bold'>No Data</font></td></tr>"
     else:
         table_html = head + table_html
     
-    print(table_html)
+    table_html += bottom
     
     return HttpResponse(table_html)
 
