@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>우정바이오 온습도계</title>
+    
+    <link href="{% static '/css/web.css' %}" media="(min-width:601px)" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/mobile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
+    
+    <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
+    <script src="{% static 'js/stream_layers.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
+    <script src="{% static 'datetimepicker/jquery.js' %}"></script>
+    <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
+    
+    <script type="text/javascript">
+        String.prototype.replaceAll = function(org, dest) {
+            return this.split(org).join(dest);
+        }
+        function csv_name(){
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
+            if(userInput == null){
+                alert("취소되었습니다.");
+            } else{
+                alert("다운로드를 시작합니다.");
+                location.href="/th_csv/"+userInput;
+            }
+        }
+    </script>
+    
+    
+
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        #chart, svg {
+            margin: 0px;
+            padding: 0px;
+            height: 450px;
+            width: 98%;
+        }
+        .button3{
+	font-size: 12px;
+	width: 55px;
+	height: 30px;
+	color:#ffffff;
+	box-shadow: 0px 0px 2px 0px #4A74D7;
+	background-color:#4A74D7;
+	border:1px solid #4A74D7;
+}
+        .button4{
+	font-size: 12px;
+	width: 55px;
+	height: 25px;
+	color:#ffffff;
+	box-shadow: 0px 0px 2px 0px #f59b42;
+	background-color:#f59b42;
+	border:1px solid #f59b42;
+}
+        
+        
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
+    <div class="main-title-container">
+	    <h1 class="main-title">우정바이오 무선 온습도계</h1>
+    </div>
+</div>
+<a href="{% url 'home' %}"><button class="btn-back"> < </button></a>
+
+<div class="result">
+    <a href="{% url 'beforeResult' %}"><button class="btn-re">새로고침</button></a>
+    <p class="graph-title">측정 결과 확인</p>
+</div>
+
+<div class="table-div result">
+<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
+<p class="home-title bt2">이전 데이터 조회</p>
+
+    <input id="datetimepicker_start" type="text" value="" placeholder="YYYY-MM-DD"/>
+    <b> ~ </b>
+    <input id="datetimepicker_end" type="text" value="" placeholder="YYYY-MM-DD"/>
+    <script type="text/javascript">
+        jQuery("#datetimepicker_start").datetimepicker({
+            lang:'ko',
+            format:'Y-m-d',
+            timepicker:false,
+            });
+            
+        jQuery("#datetimepicker_end").datetimepicker({
+            lang:'ko',
+            format:'Y-m-d',
+            timepicker:false,
+            });
+            
+            </script>
+    
+    
+    
+    <button class="button3" onclick="getDataByTime();">조회
+    </button>
+    
+    <table class="table-result" id="table_data"> </table>
+        
+	<br>
+
+	<table class="table-result" id="table_select_data"> </table>
+        
+	<br><br>
+	
+	
+</div>
+<br><br>
+
+<script type="text/javascript">
+
+    function getDataByTime(){
+        
+        let startTime = document.getElementById("datetimepicker_start").value;
+        let endTime = document.getElementById("datetimepicker_end").value;
+
+        
+        if(startTime == '' && endTime == ''){
+            alert('날짜를 선택해주세요');
+            return ;
+        }
+        
+        if(startTime != '' && endTime != '')
+            if(startTime > endTime){
+                alert('시작 날짜는 종료 날짜보다 작아야됩니다!');
+                return;
+            }
+        
+
+        let startTimeYMD = startTime.split('-');
+        let endTimeYMD = endTime.split('-');
+        
+        let param = {
+            'startYear' : startTimeYMD[0],
+            'startMonth' : startTimeYMD[1] || '',
+            'startDay' : startTimeYMD[2] || '',
+            
+            'endYear' : endTimeYMD[0],
+            'endMonth' : endTimeYMD[1] || '',
+            'endDay' : endTimeYMD[2] || '',
+        }
+        
+        $.ajax({
+            url: "{% url 'getByTime' %}",
+            type: 'POST',
+            headers: {
+                'X-CSRFTOKEN' : '{{ csrf_token }}'
+                },
+            data: JSON.stringify(param),
+            success: function(data){
+                
+                $('#table_select_data').empty();
+                let table_head_html =
+                    "<tr class='tr-bar2'>" +
+                    "<th><font>측정 날짜</font></th>" +
+                    "<th><font>측정 시간</font></th>" +
+                    "<th><font>파일명</font></th>" +
+                    "<th><font>조회</font></th>" +
+                    "</tr>";
+                    
+                $('#table_select_data').append( table_head_html )
+
+                if(data.length==0){
+                    $('#table_select_data').append("<tr><td colspan='4'><font>No Files</font></td></tr>");
+                        
+                    return;
+                }
+
+                data.forEach(function(item){
+                    let date_str = getDate(item);
+                    let time_str = getTime(item);
+                    
+                    $('#table_select_data').append( "<tr>"+
+                        "<td><font>" + date_str + "</font></td>" +
+                        "<td><font>" + time_str + "</font></td>" +
+                        "<td><font>" + item + "</font></td>" +
+                        "<td>"+
+                        '<button class="button4" onclick="getDataByName(\'' + item + '\')">조회</button>' +
+                        
+                        "</td>"+
+                        "</tr>"
+                        );
+                }); 
+                
+            },
+            error: function(){
+                console.log('getByYear ERROR!');
+                }
+                
+        });
+    
+    }
+    
+    function getDataByName(name){
+        
+        
+        let param = {
+            'csv_name' : name,
+        }
+        
+        $.ajax({
+            url: "{% url 'getDataByName' %}",
+            type: 'POST',
+            headers: {
+                'X-CSRFTOKEN' : '{{ csrf_token }}'
+                },
+            data: JSON.stringify(param),
+            success: function(data){
+                
+                $('#table_data').empty();
+                
+                $('#table_data').append( data )
+
+            },
+            error: function(){
+                console.log('getDataByName ERROR!');
+                }
+                
+        });
+        
+    }
+    
+    function getDate(item){    
+        let year = item.slice(0,4);
+        let month = item.slice(4,6);
+        let day = item.slice(6,8);
+        
+        return year+"년/" + month+"월/" + day+"일";
+    }
+    
+    function getTime(item){
+        let hour = item.slice(9,11);
+        let minute = item.slice(11,13);
+        let second = item.slice(13,15);
+        
+        return hour+':'+minute+':'+second;
+    }
+
+        
+        
+    </script>
+
+</body>
+</html>
+
+

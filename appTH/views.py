@@ -18,6 +18,8 @@ import time
 import json
 import pandas as pd
 
+import fnmatch
+
 from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse
@@ -184,7 +186,107 @@ def result(request):
     return render(request, 'result.html', {'run_state':run_state})
 
 
+path = "/home/pi/Project/backup/"
 
+def beforeResult(request):
+    
+    
+    csv_list = os.listdir(path)
+    #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
+    
+    print(csv_list)
+    
+    year = set()
+    month = set()
+    day = set()
+    hour = set()
+
+    for name in csv_list:#name ex. '20210706_171054.csv'
+        year.add(name[:4])
+        month.add(name[4:6])
+        day.add(name[6:8])
+        hour.add(name[9:11])
+
+    
+    
+    
+    return render(request, 'beforeResult.html', {'csv_list': csv_list,
+                                                 'year_list': sorted(list(year), key=int), 'month_list':sorted(list(month), key=int),
+                                                 'day_list': sorted(list(day), key=int), 'hour_list':sorted(list(hour), key=int)})
+
+def getByTime(request):
+    jsonObject = json.loads(request.body)
+    startYear = jsonObject.get('startYear')
+    startMonth = jsonObject.get('startMonth')
+    startDay = jsonObject.get('startDay')
+    
+    endYear = jsonObject.get('endYear')
+    endMonth = jsonObject.get('endMonth')
+    endDay = jsonObject.get('endDay')
+    
+    startDate = startYear+startMonth+startDay
+    endDate = endYear+endMonth+endDay
+    
+    print('start-> ' + startDate)
+    print('end-> ' + endDate)
+    
+    csv_list = os.listdir(path)
+    
+    return_list = []
+    
+    if startDate is '': # when startDate is null show ( ~ endDate) data
+        for name in csv_list:
+            ymd = name[:8]
+            if ymd <= endDate:
+                return_list.append(name)
+    
+    elif endDate is '': # when endDate is null show (startDate ~ ) data
+        for name in csv_list:
+            ymd = name[:8]
+            if ymd >= startDate:
+                return_list.append(name)
+    
+    else: # when start, end time has value show (startDate ~ endDate) data
+        for name in csv_list:
+            ymd = name[:8]
+            if startDate <= ymd and ymd <= endDate:
+                return_list.append(name)
+        
+    
+    return JsonResponse(sorted(return_list), safe=False)
+
+def getDataByName(request):
+    jsonObject = json.loads(request.body)
+    csv_name = jsonObject.get('csv_name')
+    
+    head = "<tr class='tr-bar2'>" + \
+                    "<th><font>경과 시간</font></th>" + \
+                    "<th><font>습도(%)</font></th>" + \
+                    "<th><font>온도(°C)</font></th>" + \
+                    "<th><font>측정 시간</font></th>" + \
+                    "</tr>"
+
+    table_html = ""
+    
+    with open(path+csv_name, 'r') as f:
+        fullData = csv.reader(f)
+        next(fullData) # skip first row of csv data
+        for row in fullData:
+            table_html += "<tr>"+ \
+                            "<td><font>" + row[0] + "</font></td>" + \
+                            "<td><font>" + row[1] + "</font></td>" + \
+                            "<td><font>" + row[2] + "</font></td>" + \
+                            "<td><font>" + row[3][:19] + "</font></td>" + \
+                            "</tr>"
+            
+    if table_html == "":
+        table_html = head+ "<tr><td colspan='4'><font>No Data</font></td></tr>"
+    else:
+        table_html = head + table_html
+    
+    print(table_html)
+    
+    return HttpResponse(table_html)
 
 
 
