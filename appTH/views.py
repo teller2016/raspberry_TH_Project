@@ -259,13 +259,14 @@ def getDataByName(request):
     jsonObject = json.loads(request.body)
     csv_name = jsonObject.get('csv_name')
     
-    table_html = "<tr class='tr-bar2'>" + \
+    head = "<tr class='tr-bar2'>" + \
                     "<th><font>경과 시간</font></th>" + \
                     "<th><font>습도(%)</font></th>" + \
                     "<th><font>온도(°C)</font></th>" + \
                     "<th><font>측정 시간</font></th>" + \
                     "</tr>"
 
+    table_html = ""
     
     with open(path+csv_name, 'r') as f:
         fullData = csv.reader(f)
@@ -275,8 +276,15 @@ def getDataByName(request):
                             "<td><font>" + row[0] + "</font></td>" + \
                             "<td><font>" + row[1] + "</font></td>" + \
                             "<td><font>" + row[2] + "</font></td>" + \
-                            "<td><font>" + row[3] + "</font></td>" + \
+                            "<td><font>" + row[3][:19] + "</font></td>" + \
                             "</tr>"
+            
+    if table_html == "":
+        table_html = head+ "<tr><td colspan='4'><font>No Data</font></td></tr>"
+    else:
+        table_html = head + table_html
+    
+    print(table_html)
     
     return HttpResponse(table_html)
 

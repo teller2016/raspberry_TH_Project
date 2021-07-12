@@ -177,6 +177,12 @@
                     
                 $('#table_select_data').append( table_head_html )
 
+                if(data.length==0){
+                    $('#table_select_data').append("<tr><td colspan='4'><font>No Files</font></td></tr>");
+                        
+                    return;
+                }
+
                 data.forEach(function(item){
                     let date_str = getDate(item);
                     let time_str = getTime(item);
