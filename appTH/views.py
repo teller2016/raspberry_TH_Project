@@ -27,19 +27,19 @@ from django.http import HttpResponse
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
-def getThData(request):
+def getThData(request): # ajax call (get 40 current data for Table)
     th_list_mini = TH_data.objects.all().order_by('-id')[:40]
     data = serializers.serialize('json', th_list_mini)
     
     return HttpResponse(data, content_type='text/json-commnet-filtered')
     
-def getThState(request):
+def getThState(request): # ajax call (get th_state data to show max data)
     th_state = TH_state.objects.all() 
     data = serializers.serialize('json', th_state)
 
     return HttpResponse(data, content_type='text/json-commnet-filtered')
 
-def getAllThData(request):
+def getAllThData(request): # ajax call (get all th_data for All data table)
     th_list = TH_data.objects.all().order_by('-id')
     data = serializers.serialize('json', th_list)
     
@@ -174,11 +174,11 @@ def th_csv(request, word):
             ])
     return response
 
-def graph(request):
+def graph(request): # ajax call (get all th_data, used for graph)
     th_list = TH_data.objects.all() #th_data 데이터 전체 할당
     return render(request, 'graph.html', {'th_list':th_list})
 
-def result(request):
+def result(request): # ajax call
     TH = th_model.instance()
     run_state = TH.getRunState()
     
@@ -188,17 +188,13 @@ def result(request):
 # backup files path in local
 path = "/home/pi/Project/backup/" 
 
-def beforeResult(request):
-    
-    # get all csv file names from backup folder
-    csv_list = os.listdir(path)
-    
-    #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
-    
-    
-    return render(request, 'beforeResult.html', {'csv_list': csv_list,})
+def beforeResult(request): # return 'beforeResult' page
 
-def getByTime(request):
+    #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
+
+    return render(request, 'beforeResult.html')
+
+def getByTime(request): # ajax call ( return all csv file name which are in date range )
     jsonObject = json.loads(request.body)
     startYear = jsonObject.get('startYear')
     startMonth = jsonObject.get('startMonth')
@@ -239,7 +235,7 @@ def getByTime(request):
     
     return JsonResponse(sorted(return_list), safe=False)
 
-def getDataByName(request):
+def getDataByName(request): # ajax call ( return data table that matches the csv file name )
     jsonObject = json.loads(request.body)
     csv_name = jsonObject.get('csv_name')
     

@@ -126,7 +126,7 @@
 
 <script type="text/javascript">
 
-    function getDataByTime(){
+    function getDataByTime(){ //ajax call ( get csv file name list)
         
         let startTime = document.getElementById("datetimepicker_start").value;
         let endTime = document.getElementById("datetimepicker_end").value;
@@ -208,7 +208,7 @@
     
     }
     
-    function getDataByName(name){
+    function getDataByName(name){ // ajax call ( get csv file data )
         
         
         let param = {
@@ -237,7 +237,7 @@
         
     }
     
-    function getDate(item){    
+    function getDate(item){    // change date format
         let year = item.slice(0,4);
         let month = item.slice(4,6);
         let day = item.slice(6,8);
@@ -245,7 +245,7 @@
         return year+"년/" + month+"월/" + day+"일";
     }
     
-    function getTime(item){
+    function getTime(item){ // change time format
         let hour = item.slice(9,11);
         let minute = item.slice(11,13);
         let second = item.slice(13,15);
