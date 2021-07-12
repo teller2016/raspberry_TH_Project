@@ -262,4 +262,11 @@ def getByTime(request):
     
     return JsonResponse(sorted(return_list), safe=False)
 
+def getDataByName(request):
+    jsonObject = json.loads(request.body)
+    csv_name = jsonObject.get('csv_name')
+    
+    print(csv_name)
+    
+    return
 

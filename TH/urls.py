@@ -34,4 +34,5 @@ urlpatterns = [
     path('beforeResult', appTH.views.beforeResult, name="beforeResult"),
     
     path('getByTime/', appTH.views.getByTime, name="getByTime"),
+    path('getDataByName/', appTH.views.getDataByName, name="getDataByName"),
 ]
