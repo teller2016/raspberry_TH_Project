@@ -19,6 +19,7 @@ import appTH.views
 
 
 urlpatterns = [
+    
     path('admin/', admin.site.urls),
     path('', appTH.views.home, name="home"),
     path('restart/<word>/<second>', appTH.views.restart, name="restart"),
@@ -36,5 +37,7 @@ urlpatterns = [
     path('getByTime/', appTH.views.getByTime, name="getByTime"),
     path('getDataByName/', appTH.views.getDataByName, name="getDataByName"),
     path('save_csv/<saveName>/<csvName>/', appTH.views.save_csv, name="save_csv"),
+    
+    #path('header', appTH.views.header, name="header"),
     
 ]
