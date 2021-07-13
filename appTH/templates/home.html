@@ -30,6 +30,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     
     <script type="text/javascript">
+    
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
         }
@@ -129,12 +130,9 @@
     </style>
 </head>
 <body>
-	<div class="header">
-		<div class="logo"><a href="{% url 'home' %}"><img class="logo-img" src="{% static '/images/KS.jpg' %}"></a></div>
-		<div class="main-title-container">
-			<h1 class="main-title">우정바이오 무선 온습도계</h1>
-		</div>
-	</div>
+	
+		{% include 'header.html' %}
+	
 	<div class="content-container">
 		<div class="pi-select">
         <p class="home-title">온습도계 선택</p>
