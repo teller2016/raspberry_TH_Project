@@ -281,16 +281,50 @@
         
     }
     
+    //graph initalise
+    var chart = nv.models.lineChart();
+    
+    nv.addGraph(function(){
+        
+        var dataList = new Array();
+        var dataList2 = new Array();
+        
+        var th_data = [
+          {
+            "key": "습도(%)",
+            "color": "#00ace6",
+            "values": dataList
+          },
+          {
+            "key": "온도(°C)",
+            "color": "#FF4765",
+            "values": dataList2
+          }
+        ];
+        
+        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        chart.x2Axis.tickFormat(d3.format(',f'));
+
+        chart.yDomain([0,100]);
+        chart.yTickFormat(d3.format(',.1f'));
+
+        chart.useInteractiveGuideline(true);
+
+        d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        return chart;
+        
+    });
+    
     function makeGraph(data){
-        
-        var chart = nv.models.lineChart();
-        
-        nv.addGraph(function() {
         
         var dataList = new Array();
         var dataList2 = new Array();
                                           
-	
         for(const row of data.slice(0,-1)){
              
              let run_time = getSecond(row[0]);
@@ -321,14 +355,6 @@
             "values": dataList2
           }
         ]
-	
-	
-    
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        chart.x2Axis.tickFormat(d3.format(',f'));
-
-        chart.yDomain([0,100]);
-        chart.yTickFormat(d3.format(',.1f'));
 
         chart.useInteractiveGuideline(true);
 
@@ -338,8 +364,7 @@
 
         nv.utils.windowResize(chart.update);
 
-        return chart;
-    });   
+        return chart;  
         
     }
     
