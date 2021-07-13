@@ -237,7 +237,7 @@ def getByTime(request): # ajax call ( return all csv file name which are in date
     
     return JsonResponse(sorted(return_list), safe=False)
 
-def getDataByName(request): # ajax call ( return data table that matches the csv file name )
+def getDataByName2(request): # ajax call ( return data table that matches the csv file name )
     jsonObject = json.loads(request.body)
     csv_name = jsonObject.get('csv_name')
     
@@ -274,6 +274,23 @@ def getDataByName(request): # ajax call ( return data table that matches the csv
     table_html += bottom
     
     return HttpResponse(table_html)
+
+def getDataByName(request): # ajax call ( return data table that matches the csv file name )
+    jsonObject = json.loads(request.body)
+    csv_name = jsonObject.get('csv_name')
+    
+    csv_list = []
+    # read csv file from the local
+    with open(path+csv_name, 'r') as f:
+        fullData = csv.reader(f)
+        next(fullData) # skip first row of csv data
+        
+        for row in fullData:
+            csv_list.append(row)
+
+    
+    return JsonResponse(csv_list, safe=False)
+
 
 def save_csv(request, saveName, csvName): # save request from before Data lookup
     

@@ -232,9 +232,11 @@
             data: JSON.stringify(param),
             success: function(data){
                 
-                $('#table_data').empty();
+                console.log(data);
                 
-                $('#table_data').append( data )
+                //$('#table_data').empty();
+                
+                //$('#table_data').append( data )
 
             },
             error: function(){
