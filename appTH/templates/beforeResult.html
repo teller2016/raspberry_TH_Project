@@ -231,10 +231,38 @@
                 },
             data: JSON.stringify(param),
             success: function(data){
+
+    
+                
+                let head = "<tr class='tr-bar2'>" +
+                            "<th><font>경과 시간</font></th>" + 
+                            "<th><font>습도(%)</font></th>" + 
+                            "<th><font>온도(°C)</font></th>" + 
+                            "<th><font>측정 시간</font></th>" + 
+                            "</tr>";
+                let bottom = "<tr style='border-top: 1px solid #a8a8a8;'><td colspan='1'><font style='font-weight:bold'>Current File:</td>" +
+                             "<td colspan='3'><font id='csv_name' style='font-weight:bold'>"+data[data.length - 1]+"</td></tr>";
+                let table_html = "";
+                
+                for(const row of data.slice(0,-1)){
+                    table_html += "<tr>"+
+                                  "<td><font>" + row[0] + '</font></td>' +
+                                  '<td><font>' + row[1] + '</font></td>' +
+                                  '<td><font>' + row[2] + '</font></td>' +
+                                  '<td><font>' + row[3].slice(0,19) + '</font></td>' +
+                                  '</tr>';
+                    }
+                
+                //notify "No data" when data is empty  
+                if(table_html == "")
+                    table_html = head + "<tr><td colspan='4'><font style='font-weight:bold'>No Data</font></td></tr>";
+                else
+                    table_html = head + table_html;
+                
+                table_html += bottom;
                 
                 $('#table_data').empty();
-                
-                $('#table_data').append( data )
+                $('#table_data').append( table_html );
 
             },
             error: function(){

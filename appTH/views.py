@@ -237,43 +237,24 @@ def getByTime(request): # ajax call ( return all csv file name which are in date
     
     return JsonResponse(sorted(return_list), safe=False)
 
-def getDataByName(request): # ajax call ( return data table that matches the csv file name )
+
+def getDataByName(request): # ajax call ( return data that matches the csv file name )
     jsonObject = json.loads(request.body)
     csv_name = jsonObject.get('csv_name')
     
-    head = "<tr class='tr-bar2'>" + \
-                    "<th><font>경과 시간</font></th>" + \
-                    "<th><font>습도(%)</font></th>" + \
-                    "<th><font>온도(°C)</font></th>" + \
-                    "<th><font>측정 시간</font></th>" + \
-                    "</tr>"
-    
-    bottom = "<tr style='border-top: 1px solid #a8a8a8;'><td colspan='1'><font style='font-weight:bold'>Current File:</td>" + \
-             "<td colspan='3'><font id='csv_name' style='font-weight:bold'>"+csv_name+"</td></tr>"
-    
-    table_html = ""
-    
+    csv_list = []
     # read csv file from the local
     with open(path+csv_name, 'r') as f:
         fullData = csv.reader(f)
         next(fullData) # skip first row of csv data
+        
         for row in fullData:
-            table_html += "<tr>"+ \
-                            "<td><font>" + row[0] + "</font></td>" + \
-                            "<td><font>" + row[1] + "</font></td>" + \
-                            "<td><font>" + row[2] + "</font></td>" + \
-                            "<td><font>" + row[3][:19] + "</font></td>" + \
-                            "</tr>"
-            
-    # notify "No data" when data is empty        
-    if table_html == "":
-        table_html = head+ "<tr><td colspan='4'><font style='font-weight:bold'>No Data</font></td></tr>"
-    else:
-        table_html = head + table_html
+            csv_list.append(row)
+
+    csv_list.append(csv_name) # return csv file name too
     
-    table_html += bottom
-    
-    return HttpResponse(table_html)
+    return JsonResponse(csv_list, safe=False)
+
 
 def save_csv(request, saveName, csvName): # save request from before Data lookup
     
