@@ -288,6 +288,7 @@ def getDataByName(request): # ajax call ( return data table that matches the csv
         for row in fullData:
             csv_list.append(row)
 
+    csv_list.append(csv_name)
     
     return JsonResponse(csv_list, safe=False)
 
