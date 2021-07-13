@@ -330,7 +330,7 @@
         chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));
 
-        
+        chart.useInteractiveGuideline(true);
 
         d3.select('#chart svg')
             .datum(th_data)
