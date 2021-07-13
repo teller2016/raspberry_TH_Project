@@ -121,8 +121,16 @@
     </button>
     
     <table class="table-result" id="table_data"> </table>
-        
-	<br>
+    
+    <br><br>
+    
+    
+    <p class="home-title">측정 결과 그래프</p>
+    <div id="chart" class='with-3d-shadow with-transitions'>
+        <svg></svg>
+    </div>
+    
+	<hr/>
 
 	<table class="table-result" id="table_select_data"> </table>
         
@@ -130,7 +138,7 @@
 	
 	
 </div>
-<br><br>
+
 
 <script type="text/javascript">
 
@@ -232,7 +240,7 @@
             data: JSON.stringify(param),
             success: function(data){
 
-    
+                makeGraph(data);
                 
                 let head = "<tr class='tr-bar2'>" +
                             "<th><font>경과 시간</font></th>" + 
@@ -270,6 +278,81 @@
                 }
                 
         });
+        
+    }
+    
+    function makeGraph(data){
+        
+        var chart = nv.models.lineChart();
+        
+        nv.addGraph(function() {
+        
+        var dataList = new Array();
+        var dataList2 = new Array();
+                                          
+	
+        for(const row of data.slice(0,-1)){
+             
+             let run_time = getSecond(row[0]);
+               
+             var graph = new Object();
+             graph.x = run_time;
+             graph.y = parseFloat(row[1]);
+             graph.series = 0;
+             dataList.push(graph);
+             
+             var graph2 = new Object();
+             graph2.x = run_time;
+             graph2.y = parseFloat(row[2]);
+             graph2.series = 1;
+             dataList2.push(graph2);
+        
+        }
+        
+        var th_data = [
+          {
+            "key": "습도(%)",
+            "color": "#00ace6",
+            "values": dataList
+          },
+          {
+            "key": "온도(°C)",
+            "color": "#FF4765",
+            "values": dataList2
+          }
+        ]
+	
+	
+    
+        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        chart.x2Axis.tickFormat(d3.format(',f'));
+
+        chart.yDomain([0,100]);
+        chart.yTickFormat(d3.format(',.1f'));
+
+        chart.useInteractiveGuideline(true);
+
+        d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        return chart;
+    });   
+        
+    }
+    
+    function getSecond(time){
+        let hms = time.split(':');
+        let hour = Number(hms[0]);
+        let minute = Number(hms[1]);
+        let second = Number(hms[2]);
+        
+        minute += 60 * hour;
+        second += 60 * minute;
+        
+        return second;
         
     }
     
