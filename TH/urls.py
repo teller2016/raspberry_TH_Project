@@ -38,6 +38,5 @@ urlpatterns = [
     path('getDataByName/', appTH.views.getDataByName, name="getDataByName"),
     path('save_csv/<saveName>/<csvName>/', appTH.views.save_csv, name="save_csv"),
     
-    #path('header', appTH.views.header, name="header"),
-    
+    path('test', appTH.views.test, name="test"),
 ]

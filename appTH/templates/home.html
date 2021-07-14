@@ -66,6 +66,43 @@
              return false;
         }
         
+        function test(){
+            //location.href="http://192.168.243.1:8000/test";
+            //location.href="http://192.168.243.3:8000/test";
+            
+            requestPi(1);
+            requestPi(2);
+            requestPi(3);
+            
+            return true;
+        }
+        
+        function requestPi(pi_num){
+                if(pi_num>3)
+                    return;
+                    
+                $.ajax({
+                            url: 'http://192.168.243.' + pi_num +':8000/test',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}',
+                                'Access-Control-Allow-Origin':'*',
+                                'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+                                'Access-Control-Allow-Age': 3600,
+                                'Access-Control-Allow-Headers': 'Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization',
+                                },
+                            success:function(data){
+
+                                console.log(data);
+                                //requestPi(pi_num+1);
+                            },
+                            error: function(){
+                                console.log(`Ajax requestPi-${pi_num} Error!!`);
+                            }
+                        });
+            
+            }
+        
         function end_check(){
             var result = confirm("정말로 종료하시겠습니까?");
             if(result){
@@ -255,7 +292,7 @@
                   측정 주기
               </td>  
               
-              <td rowspan="3"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
+              <td rowspan="3"><button class="btn-start" onclick="test();">새로<br>시작</button></td>
            </tr>
            
            <tr>
