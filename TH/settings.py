@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'appTH',
     'django_nvd3',
     'djangobower',
+    
+    #CORS
+    'corsheaders',
 ]
 STATIC_ROOT = os.path.join('/home/pi/Projet/TH_Project','static')
 
@@ -51,6 +54,9 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
+
+#CORS configuration
+CORS_ORIGIN_ALLOW_ALL = True
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -81,10 +87,13 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    #CORS
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'TH.urls'
