@@ -22,7 +22,7 @@ urlpatterns = [
     
     path('admin/', admin.site.urls),
     path('', appTH.views.home, name="home"),
-    path('restart/<word>/<second>', appTH.views.restart, name="restart"),
+    path('restart/<time>/<second>', appTH.views.restart, name="restart"),
     path('end', appTH.views.end, name="end"),
     path('th_csv/<word>/', appTH.views.th_csv, name="th_csv"),
     path('graph', appTH.views.graph, name="graph"),
@@ -38,5 +38,5 @@ urlpatterns = [
     path('getDataByName/', appTH.views.getDataByName, name="getDataByName"),
     path('save_csv/<saveName>/<csvName>/', appTH.views.save_csv, name="save_csv"),
     
-    path('test', appTH.views.test, name="test"),
+    path('restartAll/<time>/<second>', appTH.views.restartAll, name="restartAll"),
 ]

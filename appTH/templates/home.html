@@ -46,7 +46,7 @@
         }
         
         function start_check(){
-            var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 삭제됩니다.");
+            var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
             if(result){
 
                 let currentDate = getDate();
@@ -54,7 +54,6 @@
 
 
                 let dateAndTime = currentDate + " " + currentTime;
-                console.log(dateAndTime);
                 //dateAndTime: ex> "2021-07-06 17:13:00"
                 
                 let second = document.getElementById('cycle').value;
@@ -66,23 +65,37 @@
              return false;
         }
         
-        function test(){
-            //location.href="http://192.168.243.1:8000/test";
-            //location.href="http://192.168.243.3:8000/test";
+        function start_all(){ //start all pi
+            var result = confirm("동시 측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
+            if(result){
+                
+                let currentDate = getDate();
+                let currentTime = getTime();
+                
+                let dateAndTime = currentDate + " " + currentTime;
+                //dateAndTime: ex> "2021-07-06 17:13:00"
+                
+                let second = document.getElementById('cycle').value;
+                //let second = 5;
+                requestPi(1, dateAndTime, second);
+                requestPi(2, dateAndTime, second);
+                requestPi(3, dateAndTime, second);
+                
+                
+                location.reload();
+                return true;
+            }
             
-            requestPi(1);
-            requestPi(2);
-            requestPi(3);
             
-            return true;
+            return false;
         }
         
-        function requestPi(pi_num){
+        function requestPi(pi_num, time, second){
                 if(pi_num>3)
                     return;
                     
                 $.ajax({
-                            url: 'http://192.168.243.' + pi_num +':8000/test',
+                            url: 'http://192.168.243.' + pi_num +':8000/restartAll/'+ time + '/' + second,
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}',
@@ -91,7 +104,7 @@
                             success:function(data){
 
                                 console.log(data);
-                                //requestPi(pi_num+1);
+                                
                             },
                             error: function(){
                                 console.log(`Ajax requestPi-${pi_num} Error!!`);
@@ -289,7 +302,8 @@
                   측정 주기
               </td>  
               
-              <td rowspan="3"><button class="btn-start" onclick="test();">새로<br>시작</button></td>
+              <td rowspan="3"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
+              <td rowspan="3"><button class="btn-start" onclick="start_all();">전체<br>시작</button></td>
            </tr>
            
            <tr>
@@ -312,7 +326,7 @@
         
         
         {% endif %}
-        
+        <button class="btn-start" onclick="start_all();">전체<br>시작</button>
 
         <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");
