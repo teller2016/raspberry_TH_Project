@@ -71,50 +71,64 @@
     <p class="graph-title">측정 결과 확인</p>
 </div>
 
-<div class="table-div result">
-<button class="button2" onclick="csv_download();">엑셀 파일 저장</button>
-<p class="home-title bt2">이전 데이터 조회</p>
+<div class="table-div2 result">
+    
+    <div class="beforeResult_list">
+        
+    
+        <p class="home-title">이전 데이터 조회</p>
 
-    <input id="datetimepicker_start" type="text" value="" placeholder="YYYY-MM-DD"/>
-    <b> ~ </b>
-    <input id="datetimepicker_end" type="text" value="" placeholder="YYYY-MM-DD"/>
-    <script type="text/javascript">
-        jQuery("#datetimepicker_start").datetimepicker({
-            lang:'ko',
-            format:'Y-m-d',
-            timepicker:false,
-            });
+        <input id="datetimepicker_start" type="text" value="" placeholder="YYYY-MM-DD"/>
+        <b> ~ </b>
+        <input id="datetimepicker_end" type="text" value="" placeholder="YYYY-MM-DD"/>
+        <script type="text/javascript">
+            jQuery("#datetimepicker_start").datetimepicker({
+                lang:'ko',
+                format:'Y-m-d',
+                timepicker:false,
+                });
             
-        jQuery("#datetimepicker_end").datetimepicker({
-            lang:'ko',
-            format:'Y-m-d',
-            timepicker:false,
-            });
+            jQuery("#datetimepicker_end").datetimepicker({
+                lang:'ko',
+                format:'Y-m-d',
+                timepicker:false,
+                });
             
-            </script>
+        </script>
     
+        <button class="button3" onclick="getDataByTime();">조회</button>
     
-    
-    <button class="button3" onclick="getDataByTime();">조회
-    </button>
-    
-    <table class="table-result" id="table_data"> </table>
+        <table class="table-result" id="table_select_data"> </table>
+        
     
     <br><br>
-    
-    
-    <p class="home-title">측정 결과 그래프</p>
-    <div id="chart" class='with-3d-shadow with-transitions'>
-        <svg></svg>
     </div>
     
-	<hr/>
-
-	<table class="table-result" id="table_select_data"> </table>
+    <div class="beforeResult_result">
+        <button class="button2" onclick="csv_download();">엑셀 파일 저장</button>
+        <p class="home-title bt2">측정 결과 표</p>
+        <table class="table-result" id="table_data"> 
+            <tr>
+                <td style="font-weight:bold">No Data</td>
+            </tr>
+        </table>
         
-	<br><br>
-	
-	
+        <hr/>
+        <hr/>
+        
+        <p class="home-title">측정 결과 그래프</p>
+        <div id="chart" class='with-3d-shadow with-transitions'>
+            <svg></svg>
+        </div>
+       
+        
+    </div>
+    
+    
+    
+    
+    
+
 </div>
 
 
