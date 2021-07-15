@@ -30,9 +30,11 @@ pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
 def getMaxData(request):
+    # data from the front-end
     jsonObject = json.loads(request.body)
     maxData = jsonObject.get('data') # data from before PIs
-    
+
+    #get the latest th data
     data = TH_data.objects.last()
     currentData = [data.run_id, data.run_time_str, data.run_time_date, data.temperature, data.humidity]
     
@@ -51,9 +53,12 @@ def getMaxData(request):
         
         }
     
-    print(currentData)
+    # get the data that has maximum humidity
+    if maxData['humidity'] < currentData['humidity']:
+        maxData = currentData
+
     
-    return JsonResponse(currentData)
+    return JsonResponse(maxData)
 
 def getThData(request): # ajax call (get 40 current data for Table)
     th_list_mini = TH_data.objects.all().order_by('-id')[:40]

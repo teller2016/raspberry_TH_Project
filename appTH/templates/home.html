@@ -627,24 +627,24 @@
         
 
 
-        function getMaxData(piNumber){
-                if(piNumber>3)
-                    console.log('Show MAX DATA!!');
-                
-                let param = {
-                    'data': {pi:-1, humidity:-1}, //default data
+        function getMaxData(piNumber, maxData){
+                if(piNumber>3){
+                    console.log("MAX DATA!!");
+                    console.log(maxData);
+                    return;
                 }
-                
+                    
+
                 $.ajax({
                     url: 'http://192.168.243.' + piNumber +':8000/getMaxData',
                     type: 'POST',
-                    data: JSON.stringify(param),
+                    data: JSON.stringify(maxData),
                     headers:{
                         'X-CSRFToken': '{{csrf_token}}'
                          },
                     success: function(data){
-                        
                         console.log(data);
+                        getMaxData(piNumber+1, {'data':data});
 
                     },
                     error: function(){
@@ -652,7 +652,11 @@
                     }
                 })
         }
-        getMaxData(1);
+        
+        let defaultMaxData = {
+                    'data': {pi:-1, humidity:-1}, //default data
+                }
+        getMaxData(1, defaultMaxData);
     </script>
     <br><br><br><br>
 	</div>
