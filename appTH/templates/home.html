@@ -251,7 +251,7 @@
         {% if run_state == 2 %}
         <p class="home-title">마지막 수치</p>
         {% else %}
-        <p class="home-title">현재 수치</p>
+        <p class="home-title">실시간 수치</p>
         {% endif %}
         
         
@@ -267,6 +267,25 @@
                 
             </tr>
         </table>
+        
+        {% if run_state == 1 %}
+        <br>
+        <p class="home-title">실시간 최대 수치</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>Pi NO.</font></th>
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="max_value">
+                
+            </tr>
+        </table>
+        {% endif %}
         
         
         <br>
@@ -618,19 +637,27 @@
                 getThState();
                 getThData();
                 getAllThData();
+                
+                let defaultMaxData = {
+                    'data': {pi:-1, humidity:-1}, //default data
+                }
+                getMaxData(1,defaultMaxData);
             }
         
-        
-        refreshData();
-        if( {{run_state}} == 1)
-            setInterval(refreshData, 2000); // refresh every x seconds
-        
-
-
         function getMaxData(piNumber, maxData){
                 if(piNumber>3){
-                    console.log("MAX DATA!!");
-                    console.log(maxData);
+                    //console.log("MAX DATA!!");
+                    let data = maxData.data;
+                    $('#max_value').empty();
+                                
+                    $('#max_value').append(
+                        "<td class='ver-line'>" + data.pi_num + "</td>" +
+                        "<td class='ver-line'>" + data.run_id + "</td>" +
+                        "<td class='ver-line'>" + data.run_time_str + "</td>" +
+                        "<td class='ver-line'>" + data.humidity + "</td>" +
+                        "<td class='ver-line'>" + data.temperature + "</td>" +
+                        "<td class='ver-line'>" + getHMS(data.run_time_date) + "</td>" 
+                    )
                     return;
                 }
                     
@@ -643,7 +670,7 @@
                         'X-CSRFToken': '{{csrf_token}}'
                          },
                     success: function(data){
-                        console.log(data);
+                        //console.log(data);
                         getMaxData(piNumber+1, {'data':data});
 
                     },
@@ -653,10 +680,12 @@
                 })
         }
         
-        let defaultMaxData = {
-                    'data': {pi:-1, humidity:-1}, //default data
-                }
-        getMaxData(1, defaultMaxData);
+        
+        refreshData();
+        if( {{run_state}} == 1)
+            setInterval(refreshData, 2000); // refresh every x seconds
+
+
     </script>
     <br><br><br><br>
 	</div>
