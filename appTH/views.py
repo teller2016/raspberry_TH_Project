@@ -86,7 +86,8 @@ def home(request):
                                        'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
 
 def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
-    print('***HttpResponse PI THREE***')
+
+    print('***HttpResponse restart all***')
     
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
     run_state = TH.getRunState() #th_model의 run_state값 반환
@@ -137,8 +138,7 @@ def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // secon
     conn.close()
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
     
-    
-    return HttpResponse('***HttpResponse PI THREE***')
+    return HttpResponse('***HttpResponse restart all***')
 
 def restart(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
