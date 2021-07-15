@@ -5,11 +5,6 @@
 <head>
     <meta charset="utf-8">
     
-    {% if run_state == 1 %}
-    <!--    실행중이면 30초 마다 페이지 fresh를 한다.-->
-    <!--    <meta http-equiv="refresh" content="5;url=">-->
-    {% endif %}
-    
     <!--    브라우저 너비를 장치 너비에 맞추어 표시함-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>우정바이오 온습도계</title>
@@ -224,8 +219,8 @@
 		</div>
         <br>
         <div class="content-summary">
-        <a href="{% url 'result' %}"><button class="button2">현재 데이터 보기</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button2">이전 데이터 조회</button></a>
+        <a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
+        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
 		<p class="home-title bt1">측정 상태 요약</p>
         <p class="time-title">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
         
@@ -295,8 +290,8 @@
               <td>
                 <span id="cur_date" style="color:gray;">date</span>
               </td>
-              <td rowspan="3"><button class="btn-end" onclick="end_check();">종료</button></td>
-              <td rowspan="3"><button class="btn-end" onclick="end_all();">전체 종료</button></td>
+              <td rowspan="3"><button class="btn-end" onclick="end_check();">개별 종료</button></td>
+              <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
            </tr>
            <tr><td colspan="2"><hr></td></tr>
            <tr>
@@ -338,8 +333,8 @@
                   측정 주기
               </td>  
               
-              <td rowspan="3"><button class="btn-start" onclick="start_check();">새로<br>시작</button></td>
-              <td rowspan="3"><button class="btn-start" onclick="start_all();">전체<br>시작</button></td>
+              <td rowspan="3"><button class="btn-start" onclick="start_check();">개별 측정<br>시작</button></td>
+              <td rowspan="3"><button class="btn-startAll" onclick="start_all();">전체 측정<br>시작</button></td>
            </tr>
            
            <tr>

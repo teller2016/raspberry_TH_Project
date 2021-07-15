@@ -129,6 +129,7 @@ button {
 	margin-top: 30px;
 }
 
+
 .home-title-mini{
 	font-weight:normal;
 	font-size: 18px;
@@ -192,8 +193,17 @@ button {
 	background-color:#FF4765;
 	border:1px solid #FF4765;
 	color:#ffffff;
-	height: 80px;
-	width: 200px;
+	height: 70px;
+	width: 100px;
+}
+
+.btn-endAll{
+	box-shadow: 0px 0px 4px 0px #FF4765;
+	background-color:#ff4750;
+	border:1px solid #ff4750;
+	color:#ffffff;
+	height: 70px;
+	width: 100px;
 }
 
 .btn-start{
@@ -202,7 +212,16 @@ button {
 	border:1px solid #4A74D7;
 	color:#ffffff;
 	height: 70px;
-	width: 80px;
+	width: 100px;
+}
+
+.btn-startAll{
+	box-shadow: 0px 0px 4px 0px #4A74D7;
+	background-color:#5655d4;
+	border:1px solid #5655d4;
+	color:#ffffff;
+	height: 70px;
+	width: 100px;
 }
 
 input{
@@ -231,7 +250,7 @@ input{
 }
 
 .bt1{
-	margin-left: 135px;
+	margin-left: 265px;
 }
 
 .bt2{

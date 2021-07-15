@@ -147,16 +147,34 @@ input{
 	width: 80px;
 }
 
+.btn-startAll{
+	box-shadow: 0px 0px 4px 0px #4A74D7;
+	background-color:#5655d4;
+	border:1px solid #5655d4;
+	color:#ffffff;
+	font-size: 14px;
+	height: 70px;
+	width: 80px;
+}
+
 .btn-end{
 	box-shadow: 0px 0px 4px 0px #FF4765;
 	background-color:#FF4765;
 	border:1px solid #FF4765;
 	color:#ffffff;
 	font-size: 14px;
-	height: 80px;
-	width: 160px;
+	height: 70px;
+	width: 100px;
 }
 
+.btn-endAll{
+	box-shadow: 0px 0px 4px 0px #FF4765;
+	background-color:#ff4750;
+	border:1px solid #ff4750;
+	color:#ffffff;
+	height: 70px;
+	width: 100px;
+}
 
 .button2{
 	margin-top:30px;
