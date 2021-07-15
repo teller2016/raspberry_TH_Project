@@ -626,6 +626,33 @@
             setInterval(refreshData, 2000); // refresh every x seconds
         
 
+
+        function getMaxData(piNumber){
+                if(piNumber>3)
+                    console.log('Show MAX DATA!!');
+                
+                let param = {
+                    'data': {pi:-1, humidity:-1}, //default data
+                }
+                
+                $.ajax({
+                    url: 'http://192.168.243.' + piNumber +':8000/getMaxData',
+                    type: 'POST',
+                    data: JSON.stringify(param),
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){
+                        
+                        console.log(data);
+
+                    },
+                    error: function(){
+                        console.log("getAllThData Error occured!!");
+                    }
+                })
+        }
+        getMaxData(1);
     </script>
     <br><br><br><br>
 	</div>
