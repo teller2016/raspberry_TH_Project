@@ -25,11 +25,13 @@
         }
         function csv_download(){
             let csv_name_element = document.getElementById('csv_name');
-            let csv_name = csv_name_element.innerHTML
+            
             if(csv_name_element == null){
                 alert("먼저 저장할 데이터 조회를 해주세요.");
                 return;
             }
+            
+            let csv_name = csv_name_element.innerHTML
              
             var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)", csv_name.split('.')[0])
             if(userInput == null){
