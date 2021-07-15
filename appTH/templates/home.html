@@ -77,12 +77,14 @@
                 
                 let second = document.getElementById('cycle').value;
                 //let second = 5;
-                requestPi(1, dateAndTime, second);
-                requestPi(2, dateAndTime, second);
-                requestPi(3, dateAndTime, second);
+                requestPi_start(1, dateAndTime, second);
+                requestPi_start(2, dateAndTime, second);
+                requestPi_start(3, dateAndTime, second);
                 
                 
-                location.reload();
+                setTimeout(function(){
+                    location.reload();
+                },1000); // refresh page after 1 seconds
                 return true;
             }
             
@@ -90,10 +92,8 @@
             return false;
         }
         
-        function requestPi(pi_num, time, second){
-                if(pi_num>3)
-                    return;
-                    
+        function requestPi_start(pi_num, time, second){
+
                 $.ajax({
                             url: 'http://192.168.243.' + pi_num +':8000/restartAll/'+ time + '/' + second,
                             type: 'POST',
@@ -107,7 +107,7 @@
                                 
                             },
                             error: function(){
-                                console.log(`Ajax requestPi-${pi_num} Error!!`);
+                                console.log(`Ajax requestPi_start-${pi_num} Error!!`);
                             }
                         });
             
@@ -121,6 +121,41 @@
             }
              return false;
         }
+        
+        function end_all(){ //start all pi
+            var result = confirm("전체 종료 하시겠습니까?");
+            if(result){
+                
+                requestPi_end(1);
+                requestPi_end(2);
+                requestPi_end(3);
+                
+                
+                setTimeout(function(){
+                    location.reload();
+                },1000); // refresh page after 1 seconds
+                return true;
+            }
+            return false;
+        }
+        
+        function requestPi_end(pi_num){
+ 
+                $.ajax({
+                            url: 'http://192.168.243.' + pi_num +':8000/endAll',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}',
+                                },
+                            success:function(data){
+                                console.log(data);
+                            },
+                            error: function(){
+                                console.log(`Ajax requestPi_end-${pi_num} Error!!`);
+                            }
+                        });
+            
+            }
         
         
         function getDate(){
@@ -261,6 +296,7 @@
                 <span id="cur_date" style="color:gray;">date</span>
               </td>
               <td rowspan="3"><button class="btn-end" onclick="end_check();">종료</button></td>
+              <td rowspan="3"><button class="btn-end" onclick="end_all();">전체 종료</button></td>
            </tr>
            <tr><td colspan="2"><hr></td></tr>
            <tr>
@@ -326,7 +362,7 @@
         
         
         {% endif %}
-        <button class="btn-start" onclick="start_all();">전체<br>시작</button>
+        
 
         <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");

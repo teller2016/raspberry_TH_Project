@@ -39,4 +39,5 @@ urlpatterns = [
     path('save_csv/<saveName>/<csvName>/', appTH.views.save_csv, name="save_csv"),
     
     path('restartAll/<time>/<second>', appTH.views.restartAll, name="restartAll"),
+    path('endAll', appTH.views.endAll, name='endAll'),
 ]

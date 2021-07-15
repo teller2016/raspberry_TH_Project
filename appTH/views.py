@@ -86,7 +86,7 @@ def home(request):
                                        'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
 
 def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
-    print('***HttpResponse PI ONE***')
+    print('***HttpResponse restart all***')
     
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
     run_state = TH.getRunState() #th_model의 run_state값 반환
@@ -138,7 +138,7 @@ def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // secon
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
     
     
-    return HttpResponse('***HttpResponse PI ONE***')
+    return HttpResponse('***HttpResponse restart all***')
 
 def restart(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
@@ -190,6 +190,20 @@ def end(request):
 
     TH.setRunState(2) # run_state 1 -> 2
     return redirect('home')
+
+def endAll(request):
+    TH = th_model.instance()
+    pi_date = TH.getPiDate()
+     
+    th_update = TH_data.objects.last()
+    if th_update:
+        th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
+        th_update.save()
+    
+    os.system('sudo pkill -9 -ef th_run')
+
+    TH.setRunState(2) # run_state 1 -> 2
+    return HttpResponse('***HttpResponse end all***')
 
 def th_csv(request, word):
     TH = th_model.instance()
