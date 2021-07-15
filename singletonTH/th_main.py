@@ -22,8 +22,8 @@ class th_model:
     
     def __init__(self):
         global pi_num, pi_ip, pi_state, run_state, pi_date
-        self.pi_num = 1
-        self.pi_ip = "192.168.243.1"
+        self.pi_num = 3
+        self.pi_ip = "192.168.243.3"
         self.pi_state = 1
         self.run_state = 2
         self.pi_date = datetime.datetime.now()
