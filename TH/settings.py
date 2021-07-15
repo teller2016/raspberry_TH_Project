@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), ".."),
 )
 
-ALLOWED_HOSTS = ['192.168.243.3','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.243.1','127.0.0.1']
 
 # Application definition
 
