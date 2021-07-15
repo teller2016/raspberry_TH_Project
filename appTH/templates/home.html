@@ -633,23 +633,16 @@
                                 
                                     }
 
-        function refreshData(){
-                getThState();
-                getThData();
-                getAllThData();
-                
-                let defaultMaxData = {
-                    'data': {pi:-1, humidity:-1}, //default data
-                }
-                getMaxData(1,defaultMaxData);
-            }
         
         function getMaxData(piNumber, maxData){
                 if(piNumber>3){
                     //console.log("MAX DATA!!");
                     let data = maxData.data;
-                    $('#max_value').empty();
-                                
+                    
+                    if(data.pi_num == -1)   //when there is no data
+                        return;
+                        
+                    $('#max_value').empty();          
                     $('#max_value').append(
                         "<td class='ver-line'>" + data.pi_num + "</td>" +
                         "<td class='ver-line'>" + data.run_id + "</td>" +
@@ -680,6 +673,16 @@
                 })
         }
         
+        function refreshData(){
+                getThState();
+                getThData();
+                getAllThData();
+                
+                let defaultMaxData = {
+                    'data': {pi:-1, humidity:-1}, //default data
+                }
+                getMaxData(1,defaultMaxData);
+            }
         
         refreshData();
         if( {{run_state}} == 1)

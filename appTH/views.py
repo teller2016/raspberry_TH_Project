@@ -36,6 +36,11 @@ def getMaxData(request):
 
     #get the latest th data
     data = TH_data.objects.last()
+    
+    #when there is no data return 
+    if data == None:
+        return JsonResponse(maxData)
+    
     currentData = [data.run_id, data.run_time_str, data.run_time_date, data.temperature, data.humidity]
     
     #get pi number
