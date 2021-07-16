@@ -25,6 +25,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     
     <script type="text/javascript">
+		
+		//NUMBER OF PI
+		const PI = 3
     
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
@@ -60,14 +63,11 @@
                 
                 let second = document.getElementById('cycle').value;
                 
-                //requestPi_start(1, dateAndTime, second);
-                //requestPi_start(2, dateAndTime, second);
-                //requestPi_start(3, dateAndTime, second);
-                
-                
+                checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
+
                 //setTimeout(function(){
                 //    location.reload();
-                //},1000); // refresh page after 1 seconds
+                //},2000); // refresh page after 1 seconds
                 return true;
             }
             
@@ -86,7 +86,11 @@
                                 },
                             success:function(data){
 
-                                console.log(data);
+                                if(pi_num == '1'){ // when pi 1 started reload page
+									setTimeout(function(){
+									    location.reload();
+									},2000); // refresh page after 2 seconds
+                                }
                                 
                             },
                             error: function(){
@@ -211,8 +215,8 @@
         <div class="pi-list">
         
         <!-- DATA SUMMARY 1 -->
-        <div class="content-summary">
-        
+        <div class="content-summary" id="summary-pi1">
+        <p class="home-title">PI ONE</p>
 		<p class="home-title">측정 상태 요약</p>
         
         <table class="table-th">
@@ -249,8 +253,8 @@
         </div><!-- DATA SUMMARY 1 END -->
         
         <!-- DATA SUMMARY 2 -->
-        <div class="content-summary">
-        
+        <div class="content-summary" id="summary-pi2">
+        <p class="home-title">PI TWO</p>
 		<p class="home-title">측정 상태 요약</p>
         
         <table class="table-th">
@@ -287,8 +291,8 @@
         </div><!-- DATA SUMMARY 2 END -->
         
         <!-- DATA SUMMARY 3 -->
-        <div class="content-summary">
-        
+        <div class="content-summary" id="summary-pi3">
+        <p class="home-title">PI THREE</p>
 		<p class="home-title">측정 상태 요약</p>
         
         <table class="table-th">
@@ -554,10 +558,37 @@
                 //getMaxData(1,defaultMaxData);
             }
         
-        refreshData();
-        if( {{run_state}} == 1)
-            setInterval(refreshData, 2000); // refresh every x seconds
+        function hideElement(piNum){
+			$.ajax({
+                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){ //data == run_state
+						if(data == 2){
+							$('#summary-pi'+piNum).hide();
+						}
+                        
 
+                    },
+                    error: function(){
+                        console.log("hideElement Error occured!!");
+                    }
+                })
+		}
+        
+        refreshData();
+
+			
+        if( {{run_state}} == 1){
+			
+			for(piNum=1; piNum <= PI; piNum++){
+				hideElement(piNum); //hide pi tables that are not running
+			}
+			
+            setInterval(refreshData, 2000); // refresh every x seconds
+		}
 
     </script>
     

@@ -66,6 +66,13 @@ def summary(request):
     return render(request,'summary.html',{'run_state':run_state, 'th_list':th_list,
                                        'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
 
+def checkRunning(request):
+    TH = th_model.instance()
+    run_state = TH.getRunState()
+    
+    return HttpResponse(run_state)
+    
+
 def getMaxData(request):
     # data from the front-end
     jsonObject = json.loads(request.body)

@@ -44,4 +44,5 @@ urlpatterns = [
     path('getMaxData', appTH.views.getMaxData, name = "getMaxData"),
     
     path('summary', appTH.views.summary, name= 'summary'),
+    path('checkRunning', appTH.views.checkRunning, name='checkRunning'),
 ]
