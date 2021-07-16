@@ -41,10 +41,17 @@
         }
         
         
-        function start_all(){ //start all pi
-            var result = confirm("동시 측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
+        function start_pi(){ //start selected pi
+            var result = confirm("측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
             if(result){
                 
+                
+                let checkedList = ['1'];// pi 1 is necessary
+                //get list of checked pi
+                $("input:checkbox[name=checkbox_pi]:checked").each(function(){
+					checkedList.push($(this).val());
+				});
+            
                 let currentDate = getDate();
                 let currentTime = getTime();
                 
@@ -52,15 +59,15 @@
                 //dateAndTime: ex> "2021-07-06 17:13:00"
                 
                 let second = document.getElementById('cycle').value;
-                //let second = 5;
-                requestPi_start(1, dateAndTime, second);
-                requestPi_start(2, dateAndTime, second);
-                requestPi_start(3, dateAndTime, second);
+                
+                //requestPi_start(1, dateAndTime, second);
+                //requestPi_start(2, dateAndTime, second);
+                //requestPi_start(3, dateAndTime, second);
                 
                 
-                setTimeout(function(){
-                    location.reload();
-                },1000); // refresh page after 1 seconds
+                //setTimeout(function(){
+                //    location.reload();
+                //},1000); // refresh page after 1 seconds
                 return true;
             }
             
@@ -201,7 +208,9 @@
 		</div>
         <br>
         
-        <!-- DATA SUMMARY -->
+        <div class="pi-list">
+        
+        <!-- DATA SUMMARY 1 -->
         <div class="content-summary">
         
 		<p class="home-title">측정 상태 요약</p>
@@ -214,7 +223,7 @@
                 <th class="ver-line"><font>온도(°C)</font></th>
                 <th class="ver-line"><font>측정 시간</font></th>
             </tr>
-            <tr id="cur_state">
+            <tr id="cur_state1">
                 
             </tr>
         </table>
@@ -230,14 +239,93 @@
                 <th class="ver-line"><font>온도(°C)</font></th>
                 <th class="ver-line"><font>측정 시간</font></th>
             </tr>
-            <tr id="cur_value">
+            <tr id="cur_value1">
                 
             </tr>
         </table>
    
         
         <br>
-        </div><!-- DATA SUMMARY END -->
+        </div><!-- DATA SUMMARY 1 END -->
+        
+        <!-- DATA SUMMARY 2 -->
+        <div class="content-summary">
+        
+		<p class="home-title">측정 상태 요약</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_state2">
+                
+            </tr>
+        </table>
+        
+        
+        <p class="home-title">실시간 수치</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_value2">
+                
+            </tr>
+        </table>
+   
+        
+        <br>
+        </div><!-- DATA SUMMARY 2 END -->
+        
+        <!-- DATA SUMMARY 3 -->
+        <div class="content-summary">
+        
+		<p class="home-title">측정 상태 요약</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_state3">
+                
+            </tr>
+        </table>
+        
+        
+        <p class="home-title">실시간 수치</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_value3">
+                
+            </tr>
+        </table>
+   
+        
+        <br>
+        </div><!-- DATA SUMMARY 3 END -->
+        
+        </div>
+        
         <br>
         
 		<div class="pi-state">
@@ -291,7 +379,7 @@
                   측정 주기
               </td>  
               
-              <td rowspan="3"><button class="btn-startAll" onclick="start_all();">전체 측정<br>시작</button></td>
+              <td rowspan="3"><button class="btn-startAll" onclick="start_pi();">측정<br>시작</button></td>
            </tr>
            
            <tr>
@@ -310,12 +398,26 @@
                 <span id="cur_time" style="color:gray; padding:10px;">time</span>
               </td>
            </tr>
+           
+           <tr>
+			   <td>Additional PI</td>
+			   
+				<td colspan="2">
+					
+					<div>
+						<input type="checkbox" id="piTwo" name="checkbox_pi" value=2 checked>Pi 2	
+					</div>
+					<div>
+						<input type="checkbox" id="piThree" name="checkbox_pi" value=3 checked>Pi 3
+					</div>
+				</td>
+           </tr>
         </table>
         
         
         {% endif %}
         
-
+		<br/><br/>
 
     
     <script type="text/javascript">
