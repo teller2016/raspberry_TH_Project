@@ -40,25 +40,6 @@
             }
         }
         
-        function start_check(){
-            var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
-            if(result){
-
-                let currentDate = getDate();
-                let currentTime = getTime();
-
-
-                let dateAndTime = currentDate + " " + currentTime;
-                //dateAndTime: ex> "2021-07-06 17:13:00"
-                
-                let second = document.getElementById('cycle').value;
-                
-                location.href="/restart/" + dateAndTime + "/" + second;
-                return true;
-
-            }
-             return false;
-        }
         
         function start_all(){ //start all pi
             var result = confirm("동시 측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
@@ -214,23 +195,16 @@
 		<div class="pi-select">
         <p class="home-title">온습도계 선택</p>
         <a href="http://192.168.243.1:8000/summary"><button class="btn-me">전체 확인</button></a>
-		<a href="http://192.168.243.1:8000/"><button >1번</button></a>
+		<a href="http://192.168.243.1:8000/"><button>1번</button></a>
 		<a href="http://192.168.243.2:8000/"><button>2번</button></a>
 		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
 		</div>
         <br>
+        
+        <!-- DATA SUMMARY -->
         <div class="content-summary">
-        <a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
-		<p class="home-title bt1">측정 상태 요약</p>
-        <p class="time-title">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
         
-        {% if run_state == 2 %}
-        <!--    측정이 종료되었을 시 종료시간 표시-->
-        <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
-        {% endif %}
-
-        
+		<p class="home-title">측정 상태 요약</p>
         
         <table class="table-th">
             <tr class="tr-bar">
@@ -246,15 +220,7 @@
         </table>
         
         
-        
-        
-        <br>
-        {% if run_state == 2 %}
-        <p class="home-title">마지막 수치</p>
-        {% else %}
         <p class="home-title">실시간 수치</p>
-        {% endif %}
-        
         
         <table class="table-th">
             <tr class="tr-bar">
@@ -268,10 +234,10 @@
                 
             </tr>
         </table>
+   
         
-
         <br>
-        </div>
+        </div><!-- DATA SUMMARY END -->
         <br>
         
 		<div class="pi-state">
@@ -313,6 +279,7 @@
         <br>
         
         
+        
         <table class="table-start">
            <tr>
               <td>날짜</td>
@@ -324,7 +291,6 @@
                   측정 주기
               </td>  
               
-              <td rowspan="3"><button class="btn-start" onclick="start_check();">개별 측정<br>시작</button></td>
               <td rowspan="3"><button class="btn-startAll" onclick="start_all();">전체 측정<br>시작</button></td>
            </tr>
            
@@ -350,47 +316,10 @@
         {% endif %}
         
 
-        
-        
-        
-    <div class="graph-div">
-    <br><br>
-    <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
-    <p class="home-title bt2">측정 결과 그래프</p>
-    
-    
-    <div id="chart" class='with-3d-shadow with-transitions'>
-        <svg></svg>
-    </div>
 
-    <br><br><br><br>
-	</div>
-    <div class="table-div">
-	<button class="button2" onclick="csv_name();">엑셀 파일 저장</button>
-    <p class="home-title bt2">측정 결과 미리보기</p>
-        <table class="table-result" id="table_data">
-            
-        
-        
-        </table>
-        <br><br>
-    </div>
-    <br><br>
     
     <script type="text/javascript">
-        function getHMS(HMS){
-
-            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
-            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
-            
-            let hours = ('0' + date.getHours()).slice(-2);
-            let minutes = ('0' + date.getMinutes()).slice(-2);
-            let seconds = ('0' + date.getSeconds()).slice(-2);
-            
-            let time = hours+':'+minutes+':'+seconds;
-            
-            return time;
-        }
+        
         
         function getThData(){
                 
@@ -416,53 +345,7 @@
                                     "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>" 
                                 )
                                 
-                                
-                                //while($('#table_data').length >1){
-                                 //   $('#table_data').deleteRow(1);
-                                 //   }
-                                 $('#table_data').empty();
-                                    
-                                //console.log($('#state_id').html());
-                                let state_run_id = $('#state_id').html();
-                                let table_head_html =
-                                    "<tr class='tr-bar2'>" +
-                                    "<th><font>no.</font></th>" +
-                                    "<th><font>경과 시간</font></th>" +
-                                    "<th><font>습도(%)</font></th>" +
-                                    "<th><font>온도(°C)</font></th>" +
-                                    "<th><font>측정 시간</font></th>" +
-                                    "</tr>"
-                                $('#table_data').append( table_head_html )
-                                
-                                $.each(data, function(key, value){
-                                
-                                    let run_id = value.fields.run_id;
-                                    let run_time_str = value.fields.run_time_str;
-                                    let humidity = value.fields.humidity;
-                                    let temperature = value.fields.temperature;
-                                    let run_time_date = value.fields.run_time_date;
-                                    
-                                    let tr_html = '';
-                                    
-                                    if( run_id == state_run_id)
-                                        tr_html = "<tr class='peak'>";
-                                    else
-                                        tr_html = "<tr>";
-                                   
-                                        
-                                    $('#table_data').append( tr_html +
-                                        "<td><font>" + run_id + "</font></td>" +
-                                        "<td><font>" + run_time_str + "</font></td>" +
-                                        "<td><font>" + humidity + "</font></td>" +
-                                        "<td><font>" + temperature + "</font></td>" +
-                                        "<td><font>" + getHMS(run_time_date) + "</font></td>" +
-                                        "</tr>"
-                                    );
-                                
-                                });
-                                
-                                
-                                
+
                                 
                             },
                             error: function(){
@@ -472,7 +355,7 @@
             
             }
             
-            function getThState(){
+        function getThState(){
                 
                 $.ajax({
                             url: '{% url 'getThState' %}',
@@ -501,48 +384,6 @@
             
             }
             
-            
-        var chart = nv.models.lineChart();
-        
-        nv.addGraph(function() {
-        
-	
-	var dataList = new Array();
-	var dataList2 = new Array();
-	
-	var th_data = [
-	  {
-	    "key": "습도(%)",
-	    "color": "#00ace6",
-	    "values": dataList
-	  },
-	  {
-	    "key": "온도(°C)",
-	    "color": "#FF4765",
-	    "values": dataList2
-	  }
-	]
-	
-	
-    
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        chart.x2Axis.tickFormat(d3.format(',f'));
-
-        chart.yDomain([0,100]);
-        chart.yTickFormat(d3.format(',.1f'));
-
-        
-
-        d3.select('#chart svg')
-            .datum(th_data)
-            .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-    });   
-            
-    
         function getAllThData(){
                 $.ajax({
                     url: '{% url 'getAllThData' %}',
@@ -552,7 +393,7 @@
                          },
                     success: function(data){
                         
-                        update(data);
+                        
 
                     },
                     error: function(){
@@ -560,51 +401,6 @@
                     }
                 })
             }
-        function update(data) {
-                                        
-                                        
-                                        var dataList = new Array();
-                                        var dataList2 = new Array();
-                                        
-                                        $.each(data, function(key, value){
-                                            
-                                            var graph = new Object();
-                                            graph.x = value.fields.run_time;
-                                            graph.y = value.fields.humidity;
-                                            graph.series = 0;
-                                            dataList.push(graph);
-                                            
-                                            var graph2 = new Object();
-                                            graph2.x = value.fields.run_time;
-                                            graph2.y = value.fields.temperature;
-                                            graph2.series = 1;
-                                            dataList2.push(graph2);
-                                            
-                                            })
-                                        var th_data = [
-                                            {
-                                                "key": "습도(%)",
-                                                "color": "#00ace6",
-                                                "values": dataList
-                                             },
-                                             {
-                                                "key": "온도(°C)",
-                                                "color": "#FF4765",
-                                                "values": dataList2
-                                              }
-                                        ]
-
-                                        d3.select('#chart svg')
-                                        .datum(th_data)
-                                        .call(chart);
-
-                                        nv.utils.windowResize(chart.update);
-        
-                                        return chart;
-                                
-                                
-                                    }
-
         
         function getMaxData(piNumber, maxData){
                 if(piNumber>3){
@@ -648,12 +444,12 @@
         function refreshData(){
                 getThState();
                 getThData();
-                getAllThData();
+                //getAllThData();
                 
                 let defaultMaxData = {
                     'data': {pi:-1, humidity:-1}, //default data
                 }
-                getMaxData(1,defaultMaxData);
+                //getMaxData(1,defaultMaxData);
             }
         
         refreshData();
@@ -663,19 +459,19 @@
 
     </script>
     
-    
     <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");
         let currentTime = document.getElementById("cur_time");
         function clock(){
-
+            
+           
            currentDate.innerText = getDate();
            currentTime.innerText = getTime();
         }
         clock();
         setInterval(clock,1000);
         
-        //show 'seconds' of the cycle value that user chose on range input
+        
         function setCycle(){
                   let cycle = document.getElementById('cycle');
                   
@@ -683,6 +479,21 @@
                   cycleLabel.innerHTML = cycle.value+'초';
                            
                   }
+        
+        function getHMS(HMS){
+
+            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
+            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
+            
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            
+            return time;
+        }
+            
         </script>
     
 </body>
