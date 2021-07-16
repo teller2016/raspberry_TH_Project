@@ -29,6 +29,42 @@ from wsgiref.util import FileWrapper
 pymysql.version_info = (1, 3, 13, "final", 0)
 pymysql.install_as_MySQLdb()
 
+def getMaxData(request):
+    # data from the front-end
+    jsonObject = json.loads(request.body)
+    maxData = jsonObject.get('data') # data from before PIs
+
+    #get the latest th data
+    data = TH_data.objects.last()
+    
+    #when there is no data return 
+    if data == None:
+        return JsonResponse(maxData)
+    
+    currentData = [data.run_id, data.run_time_str, data.run_time_date, data.temperature, data.humidity]
+    
+    #get pi number
+    TH = th_model.instance()
+    pi_num = TH.getPiNum()
+    
+    currentData = {
+            'pi_num': pi_num,
+            'run_id': data.run_id,
+            'run_time': data.run_time,
+            'run_time_str': data.run_time_str,
+            'run_time_date': data.run_time_date,
+            'temperature': data.temperature,
+            'humidity': data.humidity,
+        
+        }
+    
+    # get the data that has maximum humidity
+    if maxData['humidity'] < currentData['humidity']:
+        maxData = currentData
+
+    
+    return JsonResponse(maxData)
+
 def getThData(request): # ajax call (get 40 current data for Table)
     th_list_mini = TH_data.objects.all().order_by('-id')[:40]
     data = serializers.serialize('json', th_list_mini)

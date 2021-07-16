@@ -40,4 +40,6 @@ urlpatterns = [
     
     path('restartAll/<time>/<second>', appTH.views.restartAll, name="restartAll"),
     path('endAll', appTH.views.endAll, name='endAll'),
+    
+    path('getMaxData', appTH.views.getMaxData, name = "getMaxData"),
 ]
