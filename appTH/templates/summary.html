@@ -26,21 +26,12 @@
     
     <script type="text/javascript">
 		
+        
 		//NUMBER OF PI
 		const PI = 3
     
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
-        }
-        
-        function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
-            if(userInput == null){
-                alert("취소되었습니다.");
-            } else{
-                alert("다운로드를 시작합니다.");
-                location.href="/th_csv/"+userInput;
-            }
         }
         
         
@@ -104,35 +95,29 @@
             
             }
         
-        function end_check(){
-            var result = confirm("정말로 종료하시겠습니까?");
-            if(result){
-                location.href="/end";
-                return true;
-            }
-             return false;
-        }
         
         function end_all(){ //end all pi
             var result = confirm("전체 종료 하시겠습니까?");
             if(result){
                  
-                for(piNum=1; piNum <= PI; piNum++){
-				requestPi_end(piNum);
-                }
+                //for(piNum=1; piNum <= PI; piNum++){
+				//requestPi_end(piNum);
+                //}
                 
                 requestPi_end(1);
                 
                 //refresh page when ending PI fails
-                setTimeout(function(){
-                    location.reload();
-                },5000); // refresh page after 5 seconds
+                //setTimeout(function(){
+                //    location.reload();
+                //},5000); // refresh page after 5 seconds
                 return true;
             }
             return false;
         }
         
         function requestPi_end(pi_num){
+            if(pi_num > PI)
+                location.reload();
             
                 $.ajax({
                             url: 'http://192.168.243.' + pi_num +':8000/endAll',
@@ -141,10 +126,10 @@
                                 'X-CSRFToken': '{{csrf_token}}',
                                 },
                             success:function(data){
-                                if(pi_num>=PI) //refresh when last PI responds
-                                    setTimeout(function(){
-                                        location.reload();
-                                    },1000); // refresh page after 5 seconds
+                                //if(pi_num>=PI) //refresh when last PI responds
+                                 //   setTimeout(function(){
+                                  //      location.reload();
+                                   // },2000); // refresh page after 5 seconds
                                     
                                 console.log(data);
                                 requestPi_end(pi_num+1);
@@ -152,6 +137,8 @@
                             },
                             error: function(){
                                 console.log(`Ajax requestPi_end-${pi_num} Error!!`);
+                                alert(`No.${pi_num} failed to end!!!\n***Please Turn Off Manually***`);
+                                requestPi_end(pi_num+1);
                             }
                         });
             
@@ -362,7 +349,6 @@
               <td>
                 <span id="cur_date" style="color:gray;">date</span>
               </td>
-              <td rowspan="3"><button class="btn-end" onclick="end_check();">개별 종료</button></td>
               <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
            </tr>
            <tr><td colspan="2"><hr></td></tr>
@@ -531,8 +517,6 @@
                 })
         }
         
-        
-        
         function hideElement(piNum){
 			$.ajax({
                     url: 'http://192.168.243.' + piNum +':8000/checkRunning',
@@ -566,6 +550,8 @@
                             },
                         success:function(data){
                             //console.log(data);
+                            $('#error-pi'+piNum).remove();
+                            
                             if(data == 'None'){
                                 console.log(`PI No.${piNum} not running`);
                             }
@@ -585,7 +571,15 @@
                             
                         },
                         error: function(){
-                            console.log('Ajax getThState Error!!');
+                            console.log(`PI No.${piNum} Ajax getThState Error!!`);
+                            // show error when connection is lost
+                            if($('#error-pi'+piNum).length==0){
+                                $('#summary-pi'+piNum).prepend(
+                                "<strong id='error-pi"+piNum+ "'" + " style='color:red; font-size:25px;'>Connection Lost!</strong>"
+                                )
+                            }
+                            
+                            getAllThState(piNum+1);
                         }
                     });
             

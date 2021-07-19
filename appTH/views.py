@@ -294,6 +294,7 @@ def endAll(request):
     
     run_state = TH.getRunState() #th_model의 run_state값 반환
     if run_state == 2:
+        os.system('sudo pkill -9 -ef th_run') # for 
         return HttpResponse('***HttpResponse end all( already ended )***')
     
      
