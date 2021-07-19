@@ -474,35 +474,6 @@
             
             }
             
-        function getThState(){
-                
-                $.ajax({
-                            url: '{% url 'getThState' %}',
-                            type: 'POST',
-                            headers:{
-                                'X-CSRFToken': '{{csrf_token}}'
-                                },
-                            success:function(data){
-
-                               $('#cur_state').empty();
-                                
-                                $('#cur_state').append(
-                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
-                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
-                                )
-                                
-                                
-                            },
-                            error: function(){
-                                console.log('Ajax getThState Error!!');
-                            }
-                        });
-            
-            }
-            
         function getAllThData(){
                 $.ajax({
                     url: '{% url 'getAllThData' %}',
@@ -684,7 +655,14 @@
             
             return time;
         }
-            
+        
+        //hide Table when checkbox is not checked
+        $(document).ready(function(){
+            $('input[type="checkbox"]').click(function(){
+                let inputValue = $(this).attr("value");
+                $('#summary-pi'+inputValue).toggle();
+            });
+        });
         </script>
     
 </body>
