@@ -63,11 +63,9 @@
                 
                 let second = document.getElementById('cycle').value;
                 
+                //start all checked pi
                 checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
 
-                //setTimeout(function(){
-                //    location.reload();
-                //},2000); // refresh page after 1 seconds
                 return true;
             }
             
@@ -112,15 +110,14 @@
         function end_all(){ //start all pi
             var result = confirm("전체 종료 하시겠습니까?");
             if(result){
-                
-                requestPi_end(1);
-                requestPi_end(2);
-                requestPi_end(3);
-                
+                 
+                for(piNum=1; piNum <= PI; piNum++){
+				requestPi_end(piNum);
+                }
                 
                 setTimeout(function(){
                     location.reload();
-                },1000); // refresh page after 1 seconds
+                },2000); // refresh page after 1 seconds
                 return true;
             }
             return false;
@@ -547,16 +544,7 @@
                 })
         }
         
-        function refreshData(){
-                getThState();
-                getThData();
-                //getAllThData();
-                
-                let defaultMaxData = {
-                    'data': {pi:-1, humidity:-1}, //default data
-                }
-                //getMaxData(1,defaultMaxData);
-            }
+        
         
         function hideElement(piNum){
 			$.ajax({
@@ -578,6 +566,58 @@
                 })
 		}
         
+        function getAllThState(piNum){
+            
+            if(piNum>PI)
+                return;
+            
+            $.ajax({
+                        url: 'http://192.168.243.'+piNum+':8000/getAllThState/'+ {{run_state}},
+                        type: 'POST',
+                        headers:{
+                            'X-CSRFToken': '{{csrf_token}}'
+                            },
+                        success:function(data){
+                            //console.log(data);
+                            if(data == 'None'){
+                                console.log(`PI No.${piNum} not running`);
+                            }
+                            else{
+                                $('#cur_state'+piNum).empty();
+                            
+                                $('#cur_state'+piNum).append(
+                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
+                                )
+                            }
+                            
+                            getAllThState(piNum+1);
+                            
+                        },
+                        error: function(){
+                            console.log('Ajax getThState Error!!');
+                        }
+                    });
+            
+        }
+        
+        function refreshData(){
+            
+            getAllThState(1);
+            
+                //getThState();
+                //getThData();
+                //getAllThData();
+                
+                //let defaultMaxData = {
+                //    'data': {pi:-1, humidity:-1}, //default data
+                //}
+                //getMaxData(1,defaultMaxData);
+            }
+        
         refreshData();
 
 			
@@ -591,6 +631,8 @@
 		}
 
     </script>
+    
+    
     
     <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");

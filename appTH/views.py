@@ -19,6 +19,7 @@ import json
 import pandas as pd
 
 import fnmatch
+import requests
 
 from django.http import JsonResponse
 from django.core import serializers
@@ -72,6 +73,22 @@ def checkRunning(request):
     
     return HttpResponse(run_state)
     
+def getAllThState(request, state): # ajax call (get th_state of all PIs one by one)
+    TH =  th_model.instance()
+    run_state = TH.getRunState()
+    
+    #if PIs are running, block returning datas that are not running
+    if state == '1':
+        if run_state == 2:
+            return HttpResponse(None)
+
+    
+    # if PIs are not running, return all PI's datas
+    th_state = TH_state.objects.all() 
+    data = serializers.serialize('json', th_state)
+    
+
+    return HttpResponse(data, content_type='text/json-commnet-filtered')
 
 def getMaxData(request):
     # data from the front-end
