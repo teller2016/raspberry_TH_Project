@@ -121,16 +121,19 @@
 				requestPi_end(piNum);
                 }
                 
+                requestPi_end(1);
+                
+                //refresh page when ending PI fails
                 setTimeout(function(){
                     location.reload();
-                },2000); // refresh page after 2 seconds
+                },5000); // refresh page after 5 seconds
                 return true;
             }
             return false;
         }
         
         function requestPi_end(pi_num){
- 
+            
                 $.ajax({
                             url: 'http://192.168.243.' + pi_num +':8000/endAll',
                             type: 'POST',
@@ -138,7 +141,12 @@
                                 'X-CSRFToken': '{{csrf_token}}',
                                 },
                             success:function(data){
+                                if(pi_num>=PI) //refresh when last PI responds
+                                    location.reload();
+                                    
                                 console.log(data);
+                                requestPi_end(pi_num+1);
+                                
                             },
                             error: function(){
                                 console.log(`Ajax requestPi_end-${pi_num} Error!!`);
