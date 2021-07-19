@@ -121,7 +121,7 @@
 				requestPi_end(piNum);
                 }
                 
-                requestPi_end(1);
+                //requestPi_end(1);
                 
                 //refresh page when ending PI fails
                 setTimeout(function(){
@@ -144,7 +144,7 @@
                                 if(pi_num>=PI) //refresh when last PI responds
                                     setTimeout(function(){
                                         location.reload();
-                                    },1000); // refresh page after 5 seconds
+                                    },2000); // refresh page after 5 seconds
                                     
                                 console.log(data);
                                 requestPi_end(pi_num+1);
@@ -588,8 +588,8 @@
                             console.log(`PI No.${piNum} Ajax getThState Error!!`);
                             // show error when connection is lost
                             if($('#error-pi'+piNum).length==0){
-                                $('#summary-pi'+piNum).append(
-                                "<strong id='error-pi"+piNum+ "'" + " style='color:red'>Connection Lost!</strong>"
+                                $('#summary-pi'+piNum).prepend(
+                                "<strong id='error-pi"+piNum+ "'" + " style='color:red; font-size:25px;'>Connection Lost!</strong>"
                                 )
                             }
                             
