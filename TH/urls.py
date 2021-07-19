@@ -42,4 +42,9 @@ urlpatterns = [
     path('endAll', appTH.views.endAll, name='endAll'),
     
     path('getMaxData', appTH.views.getMaxData, name = "getMaxData"),
+    
+    path('summary', appTH.views.summary, name= 'summary'),
+    path('checkRunning', appTH.views.checkRunning, name='checkRunning'),
+    
+    path('getAllThState/<state>', appTH.views.getAllThState, name='getAllThState'),
 ]

@@ -8,6 +8,13 @@ body{
 	left: 0;
 }
 
+.pi-list{
+	display:flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	
+}
+
 .hr-div{
 	margin-top: 20px;
 	color: #a6c0ff;

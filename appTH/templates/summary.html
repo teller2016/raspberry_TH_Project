@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  
+<head>
+    <meta charset="utf-8">
+    
+    <!--    브라우저 너비를 장치 너비에 맞추어 표시함-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>우정바이오 온습도계</title>
+    <link href="{% static '/css/web.css' %}" media="(min-width:600px)" rel="stylesheet" type="text/css">
+    <link href="{% static '/css/mobile.css' %}" media="(max-width:600px)" rel="stylesheet" type="text/css">
+    
+    <link media="all" href="{% static 'js/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
+    <script src="{% static 'js/stream_layers.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
+    <script src="{% static 'datetimepicker/jquery.js' %}"></script>
+    <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
+    
+    <link rel="stylesheet" href="{% static 'wickedpicker/stylesheets/wickedpicker.css' %}">
+    <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+		
+		//NUMBER OF PI
+		const PI = 3
+    
+        String.prototype.replaceAll = function(org, dest) {
+            return this.split(org).join(dest);
+        }
+        
+        function csv_name(){
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
+            if(userInput == null){
+                alert("취소되었습니다.");
+            } else{
+                alert("다운로드를 시작합니다.");
+                location.href="/th_csv/"+userInput;
+            }
+        }
+        
+        
+        function start_pi(){ //start selected pi
+            var result = confirm("측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
+            if(result){
+                
+                
+                let checkedList = ['1'];// pi 1 is necessary
+                //get list of checked pi
+                $("input:checkbox[name=checkbox_pi]:checked").each(function(){
+					checkedList.push($(this).val());
+				});
+            
+                let currentDate = getDate();
+                let currentTime = getTime();
+                
+                let dateAndTime = currentDate + " " + currentTime;
+                //dateAndTime: ex> "2021-07-06 17:13:00"
+                
+                let second = document.getElementById('cycle').value;
+                
+                //start all checked pi
+                checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
+
+                return true;
+            }
+            
+            
+            return false;
+        }
+        
+        function requestPi_start(pi_num, time, second){
+
+                $.ajax({
+                            url: 'http://192.168.243.' + pi_num +':8000/restartAll/'+ time + '/' + second,
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}',
+                                
+                                },
+                            success:function(data){
+
+                                if(pi_num == '1'){ // when pi 1 started reload page
+									setTimeout(function(){
+									    location.reload();
+									},2000); // refresh page after 2 seconds
+                                }
+                                
+                            },
+                            error: function(){
+                                console.log(`Ajax requestPi_start-${pi_num} Error!!`);
+                            }
+                        });
+            
+            }
+        
+        function end_check(){
+            var result = confirm("정말로 종료하시겠습니까?");
+            if(result){
+                location.href="/end";
+                return true;
+            }
+             return false;
+        }
+        
+        function end_all(){ //start all pi
+            var result = confirm("전체 종료 하시겠습니까?");
+            if(result){
+                 
+                for(piNum=1; piNum <= PI; piNum++){
+				requestPi_end(piNum);
+                }
+                
+                setTimeout(function(){
+                    location.reload();
+                },2000); // refresh page after 1 seconds
+                return true;
+            }
+            return false;
+        }
+        
+        function requestPi_end(pi_num){
+ 
+                $.ajax({
+                            url: 'http://192.168.243.' + pi_num +':8000/endAll',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}',
+                                },
+                            success:function(data){
+                                console.log(data);
+                            },
+                            error: function(){
+                                console.log(`Ajax requestPi_end-${pi_num} Error!!`);
+                            }
+                        });
+            
+            }
+        
+        
+        function getDate(){
+            let time = new Date();
+
+            let year = time.getFullYear();
+            let month = '' + (time.getMonth()+1);
+            let date = '' + time.getDate();
+            
+            if(month.length<2)
+                month = '0' + month;
+            if(date.length<2)
+                date='0'+date;
+            
+            return `${year}-${month}-${date}`;
+           
+        }
+        
+        function getTime(){
+            let time = new Date();
+        
+            let hours = '' + time.getHours();
+            let minutes = '' + time.getMinutes();
+            let seconds = '' + time.getSeconds();
+            
+            if(hours.length<2)
+                hours = '0'+hours;
+            if(minutes.length<2)
+                minutes = '0'+minutes;
+            if(seconds.length<2)
+                seconds = '0'+seconds;
+                
+            return `${hours}:${minutes}:${seconds}`;
+        }
+        
+        
+        
+    </script>
+    
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        #chart, svg {
+            margin: 0 auto;
+            padding: 0px;
+            height: 300px;
+            max-width: 700px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+	
+		{% include 'header.html' %}
+	
+	<div class="content-container">
+		<div class="pi-select">
+        <p class="home-title">온습도계 선택</p>
+        <a href="http://192.168.243.1:8000/summary"><button class="btn-me">전체 확인</button></a>
+		<a href="http://192.168.243.1:8000/"><button>1번</button></a>
+		<a href="http://192.168.243.2:8000/"><button>2번</button></a>
+		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
+		</div>
+        <br>
+        
+        <div class="pi-list">
+        
+        <!-- DATA SUMMARY 1 -->
+        <div class="content-summary" id="summary-pi1">
+        <p class="home-title">PI ONE</p>
+		<p class="home-title">측정 상태 요약</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_state1">
+                
+            </tr>
+        </table>
+        
+        
+        <p class="home-title">실시간 수치</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_value1">
+                
+            </tr>
+        </table>
+   
+        
+        <br>
+        </div><!-- DATA SUMMARY 1 END -->
+        
+        <!-- DATA SUMMARY 2 -->
+        <div class="content-summary" id="summary-pi2">
+        <p class="home-title">PI TWO</p>
+		<p class="home-title">측정 상태 요약</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_state2">
+                
+            </tr>
+        </table>
+        
+        
+        <p class="home-title">실시간 수치</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_value2">
+                
+            </tr>
+        </table>
+   
+        
+        <br>
+        </div><!-- DATA SUMMARY 2 END -->
+        
+        <!-- DATA SUMMARY 3 -->
+        <div class="content-summary" id="summary-pi3">
+        <p class="home-title">PI THREE</p>
+		<p class="home-title">측정 상태 요약</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_state3">
+                
+            </tr>
+        </table>
+        
+        
+        <p class="home-title">실시간 수치</p>
+        
+        <table class="table-th">
+            <tr class="tr-bar">
+                <th class="ver-line"><font>NO.</font></th>
+                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line"><font>습도(%)</font></th>
+                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line"><font>측정 시간</font></th>
+            </tr>
+            <tr id="cur_value3">
+                
+            </tr>
+        </table>
+   
+        
+        <br>
+        </div><!-- DATA SUMMARY 3 END -->
+        
+        </div>
+        
+        <br>
+        
+		<div class="pi-state">
+		
+		
+        {% if run_state == 1 %}
+        <p>온습도계 실행 상태: <strong style="color:#FF4765">실행중</strong> </p>
+        </div>
+        
+        <br>
+        <hr class="hr-div">
+        <br>
+        
+        <table class="table-start">
+           <tr>
+              <td>날짜</td>
+              <td>
+                <span id="cur_date" style="color:gray;">date</span>
+              </td>
+              <td rowspan="3"><button class="btn-end" onclick="end_check();">개별 종료</button></td>
+              <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
+           </tr>
+           <tr><td colspan="2"><hr></td></tr>
+           <tr>
+              <td>시간</td>
+              <td>
+                <span id="cur_time" style="color:gray; padding:10px;">time</span>
+              </td>
+           </tr>
+        </table>
+        
+        
+        
+        {% else %}
+        <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
+        </div>
+        <br>
+        <hr class="hr-div">
+        <br>
+        
+        
+        
+        <table class="table-start">
+           <tr>
+              <td>날짜</td>
+              <td>
+                <span id="cur_date" style="color:gray;">date</span>
+              </td>
+              
+              <td>
+                  측정 주기
+              </td>  
+              
+              <td rowspan="3"><button class="btn-startAll" onclick="start_pi();">측정<br>시작</button></td>
+           </tr>
+           
+           <tr>
+               <td colspan="2"><hr></td>
+               <td rowspan="2">
+                   
+                  <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+                  <label for="cycle" id="cycleLabel">30초</label>
+              
+              </td>   
+           </tr>
+           
+           <tr>
+              <td>시간</td>
+              <td>
+                <span id="cur_time" style="color:gray; padding:10px;">time</span>
+              </td>
+           </tr>
+           
+           <tr>
+			   <td>Additional PI</td>
+			   
+				<td colspan="2">
+					
+					<div>
+						<input type="checkbox" id="piTwo" name="checkbox_pi" value=2 checked>Pi 2	
+					</div>
+					<div>
+						<input type="checkbox" id="piThree" name="checkbox_pi" value=3 checked>Pi 3
+					</div>
+				</td>
+           </tr>
+        </table>
+        
+        
+        {% endif %}
+        
+		<br/><br/>
+
+    
+    <script type="text/javascript">
+        
+        
+        function getThData(){
+                
+                $.ajax({
+                            url: '{% url 'getThData' %}',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            success:function(data){
+                                if(data.length==0)
+                                    return;
+                                
+                                $('#cur_value').empty();
+                                
+                                
+                                
+                                $('#cur_value').append(
+                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>" 
+                                )
+                                
+
+                                
+                            },
+                            error: function(){
+                                console.log('Ajax getThData Error!!');
+                            }
+                        });
+            
+            }
+            
+        function getThState(){
+                
+                $.ajax({
+                            url: '{% url 'getThState' %}',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            success:function(data){
+
+                               $('#cur_state').empty();
+                                
+                                $('#cur_state').append(
+                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
+                                )
+                                
+                                
+                            },
+                            error: function(){
+                                console.log('Ajax getThState Error!!');
+                            }
+                        });
+            
+            }
+            
+        function getAllThData(){
+                $.ajax({
+                    url: '{% url 'getAllThData' %}',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){
+                        
+                        
+
+                    },
+                    error: function(){
+                        console.log("getAllThData Error occured!!");
+                    }
+                })
+            }
+        
+        function getMaxData(piNumber, maxData){
+                if(piNumber>3){
+                    //console.log("MAX DATA!!");
+                    let data = maxData.data;
+                    
+                    if(data.pi_num == -1)   //when there is no data
+                        return;
+                        
+                    $('#max_value').empty();          
+                    $('#max_value').append(
+                        "<td class='ver-line'>" + data.pi_num + "</td>" +
+                        "<td class='ver-line'>" + data.run_id + "</td>" +
+                        "<td class='ver-line'>" + data.run_time_str + "</td>" +
+                        "<td class='ver-line'>" + data.humidity + "</td>" +
+                        "<td class='ver-line'>" + data.temperature + "</td>" +
+                        "<td class='ver-line'>" + getHMS(data.run_time_date) + "</td>" 
+                    )
+                    return;
+                }
+                    
+
+                $.ajax({
+                    url: 'http://192.168.243.' + piNumber +':8000/getMaxData',
+                    type: 'POST',
+                    data: JSON.stringify(maxData),
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){
+                        //console.log(data);
+                        getMaxData(piNumber+1, {'data':data});
+
+                    },
+                    error: function(){
+                        console.log("getAllThData Error occured!!");
+                    }
+                })
+        }
+        
+        
+        
+        function hideElement(piNum){
+			$.ajax({
+                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){ //data == run_state
+						if(data == 2){
+							$('#summary-pi'+piNum).hide();
+						}
+                        
+
+                    },
+                    error: function(){
+                        console.log("hideElement Error occured!!");
+                    }
+                })
+		}
+        
+        function getAllThState(piNum){
+            
+            if(piNum>PI)
+                return;
+            
+            $.ajax({
+                        url: 'http://192.168.243.'+piNum+':8000/getAllThState/'+ {{run_state}},
+                        type: 'POST',
+                        headers:{
+                            'X-CSRFToken': '{{csrf_token}}'
+                            },
+                        success:function(data){
+                            //console.log(data);
+                            if(data == 'None'){
+                                console.log(`PI No.${piNum} not running`);
+                            }
+                            else{
+                                $('#cur_state'+piNum).empty();
+                            
+                                $('#cur_state'+piNum).append(
+                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
+                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
+                                )
+                            }
+                            
+                            getAllThState(piNum+1);
+                            
+                        },
+                        error: function(){
+                            console.log('Ajax getThState Error!!');
+                        }
+                    });
+            
+        }
+        
+        function refreshData(){
+            
+            getAllThState(1);
+            
+                //getThState();
+                //getThData();
+                //getAllThData();
+                
+                //let defaultMaxData = {
+                //    'data': {pi:-1, humidity:-1}, //default data
+                //}
+                //getMaxData(1,defaultMaxData);
+            }
+        
+        refreshData();
+
+			
+        if( {{run_state}} == 1){
+			
+			for(piNum=1; piNum <= PI; piNum++){
+				hideElement(piNum); //hide pi tables that are not running
+			}
+			
+            setInterval(refreshData, 2000); // refresh every x seconds
+		}
+
+    </script>
+    
+    
+    
+    <script type="text/javascript">
+        let currentDate = document.getElementById("cur_date");
+        let currentTime = document.getElementById("cur_time");
+        function clock(){
+            
+           
+           currentDate.innerText = getDate();
+           currentTime.innerText = getTime();
+        }
+        clock();
+        setInterval(clock,1000);
+        
+        
+        function setCycle(){
+                  let cycle = document.getElementById('cycle');
+                  
+                  let cycleLabel = document.getElementById('cycleLabel');
+                  cycleLabel.innerHTML = cycle.value+'초';
+                           
+                  }
+        
+        function getHMS(HMS){
+
+            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
+            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
+            
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let seconds = ('0' + date.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            
+            return time;
+        }
+            
+        </script>
+    
+</body>
