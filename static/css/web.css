@@ -8,6 +8,16 @@ body{
 	left: 0;
 }
 
+.checkbox-list{
+	flex-direction:row;
+}
+
+.checkbox-item{
+	display: inline-block;
+	zoom:1.8;
+	
+}
+
 .pi-list{
 	display:flex;
 	flex-wrap: wrap;

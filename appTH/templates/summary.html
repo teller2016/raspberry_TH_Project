@@ -82,7 +82,7 @@
                             
                             },
                         success:function(data){
-
+                            //when last one from the pi list started, refresh page
                             if(index >= checkedList.length - 1)
                                 location.reload();
                                 
@@ -211,6 +211,18 @@
 		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
 		</div>
         <br>
+        
+        <div class="checkbox-list">
+            <div class="checkbox-item">
+                <input style='width:auto ;padding:0' type="checkbox" id="piTwo" name="checkbox_pi" value=2 checked>
+                <strong>Pi 2</strong>
+            </div>
+            
+            <div class="checkbox-item">
+                <input style='width:auto ;padding:0' type="checkbox" id="piThree" name="checkbox_pi" value=3 checked>
+                <strong>Pi 3</strong>
+            </div>
+        </div>
         
         <div class="pi-list">
         
@@ -402,19 +414,7 @@
               </td>
            </tr>
            
-           <tr>
-			   <td>Additional PI</td>
-			   
-				<td colspan="2">
-					
-					<div>
-						<input type="checkbox" id="piTwo" name="checkbox_pi" value=2 checked>Pi 2	
-					</div>
-					<div>
-						<input type="checkbox" id="piThree" name="checkbox_pi" value=3 checked>Pi 3
-					</div>
-				</td>
-           </tr>
+          
         </table>
         
         
