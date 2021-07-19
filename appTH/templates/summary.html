@@ -531,8 +531,6 @@
                 })
         }
         
-        
-        
         function hideElement(piNum){
 			$.ajax({
                     url: 'http://192.168.243.' + piNum +':8000/checkRunning',
@@ -566,6 +564,8 @@
                             },
                         success:function(data){
                             //console.log(data);
+                            $('#error-pi'+piNum).remove();
+                            
                             if(data == 'None'){
                                 console.log(`PI No.${piNum} not running`);
                             }
@@ -585,7 +585,15 @@
                             
                         },
                         error: function(){
-                            console.log('Ajax getThState Error!!');
+                            console.log(`PI No.${piNum} Ajax getThState Error!!`);
+                            // show error when connection is lost
+                            if($('#error-pi'+piNum).length==0){
+                                $('#summary-pi'+piNum).append(
+                                "<strong id='error-pi"+piNum+ "'" + " style='color:red'>Connection Lost!</strong>"
+                                )
+                            }
+                            
+                            getAllThState(piNum+1);
                         }
                     });
             
