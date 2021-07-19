@@ -64,7 +64,15 @@
                 let second = document.getElementById('cycle').value;
                 
                 //start all checked pi
-                checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
+                
+                requestPi_start(0,checkedList, dateAndTime, second);
+                
+                //if start fails, refresh page
+                setTimeout(function(){
+                    location.reload();
+                },5000); // refresh page after 2 seconds
+                return true;
+                //checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
 
                 return true;
             }
@@ -73,28 +81,26 @@
             return false;
         }
         
-        function requestPi_start(pi_num, time, second){
+        function requestPi_start(index, checkedList, time, second){
 
-                $.ajax({
-                            url: 'http://192.168.243.' + pi_num +':8000/restartAll/'+ time + '/' + second,
-                            type: 'POST',
-                            headers:{
-                                'X-CSRFToken': '{{csrf_token}}',
-                                
-                                },
-                            success:function(data){
-
-                                if(pi_num == '1'){ // when pi 1 started reload page
-									setTimeout(function(){
-									    location.reload();
-									},2000); // refresh page after 2 seconds
-                                }
-                                
+            $.ajax({
+                        url: 'http://192.168.243.' + checkedList[index] +':8000/restartAll/'+ time + '/' + second,
+                        type: 'POST',
+                        headers:{
+                            'X-CSRFToken': '{{csrf_token}}',
+                            
                             },
-                            error: function(){
-                                console.log(`Ajax requestPi_start-${pi_num} Error!!`);
-                            }
-                        });
+                        success:function(data){
+
+                            if(index >= checkedList.length - 1)
+                                location.reload();
+                                
+                            requestPi_start(index+1, checkedList, time, second);
+                        },
+                        error: function(){
+                            console.log(`Ajax requestPi_start-${pi_num} Error!!`);
+                        }
+                });
             
             }
         
@@ -107,7 +113,7 @@
              return false;
         }
         
-        function end_all(){ //start all pi
+        function end_all(){ //end all pi
             var result = confirm("전체 종료 하시겠습니까?");
             if(result){
                  
@@ -117,7 +123,7 @@
                 
                 setTimeout(function(){
                     location.reload();
-                },2000); // refresh page after 1 seconds
+                },2000); // refresh page after 2 seconds
                 return true;
             }
             return false;
@@ -608,15 +614,15 @@
             
             getAllThState(1);
             
-                //getThState();
-                //getThData();
-                //getAllThData();
+            //getThState();
+            //getThData();
+            //getAllThData();
                 
-                //let defaultMaxData = {
-                //    'data': {pi:-1, humidity:-1}, //default data
-                //}
-                //getMaxData(1,defaultMaxData);
-            }
+            //let defaultMaxData = {
+            //    'data': {pi:-1, humidity:-1}, //default data
+            //}
+            //getMaxData(1,defaultMaxData);
+        }
         
         refreshData();
 
