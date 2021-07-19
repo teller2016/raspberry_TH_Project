@@ -142,7 +142,9 @@
                                 },
                             success:function(data){
                                 if(pi_num>=PI) //refresh when last PI responds
-                                    location.reload();
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },1000); // refresh page after 5 seconds
                                     
                                 console.log(data);
                                 requestPi_end(pi_num+1);
