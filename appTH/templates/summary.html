@@ -34,16 +34,6 @@
             return this.split(org).join(dest);
         }
         
-        function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
-            if(userInput == null){
-                alert("취소되었습니다.");
-            } else{
-                alert("다운로드를 시작합니다.");
-                location.href="/th_csv/"+userInput;
-            }
-        }
-        
         
         function start_pi(){ //start selected pi
             var result = confirm("측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
@@ -105,14 +95,6 @@
             
             }
         
-        function end_check(){
-            var result = confirm("정말로 종료하시겠습니까?");
-            if(result){
-                location.href="/end";
-                return true;
-            }
-             return false;
-        }
         
         function end_all(){ //end all pi
             var result = confirm("전체 종료 하시겠습니까?");
@@ -367,7 +349,6 @@
               <td>
                 <span id="cur_date" style="color:gray;">date</span>
               </td>
-              <td rowspan="3"><button class="btn-end" onclick="end_check();">개별 종료</button></td>
               <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
            </tr>
            <tr><td colspan="2"><hr></td></tr>

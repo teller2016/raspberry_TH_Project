@@ -26,6 +26,10 @@
     
     <script type="text/javascript">
     
+    
+        //NUMBER OF PI
+		const PI = 3
+    
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
         }
@@ -60,53 +64,6 @@
              return false;
         }
         
-        function start_all(){ //start all pi
-            var result = confirm("동시 측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
-            if(result){
-                
-                let currentDate = getDate();
-                let currentTime = getTime();
-                
-                let dateAndTime = currentDate + " " + currentTime;
-                //dateAndTime: ex> "2021-07-06 17:13:00"
-                
-                let second = document.getElementById('cycle').value;
-                //let second = 5;
-                requestPi_start(1, dateAndTime, second);
-                requestPi_start(2, dateAndTime, second);
-                requestPi_start(3, dateAndTime, second);
-                
-                
-                setTimeout(function(){
-                    location.reload();
-                },1000); // refresh page after 1 seconds
-                return true;
-            }
-            
-            
-            return false;
-        }
-        
-        function requestPi_start(pi_num, time, second){
-
-                $.ajax({
-                            url: 'http://192.168.243.' + pi_num +':8000/restartAll/'+ time + '/' + second,
-                            type: 'POST',
-                            headers:{
-                                'X-CSRFToken': '{{csrf_token}}',
-                                
-                                },
-                            success:function(data){
-
-                                console.log(data);
-                                
-                            },
-                            error: function(){
-                                console.log(`Ajax requestPi_start-${pi_num} Error!!`);
-                            }
-                        });
-            
-            }
         
         function end_check(){
             var result = confirm("정말로 종료하시겠습니까?");
@@ -117,25 +74,21 @@
              return false;
         }
         
-        function end_all(){ //start all pi
+        function end_all(){ //end all pi
             var result = confirm("전체 종료 하시겠습니까?");
             if(result){
-                
+                 
                 requestPi_end(1);
-                requestPi_end(2);
-                requestPi_end(3);
                 
-                
-                setTimeout(function(){
-                    location.reload();
-                },1000); // refresh page after 1 seconds
                 return true;
             }
             return false;
         }
         
         function requestPi_end(pi_num){
- 
+            if(pi_num > PI)
+                location.reload();
+            
                 $.ajax({
                             url: 'http://192.168.243.' + pi_num +':8000/endAll',
                             type: 'POST',
@@ -143,10 +96,15 @@
                                 'X-CSRFToken': '{{csrf_token}}',
                                 },
                             success:function(data){
+                                    
                                 console.log(data);
+                                requestPi_end(pi_num+1);
+                                
                             },
                             error: function(){
                                 console.log(`Ajax requestPi_end-${pi_num} Error!!`);
+                                alert(`No.${pi_num} failed to end!!!\n***Please Turn Off Manually***`);
+                                requestPi_end(pi_num+1);
                             }
                         });
             
@@ -354,7 +312,6 @@
               </td>  
               
               <td rowspan="3"><button class="btn-start" onclick="start_check();">개별 측정<br>시작</button></td>
-              <td rowspan="3"><button class="btn-startAll" onclick="start_all();">전체 측정<br>시작</button></td>
            </tr>
            
            <tr>
