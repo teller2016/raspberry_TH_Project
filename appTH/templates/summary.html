@@ -432,6 +432,10 @@
         {% endif %}
         
 		<br/><br/>
+        <p class="home-title">측정 결과 그래프</p>
+        <div id="chart" class='with-3d-shadow with-transitions'>
+        <svg></svg>
+        </div>
 
     
     <script type="text/javascript">
@@ -449,6 +453,7 @@
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
+                                //show data on table
                                 if(data.length==0){
                                     console.log(`PI No.${piNum} no data`);
                                 }
@@ -465,6 +470,9 @@
                                     "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>")
                                 }
                                 
+                                //show data on graph
+                                updateGraph(data);
+                                
                                 getLastThData(piNum+1);
                                 
                             },
@@ -475,26 +483,8 @@
                         });
             
             }
-            
-        function getAllThData(){
-                $.ajax({
-                    url: '{% url 'getAllThData' %}',
-                    type: 'POST',
-                    headers:{
-                        'X-CSRFToken': '{{csrf_token}}'
-                         },
-                    success: function(data){
-                        
-                        
-
-                    },
-                    error: function(){
-                        console.log("getAllThData Error occured!!");
-                    }
-                })
-            }
         
-        function hideElement(piNum){
+        function hideElement(piNum){// hide data that is not running
 			$.ajax({
                     url: 'http://192.168.243.' + piNum +':8000/checkRunning',
                     type: 'POST',
@@ -505,8 +495,6 @@
 						if(data == 2){
 							$('#summary-pi'+piNum).hide();
 						}
-                        
-
                     },
                     error: function(){
                         console.log("hideElement Error occured!!");
@@ -562,13 +550,79 @@
             
         }
         
+        //******GRAPH
+        var chart = nv.models.lineChart();
+        
+        //globalData
+        var th_data=[]
+        
+        nv.addGraph(function() {
+        var dataList = new Array();
+
+	
+        var th_data = [
+        {
+            "key": "습도(%)",
+            "color": "#00ace6",
+            "values": dataList
+        }]
+	
+        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        chart.x2Axis.tickFormat(d3.format(',f'));
+
+        chart.yDomain([0,100]);
+        chart.yTickFormat(d3.format(',.1f'));
+
+        d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        return chart;
+    });
+    
+        function updateGraph(data){
+            
+            var dataList = new Array();
+            
+            $.each(data, function(key, value){
+                var graph = new Object();
+                graph.x = value.fields.run_time;
+                graph.y = value.fields.humidity;
+                graph.series = 0;  
+                                          
+                dataList.push(graph);                            
+                })
+                
+            th_data.push({
+                "key": "습도(%)",
+                "color": "#00ace6",
+                "values": dataList
+            });
+            
+            d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+                
+            
+        }
+        
+        //******
+        
+        
+        
+        
         function refreshData(){
             
             getAllThState(1);
             getLastThData(1);
             
             //getThData();
-            //getAllThData();
 
         }
         

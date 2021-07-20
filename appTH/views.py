@@ -99,7 +99,7 @@ def getLastThData(request, state):
         if run_state == 2:
             return HttpResponse(None)
     
-    th_data = TH_data.objects.all().order_by('-id')[:1]
+    th_data = TH_data.objects.all().order_by('-id')
     data = serializers.serialize('json', th_data)
     
     return HttpResponse(data, content_type='text/json-comment-filtered')
