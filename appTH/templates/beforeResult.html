@@ -107,6 +107,17 @@
     </div>
     
     <div class="beforeResult_result">
+        
+        <p class="home-title">최대값 데이터</p>
+        <table class="table-result" id="summary_data">
+            <tr>
+                <td style="font-weight:bold">No Data</td>
+            </tr>
+        </table>
+        
+        <hr/>
+        <hr/>
+        
         <button class="button2" onclick="csv_download();">엑셀 파일 저장</button>
         <p class="home-title bt2">측정 결과 표</p>
         <table class="table-result" id="table_data"> 
@@ -125,10 +136,6 @@
        
         
     </div>
-    
-    
-    
-    
     
 
 </div>
@@ -244,27 +251,53 @@
                             "</tr>";
                 let bottom = "<tr style='border-top: 1px solid #a8a8a8;'><td colspan='1'><font style='font-weight:bold'>Current File:</td>" +
                              "<td colspan='3'><font id='csv_name' style='font-weight:bold'>"+data[data.length - 1]+"</td></tr>";
-                let table_html = "";
+                let table_html = "";   //html for all data table
+                let summary_html = ""; //html for summary table
                 
-                for(const row of data.slice(0,-1)){
-                    table_html += "<tr>"+
-                                  "<td><font>" + row[0] + '</font></td>' +
+                //variable to find max humidity
+                let maxHumidity = 0;
+                let maxData = [];
+                
+                for(const row of data.slice(0,-1)){ //for each data
+                    
+                    if(maxHumidity<Number(row[1])){ // find data that has max humidity
+                        maxData = row;
+                        maxHumidity = row[1];
+                    }
+                    
+                    table_html += '<tr>'+
+                                  '<td><font>' + row[0] + '</font></td>' +
                                   '<td><font>' + row[1] + '</font></td>' +
                                   '<td><font>' + row[2] + '</font></td>' +
                                   '<td><font>' + row[3].slice(0,19) + '</font></td>' +
                                   '</tr>';
-                    }
+                }
                 
                 //notify "No data" when data is empty  
-                if(table_html == "")
-                    table_html = head + "<tr><td colspan='4'><font style='font-weight:bold'>No Data</font></td></tr>";
-                else
-                    table_html = head + table_html;
+                if(table_html == ""){
+                    let noData = "<tr><td colspan='4'><font style='font-weight:bold'>No Data</font></td></tr>";
+                    table_html = head + noData;
+                    summary_html = head + noData;
+                }
+                else{
+                    table_html = head + table_html;    
+                    summary_html = head.replace('습도', '최대 습도') +
+                        '<tr>'+
+                        '<td><font>' + maxData[0] + '</font></td>' +
+                        '<td><font>' + maxData[1] + '</font></td>' +
+                        '<td><font>' + maxData[2] + '</font></td>' +
+                        '<td><font>' + maxData[3].slice(0,19) + '</font></td>' +
+                        '</tr>';
+                }
+                
                 
                 table_html += bottom;
                 
                 $('#table_data').empty();
                 $('#table_data').append( table_html );
+                
+                $('#summary_data').empty();
+                $('#summary_data').append(summary_html);
 
             },
             error: function(){
