@@ -90,6 +90,20 @@ def getAllThState(request, state): # ajax call (get th_state of all PIs one by o
 
     return HttpResponse(data, content_type='text/json-commnet-filtered')
 
+def getLastThData(request, state):
+    TH = th_model.instance()
+    run_state = TH.getRunState()
+    
+    #if PIs are running, block returning datas that are not running
+    if state == '1':
+        if run_state == 2:
+            return HttpResponse(None)
+    
+    th_data = TH_data.objects.all().order_by('-id')[:1]
+    data = serializers.serialize('json', th_data)
+    
+    return HttpResponse(data, content_type='text/json-comment-filtered')
+
 def getMaxData(request):
     # data from the front-end
     jsonObject = json.loads(request.body)

@@ -428,35 +428,40 @@
     <script type="text/javascript">
         
         
-        function getThData(){
+        function getLastThData(piNum){
+                
+                if(piNum>PI)
+                    return
                 
                 $.ajax({
-                            url: '{% url 'getThData' %}',
+                            url: 'http://192.168.243.'+piNum+':8000/getLastThData/'+ {{run_state}},
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
-                                if(data.length==0)
-                                    return;
-                                
-                                $('#cur_value').empty();
-                                
-                                
-                                
-                                $('#cur_value').append(
+                                if(data.length==0){
+                                    console.log(`PI No.${piNum} no data`);
+                                }
+                                else if(data == "None"){
+                                    console.log(`PI No.${piNum} not running`);
+                                }
+                                else{
+                                    $('#cur_value'+piNum).empty();
+                                    $('#cur_value'+piNum).append(
                                     "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
                                     "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
-                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>" 
-                                )
+                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>")
+                                }
                                 
-
+                                getLastThData(piNum+1);
                                 
                             },
                             error: function(){
-                                console.log('Ajax getThData Error!!');
+                                console.log(`PI No.${piNum} Ajax getLastThData Error!!`);
+                                getLastThData(piNum+1);
                             }
                         });
             
@@ -479,45 +484,6 @@
                     }
                 })
             }
-        
-        function getMaxData(piNumber, maxData){
-                if(piNumber>3){
-                    //console.log("MAX DATA!!");
-                    let data = maxData.data;
-                    
-                    if(data.pi_num == -1)   //when there is no data
-                        return;
-                        
-                    $('#max_value').empty();          
-                    $('#max_value').append(
-                        "<td class='ver-line'>" + data.pi_num + "</td>" +
-                        "<td class='ver-line'>" + data.run_id + "</td>" +
-                        "<td class='ver-line'>" + data.run_time_str + "</td>" +
-                        "<td class='ver-line'>" + data.humidity + "</td>" +
-                        "<td class='ver-line'>" + data.temperature + "</td>" +
-                        "<td class='ver-line'>" + getHMS(data.run_time_date) + "</td>" 
-                    )
-                    return;
-                }
-                    
-
-                $.ajax({
-                    url: 'http://192.168.243.' + piNumber +':8000/getMaxData',
-                    type: 'POST',
-                    data: JSON.stringify(maxData),
-                    headers:{
-                        'X-CSRFToken': '{{csrf_token}}'
-                         },
-                    success: function(data){
-                        //console.log(data);
-                        getMaxData(piNumber+1, {'data':data});
-
-                    },
-                    error: function(){
-                        console.log("getAllThData Error occured!!");
-                    }
-                })
-        }
         
         function hideElement(piNum){
 			$.ajax({
@@ -590,15 +556,11 @@
         function refreshData(){
             
             getAllThState(1);
+            getLastThData(1);
             
-            //getThState();
             //getThData();
             //getAllThData();
-                
-            //let defaultMaxData = {
-            //    'data': {pi:-1, humidity:-1}, //default data
-            //}
-            //getMaxData(1,defaultMaxData);
+
         }
         
         refreshData();

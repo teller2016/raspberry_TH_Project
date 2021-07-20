@@ -47,4 +47,5 @@ urlpatterns = [
     path('checkRunning', appTH.views.checkRunning, name='checkRunning'),
     
     path('getAllThState/<state>', appTH.views.getAllThState, name='getAllThState'),
+    path('getLastThData/<state>', appTH.views.getLastThData, name='getLastThData'),
 ]
