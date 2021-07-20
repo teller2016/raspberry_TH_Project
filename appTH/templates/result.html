@@ -50,7 +50,7 @@
 
 {% include 'header.html' %}
 
-<a href="{% url 'home' %}"><button class="btn-back"> < </button></a>
+<button class="btn-back" onclick="window.history.back();"> < </button>
 
 <div class="result">
     <a href="{% url 'result' %}"><button class="btn-re">새로고침</button></a>
