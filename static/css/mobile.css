@@ -9,6 +9,7 @@ body{
 
 .checkbox-list{
 	flex-direction:row;
+	margin-bottom:10px;
 }
 
 .checkbox-item{
