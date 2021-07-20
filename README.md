@@ -17,6 +17,7 @@
 
 ## Before start
 - 상세 내용은 설명문서를 확인해주세요.
+
 온습도 센서 이용을 위해 설정이 필요합니다.
 ```sh
 git clone https://github.com/adafruit/Adafruit_Python_DHT.git
