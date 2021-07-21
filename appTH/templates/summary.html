@@ -464,6 +464,10 @@
                                     console.log(`PI No.${piNum} not running`);
                                 }
                                 else{
+                                    //show data on graph
+                                    updateGraph(data, piNum);
+                                    
+                                    //add data to the table
                                     $('#cur_value'+piNum).empty();
                                     $('#cur_value'+piNum).append(
                                     "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
@@ -473,8 +477,7 @@
                                     "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>")
                                 }
                                 
-                                //show data on graph
-                                updateGraph(data, piNum);
+                                
                                 
                                 getLastThData(piNum+1);
                                 
@@ -554,7 +557,7 @@
         }
         
         //******GRAPH
-        var chart = nv.models.lineChart();
+        var chart = nv.models.lineWithFocusChart();
         
         //globalData
         var th_data=[]
@@ -597,11 +600,13 @@
                                           
                 dataList.push(graph);                            
                 })
-            let randomColor = Math.floor(Math.random()*16777215).toString(16);
+                
+            //make fixed color for each PI data
+            let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
             
             th_data.push({
                 "key": `PI-${piNum} 습도(%)`,
-                "color": "#"+randomColor,
+                "color": "#"+fixedColor,
                 "values": dataList
             });
             
