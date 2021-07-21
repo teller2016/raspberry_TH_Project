@@ -20,7 +20,7 @@ body{
 }
 
 .pi-list{
-	display:flex;
+	display:block;
 	flex-wrap: wrap;
 	flex-direction: row;
 	
@@ -48,8 +48,9 @@ body{
 }
 
 .content-container{
-	display: inline-block;
+	display: block;
 	vertical-align: middle;
+	text-align:center;
 }
 
 .pi-select{
@@ -157,6 +158,13 @@ button {
 .time-title{
 	font-size: 18px;
 	margin-top: 15px;
+	color: #949494;
+}
+
+.time-title2{
+	font-size: 18px;
+	margin-bottom: 5px;
+	margin-top: 5px;
 	color: #949494;
 }
 

@@ -190,11 +190,13 @@
             display: block;
         }
         #chart, svg {
-            margin: 0 auto;
+            margin: 0px;
             padding: 0px;
-            height: 300px;
-            max-width: 700px;
-            width: 100%;
+            height: 450px;
+            width: 98%;
+        }
+        .nvtooltip{
+            margin-top:830px;
         }
     </style>
 </head>
@@ -225,6 +227,17 @@
             </div>
         </div>
         {% endif %}
+        
+        <div>
+            <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
+            <p class="time-title2">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
+            {% if run_state == 2 %}
+            <!--    측정이 종료되었을 시 종료시간 표시-->
+            <p class="time-title2">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
+            
+            {% endif %}
+            <p class="time-title2" id="dataCycle">측정주기: N/A</p>
+        </div>
         
         <div class="pi-list">
         
@@ -383,10 +396,10 @@
            </tr>
         </table>
         
-        
-        
+
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
+        
         </div>
         <br>
         <hr class="hr-div">
@@ -431,7 +444,13 @@
         
         {% endif %}
         
+        </div> <!-- content-container -->
+        
 		<br/><br/>
+        <p class="home-title">측정 결과 그래프</p>
+        <div id="chart" class='with-3d-shadow with-transitions'>
+        <svg></svg>
+        </div>
 
     
     <script type="text/javascript">
@@ -439,8 +458,10 @@
         
         function getLastThData(piNum){
                 
-                if(piNum>PI)
-                    return
+                if(piNum>PI){
+                    th_data=[];
+                    return;
+                }
                 
                 $.ajax({
                             url: 'http://192.168.243.'+piNum+':8000/getLastThData/'+ {{run_state}},
@@ -449,6 +470,7 @@
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
+                                //show data on table
                                 if(data.length==0){
                                     console.log(`PI No.${piNum} no data`);
                                 }
@@ -456,6 +478,19 @@
                                     console.log(`PI No.${piNum} not running`);
                                 }
                                 else{
+                                    
+                                    //show cycle
+                                    if(piNum==1 && data.length>1){
+                                        let last = data[0].fields.run_time;
+                                        let before = data[1].fields.run_time;
+                                        let cycleHtml = document.getElementById('dataCycle');
+                                        cycleHtml.innerHTML = `측정주기: 약 ${last-before}초`
+                                    }
+                                    
+                                    //show data on graph
+                                    updateGraph(data, piNum);
+                                    
+                                    //add data to the table
                                     $('#cur_value'+piNum).empty();
                                     $('#cur_value'+piNum).append(
                                     "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
@@ -464,6 +499,8 @@
                                     "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
                                     "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>")
                                 }
+                                
+                                
                                 
                                 getLastThData(piNum+1);
                                 
@@ -475,26 +512,8 @@
                         });
             
             }
-            
-        function getAllThData(){
-                $.ajax({
-                    url: '{% url 'getAllThData' %}',
-                    type: 'POST',
-                    headers:{
-                        'X-CSRFToken': '{{csrf_token}}'
-                         },
-                    success: function(data){
-                        
-                        
-
-                    },
-                    error: function(){
-                        console.log("getAllThData Error occured!!");
-                    }
-                })
-            }
         
-        function hideElement(piNum){
+        function hideElement(piNum){// hide data that is not running
 			$.ajax({
                     url: 'http://192.168.243.' + piNum +':8000/checkRunning',
                     type: 'POST',
@@ -505,8 +524,6 @@
 						if(data == 2){
 							$('#summary-pi'+piNum).hide();
 						}
-                        
-
                     },
                     error: function(){
                         console.log("hideElement Error occured!!");
@@ -562,13 +579,80 @@
             
         }
         
+        //******GRAPH
+        var chart = nv.models.lineWithFocusChart();
+        
+        //globalData
+        var th_data=[]
+        
+        nv.addGraph(function() {
+        var dataList = new Array();
+
+	
+        var th_data = [
+        {
+            "key": "습도(%)",
+            "color": "#00ace6",
+            "values": dataList
+        }]
+	
+        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        chart.x2Axis.tickFormat(d3.format(',f'));
+
+        chart.yDomain([50,100]);
+        chart.yTickFormat(d3.format(',.1f'));
+
+        d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        return chart;
+    });
+    
+        function updateGraph(data, piNum){
+            
+            var dataList = new Array();
+            
+            $.each(data, function(key, value){
+                var graph = new Object();
+                graph.x = value.fields.run_time;
+                graph.y = value.fields.humidity;
+                graph.series = piNum;  
+                                          
+                dataList.push(graph);                            
+                })
+                
+            //make fixed color for each PI data
+            let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
+            
+            th_data.push({
+                "key": `PI-${piNum} 습도(%)`,
+                "color": "#"+fixedColor,
+                "values": dataList
+            });
+            
+            d3.select('#chart svg')
+            .datum(th_data)
+            .call(chart);
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+                
+            
+        }
+        
+        //****** Graph END
+        
+        
+        
+        
         function refreshData(){
             
             getAllThState(1);
             getLastThData(1);
-            
-            //getThData();
-            //getAllThData();
 
         }
         
