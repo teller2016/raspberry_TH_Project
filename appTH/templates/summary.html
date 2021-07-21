@@ -234,7 +234,9 @@
             {% if run_state == 2 %}
             <!--    측정이 종료되었을 시 종료시간 표시-->
             <p class="time-title2">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
+            
             {% endif %}
+            <p class="time-title2" id="dataCycle">측정주기: N/A</p>
         </div>
         
         <div class="pi-list">
@@ -394,10 +396,7 @@
            </tr>
         </table>
         
-        
-        
-        
-        
+
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
         
@@ -479,6 +478,15 @@
                                     console.log(`PI No.${piNum} not running`);
                                 }
                                 else{
+                                    
+                                    //show cycle
+                                    if(piNum==1 && data.length>1){
+                                        let last = data[0].fields.run_time;
+                                        let before = data[1].fields.run_time;
+                                        let cycleHtml = document.getElementById('dataCycle');
+                                        cycleHtml.innerHTML = `측정주기: 약 ${last-before}초`
+                                    }
+                                    
                                     //show data on graph
                                     updateGraph(data, piNum);
                                     
@@ -645,8 +653,6 @@
             
             getAllThState(1);
             getLastThData(1);
-            
-            //getThData();
 
         }
         
