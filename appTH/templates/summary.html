@@ -196,7 +196,7 @@
             width: 98%;
         }
         .nvtooltip{
-            margin-top:800px;
+            margin-top:830px;
         }
     </style>
 </head>
@@ -227,6 +227,15 @@
             </div>
         </div>
         {% endif %}
+        
+        <div>
+            <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
+            <p class="time-title2">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
+            {% if run_state == 2 %}
+            <!--    측정이 종료되었을 시 종료시간 표시-->
+            <p class="time-title2">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
+            {% endif %}
+        </div>
         
         <div class="pi-list">
         
@@ -387,8 +396,11 @@
         
         
         
+        
+        
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
+        
         </div>
         <br>
         <hr class="hr-div">
