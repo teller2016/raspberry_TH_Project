@@ -190,11 +190,10 @@
             display: block;
         }
         #chart, svg {
-            margin: 0 auto;
+            margin: 0px;
             padding: 0px;
-            height: 300px;
-            max-width: 700px;
-            width: 100%;
+            height: 450px;
+            width: 98%;
         }
     </style>
 </head>
@@ -431,6 +430,8 @@
         
         {% endif %}
         
+        </div> <!-- content-container -->
+        
 		<br/><br/>
         <p class="home-title">측정 결과 그래프</p>
         <div id="chart" class='with-3d-shadow with-transitions'>
@@ -443,8 +444,10 @@
         
         function getLastThData(piNum){
                 
-                if(piNum>PI)
-                    return
+                if(piNum>PI){
+                    th_data=[];
+                    return;
+                }
                 
                 $.ajax({
                             url: 'http://192.168.243.'+piNum+':8000/getLastThData/'+ {{run_state}},
@@ -471,7 +474,7 @@
                                 }
                                 
                                 //show data on graph
-                                updateGraph(data);
+                                updateGraph(data, piNum);
                                 
                                 getLastThData(piNum+1);
                                 
@@ -570,7 +573,7 @@
         chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
         chart.x2Axis.tickFormat(d3.format(',f'));
 
-        chart.yDomain([0,100]);
+        chart.yDomain([50,100]);
         chart.yTickFormat(d3.format(',.1f'));
 
         d3.select('#chart svg')
@@ -582,7 +585,7 @@
         return chart;
     });
     
-        function updateGraph(data){
+        function updateGraph(data, piNum){
             
             var dataList = new Array();
             
@@ -590,14 +593,15 @@
                 var graph = new Object();
                 graph.x = value.fields.run_time;
                 graph.y = value.fields.humidity;
-                graph.series = 0;  
+                graph.series = piNum;  
                                           
                 dataList.push(graph);                            
                 })
-                
+            let randomColor = Math.floor(Math.random()*16777215).toString(16);
+            
             th_data.push({
-                "key": "습도(%)",
-                "color": "#00ace6",
+                "key": `PI-${piNum} 습도(%)`,
+                "color": "#"+randomColor,
                 "values": dataList
             });
             
@@ -612,7 +616,7 @@
             
         }
         
-        //******
+        //****** Graph END
         
         
         

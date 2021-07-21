@@ -20,7 +20,7 @@ body{
 }
 
 .pi-list{
-	display:flex;
+	display:block;
 	flex-wrap: wrap;
 	flex-direction: row;
 	
@@ -48,8 +48,9 @@ body{
 }
 
 .content-container{
-	display: inline-block;
+	display: block;
 	vertical-align: middle;
+	text-align:center;
 }
 
 .pi-select{
