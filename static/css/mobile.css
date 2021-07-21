@@ -104,6 +104,13 @@ input{
 	color: #949494;
 }
 
+.time-title2{
+	font-size: 15px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	color: #949494;
+}
+
 .home-title-mini{
 	font-weight: bold;
 	font-size: 14px;

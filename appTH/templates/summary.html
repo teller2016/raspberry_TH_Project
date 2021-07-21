@@ -99,17 +99,9 @@
         function end_all(){ //end all pi
             var result = confirm("전체 종료 하시겠습니까?");
             if(result){
-                 
-                //for(piNum=1; piNum <= PI; piNum++){
-				//requestPi_end(piNum);
-                //}
                 
                 requestPi_end(1);
-                
-                //refresh page when ending PI fails
-                //setTimeout(function(){
-                //    location.reload();
-                //},5000); // refresh page after 5 seconds
+
                 return true;
             }
             return false;
@@ -126,10 +118,6 @@
                                 'X-CSRFToken': '{{csrf_token}}',
                                 },
                             success:function(data){
-                                //if(pi_num>=PI) //refresh when last PI responds
-                                 //   setTimeout(function(){
-                                  //      location.reload();
-                                   // },2000); // refresh page after 5 seconds
                                     
                                 console.log(data);
                                 requestPi_end(pi_num+1);
