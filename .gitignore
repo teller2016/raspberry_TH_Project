@@ -1,3 +1,7 @@
 *.pyc
 __ pycache __
 db.sqlite3
+
+/static/datetimepicker/
+/static/wickedpicker/
+/static/Chart.js/
