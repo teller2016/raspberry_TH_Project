@@ -86,8 +86,10 @@
         }
         
         function requestPi_end(pi_num){
-            if(pi_num > PI)
+            if(pi_num > PI){
                 location.reload();
+                return;
+            }
             
                 $.ajax({
                             url: 'http://192.168.243.' + pi_num +':8000/endAll',
