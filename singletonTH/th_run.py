@@ -84,14 +84,14 @@ try :
                            (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,3),round(humidity,3)))
                conn.commit()
                # max database update
-               if max_hum < round(humidity,3):
+               if max_hum <= round(humidity,3):
                    print('Max Humid value appeared!!')
                    max_hum = round(humidity,3)
                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
                    conn.commit()
                count = count + 1
                time.sleep(sleepTime)
-               if runtime > 86400:
+               if runtime > 86400: # reboot PI after 24 hours
                    os.system('sudo reboot')
                 
 except KeyboardInterrupt:
