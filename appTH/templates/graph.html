@@ -82,8 +82,31 @@
 	]
 	
     
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        chart.x2Axis.tickFormat(d3.format(',f'));
+        //chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        //chart.x2Axis.tickFormat(d3.format(',f'));
+	chart.xAxis.tickFormat(function(time){
+                var hours = Math.floor(time / 3600);
+                time = time - hours * 3600;
+                var minutes = Math.floor(time/60);
+                var seconds = time - minutes * 60;
+                
+                if(hours<10)
+                    hours = '0' + hours;
+                if(minutes<10)
+                    minutes = '0' + minutes;
+                if(seconds<10)
+                    seconds = '0' + seconds;
+
+                if(hours>0)
+                    str = hours + "시간 " + minutes+ "분 ";
+                else
+                    if(minutes>0)
+                        str = minutes+ "분 " + seconds + "초";
+                    else
+                        str = seconds + "초";
+                
+                return str;
+            }).axisLabel("시간(분, 초)");
 
 	chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));

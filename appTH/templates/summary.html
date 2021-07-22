@@ -183,9 +183,6 @@
             height: 450px;
             width: 98%;
         }
-        .nvtooltip{
-            margin-top:830px;
-        }
     </style>
 </head>
 <body>
@@ -460,10 +457,10 @@
                             success:function(data){
                                 //show data on table
                                 if(data.length==0){
-                                    console.log(`PI No.${piNum} no data`);
+                                    //console.log(`PI No.${piNum} no data`);
                                 }
                                 else if(data == "None"){
-                                    console.log(`PI No.${piNum} not running`);
+                                    //console.log(`PI No.${piNum} not running`);
                                 }
                                 else{
                                     
@@ -535,7 +532,7 @@
                             $('#error-pi'+piNum).remove();
                             
                             if(data == 'None'){
-                                console.log(`PI No.${piNum} not running`);
+                                //console.log(`PI No.${piNum} not running`);
                             }
                             else{
                                 $('#cur_state'+piNum).empty();
@@ -584,10 +581,34 @@
             "values": dataList
         }]
 	
-        chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        chart.x2Axis.tickFormat(d3.format(',f'));
+        //d3.format(',f') ex) 68.12 -> 68
+        chart.xAxis.tickFormat(function(time){
+                var hours = Math.floor(time / 3600);
+                time = time - hours * 3600;
+                var minutes = Math.floor(time/60);
+                var seconds = time - minutes * 60;
+                
+                if(hours<10)
+                    hours = '0' + hours;
+                if(minutes<10)
+                    minutes = '0' + minutes;
+                if(seconds<10)
+                    seconds = '0' + seconds;
 
-        chart.yDomain([50,100]);
+                if(hours>0)
+                    str = hours + "시간 " + minutes+ "분 ";
+                else
+                    if(minutes>0)
+                        str = minutes+ "분 " + seconds + "초";
+                    else
+                        str = seconds + "초";
+                
+                return str;
+            }).axisLabel("시간(분, 초)");
+        //chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
+        //chart.x2Axis.tickFormat(d3.format(',f'));
+
+        //chart.yDomain([50,100]);
         chart.yTickFormat(d3.format(',.1f'));
 
         d3.select('#chart svg')
