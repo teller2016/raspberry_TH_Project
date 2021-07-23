@@ -466,28 +466,40 @@
         
         <div id = 'svgcontainer'>
         </div>
+        
+        <div id = 'tran'></div>
 
     <script type="text/javascript">
+        
+        //d3.select('body').transition().style('background-color','lightblue');
+        
+        var t = d3.transition().duration(18000);
+        
+        d3.select('body').transition(t).style('background-color', 'lightblue')
+            .style('background-color','gray');
+            
+        d3.selectAll('p').transition().style('color','green').style('font-size','28px').duration(5000);
+        //d3.selectAll('p').transition().style('font-size', '28px').delay(2000).duration(2000);
+        ////////////////////////////////////////////////////////////
         var width = 300;
         var height = 300;
         var svg = d3.select('#svgcontainer')
                     .append('svg').attr('width',width).attr('height',height);
-        svg.append('line')
-            .attr('x1',100)
-            .attr('y1',100)
-            .attr('x2',200)
-            .attr('y2',200)
-            .style('stroke','rgb(255,0,0)')
-            .style('stroke-width', 2);
+        var group = svg.append('g')
+                    .attr('transform', 'translate(60 , 60) rotate(30)');
         
-        svg.append('rect')
-            .attr('x',20)
-            .attr('y',20)
-            .attr('width',200)
-            .attr('height',100)
-            .attr('fill','green');
-            
+        var rect = group.append('rect')
+                    .attr('x', 20)
+                    .attr('y', 20)
+                    .attr('width', 60)
+                    .attr('height', 30)
+                    .attr('fill', 'green');
         
+        var circle = group.append('circle')
+                    .attr('cx',0)
+                    .attr('cy',0)
+                    .attr('r',30)
+                    .attr('fill','red');
         
         ////////////////////////////////////////////////////////////////////
         
