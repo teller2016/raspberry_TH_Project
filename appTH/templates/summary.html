@@ -441,6 +441,7 @@
         <svg></svg>
         </div>
 
+        <br/><br/><br/>
     
     <script type="text/javascript">
         
@@ -448,6 +449,12 @@
         function getLastThData(piNum){
                 
                 if(piNum>PI){
+                    d3.select('#chart svg')
+                        .datum(th_data)
+                        .call(chart); //draw chart when getting data is done
+
+                    nv.utils.windowResize(chart.update);
+                    
                     th_data=[];
                     return;
                 }
@@ -616,8 +623,8 @@
         chart.yTickFormat(d3.format(',.1f'));
 
         d3.select('#chart svg')
-            .datum(th_data)
-            .call(chart);
+            .datum(th_data) //push in datat
+            .call(chart); // render chart
 
         nv.utils.windowResize(chart.update);
 
@@ -646,11 +653,7 @@
                 "values": dataList
             });
             
-            d3.select('#chart svg')
-            .datum(th_data)
-            .call(chart);
-
-            nv.utils.windowResize(chart.update);
+            
 
             return chart;
                 
