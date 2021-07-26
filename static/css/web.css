@@ -26,6 +26,12 @@ body{
 	
 }
 
+.connection{
+	position:absolute;
+	right: 20px;
+	top:40px;
+}
+
 .hr-div{
 	margin-top: 20px;
 	color: #a6c0ff;
