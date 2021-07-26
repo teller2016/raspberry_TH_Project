@@ -381,3 +381,7 @@ td{
 .ver-line{
 	border: 1px solid #a8a8a8;
 }
+
+.thick{
+	border-right:3px solid;
+}
