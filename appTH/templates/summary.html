@@ -283,6 +283,13 @@
         <p class="home-title">전체 요약</p>
         
         <table class="table-th">
+            
+            <tr>
+                <th class='thick'></th>
+                <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
+                <th class='ver-line' style='border:3px solid' colspan=2>실시간 데이터</th>
+            </tr>
+            
             <tr class="tr-bar">
                 <th class="ver-line thick"><font>PI NO.</font></th>
                 
@@ -290,7 +297,7 @@
                 <th class="ver-line thick"><font>경과 시간</font></th>
                 
                 <th class="ver-line"><font>현재 습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
+                <th class="ver-line thick"><font>온도(°C)</font></th>
                 
             </tr>
             <!-- PI No.1 -->
@@ -301,7 +308,7 @@
                 <td class='ver-line thick' id='maxRunTime1'>-</td>
                 
                 <td class='ver-line' id='curHumidity1'>-</td>
-                <td class='ver-line' id='curTemperature1'>-</td>
+                <td class='ver-line thick' id='curTemperature1'>-</td>
                 
             </tr>
             
@@ -313,7 +320,7 @@
                 <td class='ver-line thick' id='maxRunTime2'>-</td>
                 
                 <td class='ver-line' id='curHumidity2'>-</td>
-                <td class='ver-line' id='curTemperature2'>-</td>
+                <td class='ver-line thick' id='curTemperature2'>-</td>
                 
             </tr>
             
@@ -325,7 +332,7 @@
                 <td class='ver-line thick' id='maxRunTime3'>-</td>
                 
                 <td class='ver-line' id='curHumidity3'>-</td>
-                <td class='ver-line' id='curTemperature3'>-</td>
+                <td class='ver-line thick' id='curTemperature3'>-</td>
                 
             </tr>
             
@@ -565,7 +572,11 @@
                                     //show data on graph
                                     updateGraph(data, piNum);
                                     
+                                    
                                     //add data to the table
+                                    $('#curHumidity'+piNum).html(data[0].fields.humidity);
+                                    $('#curTemperature'+piNum).html(data[0].fields.temperature);
+                                    
                                     $('#cur_value'+piNum).empty();
                                     $('#cur_value'+piNum).append(
                                     "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
@@ -628,6 +639,9 @@
                                 //console.log(`PI No.${piNum} not running`);
                             }
                             else{
+                                $('#maxHumidity'+piNum).html(data[0].fields.max_hum);
+                                $('#maxRunTime'+piNum).html(data[0].fields.run_time_str);
+                                
                                 $('#cur_state'+piNum).empty();
                             
                                 $('#cur_state'+piNum).append(
