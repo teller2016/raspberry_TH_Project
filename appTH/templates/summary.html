@@ -602,8 +602,7 @@
             "values": dataList
         }]
 	
-        //d3.format(',f') ex) 68.12 -> 68
-        chart.xAxis.tickFormat(function(time){
+        function xAxisLabel(time){
                 var hours = Math.floor(time / 3600);
                 time = time - hours * 3600;
                 var minutes = Math.floor(time/60);
@@ -625,9 +624,11 @@
                         str = seconds + "초";
                 
                 return str;
-            }).axisLabel("시간(시, 분, 초)");
-        //chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        //chart.x2Axis.tickFormat(d3.format(',f'));
+        }
+        //d3.format(',f') ex) 68.12 -> 68
+        chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
+        chart.x2Axis.tickFormat((time)=> xAxisLabel(time));
+
 
         //chart.yDomain([50,100]);
         chart.yTickFormat(d3.format(',.1f'));
