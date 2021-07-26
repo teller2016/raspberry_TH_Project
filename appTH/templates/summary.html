@@ -149,7 +149,7 @@
             if(date.length<2)
                 date='0'+date;
             
-            return `${year}-${month}-${date}`;
+            return `${year}/${month}/${date}`;
            
         }
         
@@ -220,7 +220,7 @@
         {% endif %}
         <div class='pi-list'>
             <div class='content-summary2'>
-                <div style='margin:5px 0px 5px 0px;'>현재시간</div>
+                <div class='time-box'>현재시간</div>
                 <span class="time-title2" id="cur_date" >date</span>
                 <span class="time-title2" id="cur_time" >time</span>
             </div>
@@ -247,15 +247,32 @@
             </div>
         </div>
         
-        <!-- PI.1 기준 시간 + 주기 -->
+
+        
+        <!-- PI.1 기준 (시간 + 주기)--><!-- 경과시간 -->
         <div>
             <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
-            <p class="time-title2">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
-            {% if run_state == 2 %}
-            <!--    측정이 종료되었을 시 종료시간 표시-->
-            <p class="time-title2">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
             
-            {% endif %}
+            <div class='pi-list'>
+                <div class='content-summary2'>
+                    <div class='time-box'>시작시간</div>
+                    <span class='time-title2'>{{th_state.start_time|date:"Y/m/d H:i:s"}}</span>
+                </div>
+                
+                {% if run_state == 2 %}
+                <div class='content-summary2'>
+                    <div class='time-box'>종료시간</div>
+                    <span class='time-title2'>{{th_state.end_time|date:"Y/m/d H:i:s"}}</span>
+                </div>
+                {% else %}
+                <div class='content-summary2'>
+                    <div class='time-box'>경과시간</div>
+                    <span class='time-title2' id='run_time'>run_time</span>
+                </div>
+                {% endif %}
+            
+            </div>
+            
             <p class="time-title2" id="dataCycle">측정주기: N/A</p>
         </div>
         
@@ -735,6 +752,11 @@
         let currentTime = document.getElementById("cur_time");
         function clock(){
             
+            
+            
+            if({{run_state}} == 1){
+                getRunTime();
+            }
            
            currentDate.innerText = getDate();
            currentTime.innerText = getTime();
@@ -742,6 +764,24 @@
         clock();
         setInterval(clock,1000);
         
+        function getRunTime(){ //경과 시간 계산하여 출력
+            let runTime = document.getElementById('run_time');
+            
+            let end = new Date('{{th_state.start_time|date:"Y/m/d H:i:s"}}');
+            
+            let cur = new Date();
+            let milisecond = cur-end;
+            let run = new Date(milisecond);
+            
+            let hours = ('0' + parseInt(milisecond /1000 /60/60)).slice(-2);
+            let minutes = ('0' + run.getMinutes()).slice(-2);
+            let seconds = ('0' + run.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            //console.log(time);
+            runTime.innerText = time;
+
+        }
         
         function setCycle(){
                   let cycle = document.getElementById('cycle');
