@@ -149,7 +149,7 @@
             if(date.length<2)
                 date='0'+date;
             
-            return `${year}-${month}-${date}`;
+            return `${year}/${month}/${date}`;
            
         }
         
@@ -201,6 +201,8 @@
 		<a href="http://192.168.243.2:8000/"><button>2번</button></a>
 		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
 		</div>
+        
+        
         <br>
         
         {% if run_state == 2 %}
@@ -217,16 +219,65 @@
         </div>
         {% endif %}
         
+        <!-- 연결상태 -->
+        <div class='pi-list connection'>
+            <div class='content-summary2'>
+                <div style='margin:5px 0px 5px 0px;'>연결상태</div>
+                
+                <table class='table-connection'>
+                    <tr>
+                        <td class='td-connection connection1'>
+                            PI.1
+                        </td>
+                        <td class='td-connection connection2'>
+                            PI.2
+                        </td>
+                        <td class='td-connection connection3'>
+                            PI.3
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- 현재시간 -->
+        <div class='pi-list'>
+            <div class='content-summary2'>
+                <div class='time-box'>현재시간</div>
+                <span class="time-title2" id="cur_date" >date</span>
+                <span class="time-title2" id="cur_time" >time</span>
+            </div>
+        </div>
+        
+        <!-- PI.1 기준 (시간 + 주기)--><!-- 경과시간 -->
         <div>
             <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
-            <p class="time-title2">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
-            {% if run_state == 2 %}
-            <!--    측정이 종료되었을 시 종료시간 표시-->
-            <p class="time-title2">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
             
-            {% endif %}
+            <div class='pi-list'>
+                <div class='content-summary2'>
+                    <div class='time-box'>시작시간</div>
+                    <span class='time-title2'>{{th_state.start_time|date:"Y/m/d H:i:s"}}</span>
+                </div>
+                
+                {% if run_state == 2 %}
+                <div class='content-summary2'>
+                    <div class='time-box'>종료시간</div>
+                    <span class='time-title2'>{{th_state.end_time|date:"Y/m/d H:i:s"}}</span>
+                </div>
+                {% else %}
+                <div class='content-summary2'>
+                    <div class='time-box'>경과시간</div>
+                    <span class='time-title2' id='run_time'>run_time</span>
+                </div>
+                {% endif %}
+            
+            </div>
+            
             <p class="time-title2" id="dataCycle">측정주기: N/A</p>
         </div>
+        
+        
+        
         
         <div class="pi-list">
         
@@ -368,22 +419,9 @@
         <hr class="hr-div">
         <br>
         
-        <table class="table-start">
-           <tr>
-              <td>날짜</td>
-              <td>
-                <span id="cur_date" style="color:gray;">date</span>
-              </td>
-              <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
-           </tr>
-           <tr><td colspan="2"><hr></td></tr>
-           <tr>
-              <td>시간</td>
-              <td>
-                <span id="cur_time" style="color:gray; padding:10px;">time</span>
-              </td>
-           </tr>
-        </table>
+        <div class='content-summary2'>
+            <button class="btn-endAll" onclick="end_all();">전체 종료</button>
+        </div>
         
 
         {% else %}
@@ -395,40 +433,25 @@
         <br>
         
         
+        <div class='content-summary2'>
+            <table class='table-start'>
         
-        <table class="table-start">
-           <tr>
-              <td>날짜</td>
-              <td>
-                <span id="cur_date" style="color:gray;">date</span>
-              </td>
-              
-              <td>
-                  측정 주기
-              </td>  
-              
-              <td rowspan="3"><button class="btn-startAll" onclick="start_pi();">측정<br>시작</button></td>
-           </tr>
-           
-           <tr>
-               <td colspan="2"><hr></td>
-               <td rowspan="2">
-                   
-                  <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
-                  <label for="cycle" id="cycleLabel">30초</label>
-              
-              </td>   
-           </tr>
-           
-           <tr>
-              <td>시간</td>
-              <td>
-                <span id="cur_time" style="color:gray; padding:10px;">time</span>
-              </td>
-           </tr>
-           
-          
-        </table>
+            <tr>
+                <td>
+                    측정 주기
+                </td>
+            </tr>
+            <tr>
+                <td>
+                 <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+                <label for="cycle" id="cycleLabel">30초</label>
+                </td>
+                
+            </tr>
+            </table>
+            
+            <button class="btn-startAll" onclick="start_pi();">측정<br>시작</button>
+        </div>
         
         
         {% endif %}
@@ -542,6 +565,9 @@
                             //console.log(data);
                             $('#error-pi'+piNum).remove();
                             
+                            // change connection state color to green
+                            $('.connection'+piNum).css('background-color','#6eff3d');
+                            
                             if(data == 'None'){
                                 //console.log(`PI No.${piNum} not running`);
                             }
@@ -562,6 +588,7 @@
                         },
                         error: function(){
                             console.log(`PI No.${piNum} Ajax getThState Error!!`);
+
                             // show error when connection is lost
                             if($('#error-pi'+piNum).length==0){
                                 $('#summary-pi'+piNum).prepend(
@@ -592,8 +619,7 @@
             "values": dataList
         }]
 	
-        //d3.format(',f') ex) 68.12 -> 68
-        chart.xAxis.tickFormat(function(time){
+        function xAxisLabel(time){
                 var hours = Math.floor(time / 3600);
                 time = time - hours * 3600;
                 var minutes = Math.floor(time/60);
@@ -615,9 +641,11 @@
                         str = seconds + "초";
                 
                 return str;
-            }).axisLabel("시간(분, 초)");
-        //chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        //chart.x2Axis.tickFormat(d3.format(',f'));
+        }
+        //d3.format(',f') ex) 68.12 -> 68
+        chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
+        chart.x2Axis.tickFormat((time)=> xAxisLabel(time));
+
 
         //chart.yDomain([50,100]);
         chart.yTickFormat(d3.format(',.1f'));
@@ -662,8 +690,39 @@
         
         //****** Graph END
         
+        function checkRunning(){ //check the running state and change color of the box
+            
+            function changeColor(piNum){
+                $.ajax({
+                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    success: function(data){ //data == run_state
+						if(data == 2){ // not running
+							$('.connection'+piNum).css('background-color','#6eff3d');
+						}
+                        else if(data == 1){
+                            $('.connection'+piNum).css('background-color','#0ea800');
+                        }
+                    },
+                    error: function(){
+                        // error - change connection state to red
+                        $('.connection'+piNum).css('background-color','#ff2b2b');
+                        console.log("checkRunning Error occured!!");
+                    }
+                })
+            }
+            
+            for(piNum=1; piNum <= PI; piNum++)
+            {
+                changeColor(piNum);
+            }
+            
+        }
         
-        
+        setInterval(checkRunning, 5000);
         
         function refreshData(){
             
@@ -693,6 +752,11 @@
         let currentTime = document.getElementById("cur_time");
         function clock(){
             
+            
+            
+            if({{run_state}} == 1){
+                getRunTime();
+            }
            
            currentDate.innerText = getDate();
            currentTime.innerText = getTime();
@@ -700,6 +764,24 @@
         clock();
         setInterval(clock,1000);
         
+        function getRunTime(){ //경과 시간 계산하여 출력
+            let runTime = document.getElementById('run_time');
+            
+            let end = new Date('{{th_state.start_time|date:"Y/m/d H:i:s"}}');
+            
+            let cur = new Date();
+            let milisecond = cur-end;
+            let run = new Date(milisecond);
+            
+            let hours = ('0' + parseInt(milisecond /1000 /60/60)).slice(-2);
+            let minutes = ('0' + run.getMinutes()).slice(-2);
+            let seconds = ('0' + run.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            //console.log(time);
+            runTime.innerText = time;
+
+        }
         
         function setCycle(){
                   let cycle = document.getElementById('cycle');
