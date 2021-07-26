@@ -226,7 +226,28 @@
             </div>
         </div>
         
+        <!-- 연결상태 -->
+        <div class='pi-list'>
+            <div class='content-summary2'>
+                <div style='margin:5px 0px 5px 0px;'>연결상태</div>
+                
+                <table class='table-connection'>
+                    <tr>
+                        <td class='td-connection connection1'>
+                            PI.1
+                        </td>
+                        <td class='td-connection connection2'>
+                            PI.2
+                        </td>
+                        <td class='td-connection connection3'>
+                            PI.3
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         
+        <!-- PI.1 기준 시간 + 주기 -->
         <div>
             <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
             <p class="time-title2">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
@@ -237,6 +258,9 @@
             {% endif %}
             <p class="time-title2" id="dataCycle">측정주기: N/A</p>
         </div>
+        
+        
+        
         
         <div class="pi-list">
         
@@ -597,7 +621,7 @@
                         str = seconds + "초";
                 
                 return str;
-            }).axisLabel("시간(분, 초)");
+            }).axisLabel("시간(시, 분, 초)");
         //chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
         //chart.x2Axis.tickFormat(d3.format(',f'));
 
