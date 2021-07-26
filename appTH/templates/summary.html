@@ -201,6 +201,8 @@
 		<a href="http://192.168.243.2:8000/"><button>2번</button></a>
 		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
 		</div>
+        
+        
         <br>
         
         {% if run_state == 2 %}
@@ -216,6 +218,14 @@
             </div>
         </div>
         {% endif %}
+        <div class='pi-list'>
+            <div class='content-summary2'>
+                <div style='margin:5px 0px 5px 0px;'>현재시간</div>
+                <span class="time-title2" id="cur_date" >date</span>
+                <span class="time-title2" id="cur_time" >time</span>
+            </div>
+        </div>
+        
         
         <div>
             <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
@@ -368,22 +378,9 @@
         <hr class="hr-div">
         <br>
         
-        <table class="table-start">
-           <tr>
-              <td>날짜</td>
-              <td>
-                <span id="cur_date" style="color:gray;">date</span>
-              </td>
-              <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
-           </tr>
-           <tr><td colspan="2"><hr></td></tr>
-           <tr>
-              <td>시간</td>
-              <td>
-                <span id="cur_time" style="color:gray; padding:10px;">time</span>
-              </td>
-           </tr>
-        </table>
+        <div class='content-summary2'>
+            <button class="btn-endAll" onclick="end_all();">전체 종료</button>
+        </div>
         
 
         {% else %}
@@ -395,40 +392,25 @@
         <br>
         
         
+        <div class='content-summary2'>
+            <table class='table-start'>
         
-        <table class="table-start">
-           <tr>
-              <td>날짜</td>
-              <td>
-                <span id="cur_date" style="color:gray;">date</span>
-              </td>
-              
-              <td>
-                  측정 주기
-              </td>  
-              
-              <td rowspan="3"><button class="btn-startAll" onclick="start_pi();">측정<br>시작</button></td>
-           </tr>
-           
-           <tr>
-               <td colspan="2"><hr></td>
-               <td rowspan="2">
-                   
-                  <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
-                  <label for="cycle" id="cycleLabel">30초</label>
-              
-              </td>   
-           </tr>
-           
-           <tr>
-              <td>시간</td>
-              <td>
-                <span id="cur_time" style="color:gray; padding:10px;">time</span>
-              </td>
-           </tr>
-           
-          
-        </table>
+            <tr>
+                <td>
+                    측정 주기
+                </td>
+            </tr>
+            <tr>
+                <td>
+                 <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+                <label for="cycle" id="cycleLabel">30초</label>
+                </td>
+                
+            </tr>
+            </table>
+            
+            <button class="btn-startAll" onclick="start_pi();">측정<br>시작</button>
+        </div>
         
         
         {% endif %}
