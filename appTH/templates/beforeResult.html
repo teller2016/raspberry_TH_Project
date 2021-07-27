@@ -140,8 +140,21 @@
 
 </div>
 
+<!-- Modal -->
+
+<div id='myModal' class='modal'>
+    <div class='modal-content'>
+        <div class='close' style='float:right'>&times;</div>
+    </div>
+</div>
+
+<!-- Modal End -->
 
 <script type="text/javascript">
+    
+    function showAllGraph(fileName){
+        $('#myModal').css('display', 'block');
+    }
 
     function getDataByTime(){ //ajax call ( get csv file name list)
         
@@ -190,6 +203,7 @@
                     "<th><font>측정 시간</font></th>" +
                     "<th><font>파일명</font></th>" +
                     "<th><font>조회</font></th>" +
+                    "<th><font>동시조회</font></th>" +
                     "</tr>";
                     
                 $('#table_select_data').append( table_head_html )
@@ -211,6 +225,10 @@
                         "<td>"+
                         '<button class="button4" onclick="getDataByName(\'' + item + '\')">조회</button>' +
                         
+                        "</td>"+
+                        "<td>"+
+                   
+                        '<button class="button4" onclick="showAllGraph(\'' + item + '\')">동시조회</button>' +
                         "</td>"+
                         "</tr>"
                         );
