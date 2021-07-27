@@ -320,24 +320,29 @@ def th_csv(request, word):
     return response
 
 def graph(request): # ajax call (get all th_data, used for graph)
+    TH = th_model.instance()
+    pi_num = TH.getPiNum()
+    
     th_list = TH_data.objects.all() #th_data 데이터 전체 할당
-    return render(request, 'graph.html', {'th_list':th_list})
+    return render(request, 'graph.html', {'th_list':th_list, 'pi_num':pi_num})
 
 def result(request): # ajax call
     TH = th_model.instance()
     run_state = TH.getRunState()
+    pi_num = TH.getPiNum()
     
             
-    return render(request, 'result.html', {'run_state':run_state})
+    return render(request, 'result.html', {'run_state':run_state, 'pi_num':pi_num})
 
 # backup files path in local
 path = "/home/pi/Project/backup/" 
 
 def beforeResult(request): # return 'beforeResult' page
-
+    TH = th_model.instance()
+    pi_num = TH.getPiNum()
     #csv_list = fnmatch.filter(os.listdir(path), "2021*54.csv")
 
-    return render(request, 'beforeResult.html')
+    return render(request, 'beforeResult.html', {'pi_num':pi_num})
 
 def getByTime(request): # ajax call ( return all csv file name which are in date range )
     jsonObject = json.loads(request.body)
