@@ -312,6 +312,8 @@
                 <td class='ver-line' id='curHumidity1'>-</td>
                 <td class='ver-line thick' id='curTemperature1'>-</td>
                 
+                <td style='display:none' id='curRunId1'>-</td>
+                
                 <td class='ver-line thick' colspan=2>
                 <a href='http://192.168.243.1:8000/result'><button class="button5">현재</button></a>
                 <a href='http://192.168.243.1:8000/beforeResult'><button class="button5">과거</button></a>
@@ -328,6 +330,8 @@
                 <td class='ver-line' id='curHumidity2'>-</td>
                 <td class='ver-line thick' id='curTemperature2'>-</td>
                 
+                <td style='display:none' id='curRunId2'>-</td>
+                
                 <td class='ver-line thick' colspan=2>
                 <a href='http://192.168.243.2:8000/result'><button class="button5">현재</button></a>
                 <a href='http://192.168.243.2:8000/beforeResult'><button class="button5">과거</button></a>
@@ -343,6 +347,8 @@
                 
                 <td class='ver-line' id='curHumidity3'>-</td>
                 <td class='ver-line thick' id='curTemperature3'>-</td>
+                
+                <td style='display:none' id='curRunId3'>-</td>
                 
                 <td class='ver-line thick' colspan=2>
                 <a href='http://192.168.243.3:8000/result'><button class="button5">현재</button></a>
@@ -461,16 +467,15 @@
                                     
                                     
                                     
-                                    
-                                    let lastHumidity = $(`#curHumidity${piNum}`).text();
-                                    let lastTemperature = $(`#curTemperature${piNum}`).text();
-                                    
-                                    //add data to the table
-                                    $('#curHumidity'+piNum).html(data[0].fields.humidity);
-                                    $('#curTemperature'+piNum).html(data[0].fields.temperature);
-                                    
-                                    // if Data is changed - change color
-                                    if(lastHumidity != data[0].fields.humidity || lastTemperature != data[0].fields.temperature){ 
+                                    let lastRunId = $(`#curRunId${piNum}`).text();
+
+                                    // if Data is new - change Data and Color
+                                    if(lastRunId != data[0].fields.run_id){ 
+                                        //add data to the table
+                                        $('#curHumidity'+piNum).html(data[0].fields.humidity);
+                                        $('#curTemperature'+piNum).html(data[0].fields.temperature);
+                                        $('#curRunId'+piNum).html(data[0].fields.run_id);
+                                        
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                     }
