@@ -51,7 +51,7 @@
                 
                 let dateAndTime = currentDate + " " + currentTime;
                 //dateAndTime: ex> "2021-07-06 17:13:00"
-                
+
                 let second = document.getElementById('cycle').value;
                 
                 //start all checked pi
@@ -61,7 +61,7 @@
                 //if start fails, refresh page
                 setTimeout(function(){
                     location.reload();
-                },5000); // refresh page after 2 seconds
+                },5000); 
                 return true;
                 //checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
 
@@ -91,7 +91,7 @@
                             requestPi_start(index+1, checkedList, time, second);
                         },
                         error: function(){
-                            console.log(`Ajax requestPi_start-${pi_num} Error!!`);
+                            console.log(`Ajax requestPi_start-${index+1} Error!!`);
                         }
                 });
             
@@ -149,7 +149,7 @@
             if(date.length<2)
                 date='0'+date;
             
-            return `${year}/${month}/${date}`;
+            return `${year}-${month}-${date}`;
            
         }
         
@@ -256,13 +256,13 @@
             <div class='pi-list'>
                 <div class='content-summary2'>
                     <div class='time-box'>시작시간</div>
-                    <span class='time-title2'>{{th_state.start_time|date:"Y/m/d H:i:s"}}</span>
+                    <span class='time-title2'>{{th_state.start_time|date:"Y-m-d H:i:s"}}</span>
                 </div>
                 
                 {% if run_state == 2 %}
                 <div class='content-summary2'>
                     <div class='time-box'>종료시간</div>
-                    <span class='time-title2'>{{th_state.end_time|date:"Y/m/d H:i:s"}}</span>
+                    <span class='time-title2'>{{th_state.end_time|date:"Y-m-d H:i:s"}}</span>
                 </div>
                 {% else %}
                 <div class='content-summary2'>
@@ -277,6 +277,83 @@
         </div>
         
         
+        <!-- ALL SUMMARY -->
+        <div class="content-summary">
+        
+        <p class="home-title">전체 요약</p>
+        
+        <table class="table-th">
+            <br/>
+            <tr>
+                <th class='thick'></th>
+                <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
+                <th class='ver-line' style='border:3px solid' colspan=2>실시간 데이터</th>
+            </tr>
+            
+            <tr class="tr-bar">
+                <th class="ver-line thick"><font>PI NO.</font></th>
+                
+                <th class="ver-line"><font>최대 습도(%)</font></th>
+                <th class="ver-line thick"><font>경과 시간</font></th>
+                
+                <th class="ver-line"><font>현재 습도(%)</font></th>
+                <th class="ver-line thick"><font>온도(°C)</font></th>
+                
+                <th class="ver-line thick" style='border-top: 3px solid' colspan=2>데이터 조회</th>
+                
+            </tr>
+            <!-- PI No.1 -->
+            <tr id="summary1">
+                <td class='ver-line thick'>1</td>
+                
+                <td class='ver-line' id='maxHumidity1'>-</td>
+                <td class='ver-line thick' id='maxRunTime1'>-</td>
+                
+                <td class='ver-line' id='curHumidity1'>-</td>
+                <td class='ver-line thick' id='curTemperature1'>-</td>
+                
+                <td class='ver-line thick' colspan=2>
+                <a href='http://192.168.243.1:8000/result'><button class="button5">현재</button></a>
+                <a href='http://192.168.243.1:8000/beforeResult'><button class="button5">과거</button></a>
+                </td>
+            </tr>
+            
+            <!-- PI No.2 -->
+            <tr id="summary2">
+                <td class='ver-line thick'>2</td>
+                
+                <td class='ver-line' id='maxHumidity2'>-</td>
+                <td class='ver-line thick' id='maxRunTime2'>-</td>
+                
+                <td class='ver-line' id='curHumidity2'>-</td>
+                <td class='ver-line thick' id='curTemperature2'>-</td>
+                
+                <td class='ver-line thick' colspan=2>
+                <a href='http://192.168.243.2:8000/result'><button class="button5">현재</button></a>
+                <a href='http://192.168.243.2:8000/beforeResult'><button class="button5">과거</button></a>
+                </td>
+            </tr>
+            
+            <!-- PI No.3 -->
+            <tr id="summary3">
+               <td class='ver-line thick'>3</td>
+                
+                <td class='ver-line' id='maxHumidity3'>-</td>
+                <td class='ver-line thick' id='maxRunTime3'>-</td>
+                
+                <td class='ver-line' id='curHumidity3'>-</td>
+                <td class='ver-line thick' id='curTemperature3'>-</td>
+                
+                <td class='ver-line thick' colspan=2>
+                <a href='http://192.168.243.3:8000/result'><button class="button5">현재</button></a>
+                <a href='http://192.168.243.3:8000/beforeResult'><button class="button5">과거</button></a>
+                </td>
+            </tr>
+            
+        </table
+        
+        <br>
+        </div><!-- ALL SUMMARY END -->
         
         
         <div class="pi-list">
@@ -509,7 +586,11 @@
                                     //show data on graph
                                     updateGraph(data, piNum);
                                     
+                                    
                                     //add data to the table
+                                    $('#curHumidity'+piNum).html(data[0].fields.humidity);
+                                    $('#curTemperature'+piNum).html(data[0].fields.temperature);
+                                    
                                     $('#cur_value'+piNum).empty();
                                     $('#cur_value'+piNum).append(
                                     "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
@@ -542,6 +623,7 @@
                     success: function(data){ //data == run_state
 						if(data == 2){
 							$('#summary-pi'+piNum).hide();
+                            $('#summary'+piNum).hide();
 						}
                     },
                     error: function(){
@@ -565,13 +647,13 @@
                             //console.log(data);
                             $('#error-pi'+piNum).remove();
                             
-                            // change connection state color to green
-                            $('.connection'+piNum).css('background-color','#6eff3d');
-                            
                             if(data == 'None'){
                                 //console.log(`PI No.${piNum} not running`);
                             }
                             else{
+                                $('#maxHumidity'+piNum).html(data[0].fields.max_hum);
+                                $('#maxRunTime'+piNum).html(data[0].fields.run_time_str);
+                                
                                 $('#cur_state'+piNum).empty();
                             
                                 $('#cur_state'+piNum).append(
@@ -808,8 +890,9 @@
         //hide Table when checkbox is not checked
         $(document).ready(function(){
             $('input[type="checkbox"]').click(function(){
-                let inputValue = $(this).attr("value");
+                let inputValue = $(this).attr("value"); // == piNum
                 $('#summary-pi'+inputValue).toggle();
+                $('#summary'+inputValue).toggle();
             });
         });
         </script>
