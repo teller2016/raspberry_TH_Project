@@ -441,6 +441,7 @@
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
+                                
                                 //show data on table
                                 if(data.length==0){
                                     //console.log(`PI No.${piNum} no data`);
@@ -458,8 +459,7 @@
                                         cycleHtml.innerHTML = `측정주기: 약 ${last-before}초`
                                     }
                                     
-                                    //show data on graph
-                                    updateGraph(data, piNum);
+                                    
                                     
                                     
                                     let lastHumidity = $(`#curHumidity${piNum}`).text();
@@ -474,6 +474,10 @@
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                     }
+                                    
+                                    //show data on graph
+                                    updateGraph(data, piNum);
+                                    
                                 }
                                 
                                 
@@ -606,7 +610,7 @@
 
         //chart.yDomain([50,100]);
         chart.yTickFormat(d3.format(',.1f'));
-        //chart.useInteractiveGuideline(true);
+        chart.useInteractiveGuideline(true);
         d3.select('#chart svg')
             .datum(th_data) //push in datat
             .call(chart); // render chart
@@ -620,7 +624,9 @@
             
             var dataList = new Array();
             
-            $.each(data, function(key, value){
+            let reversedData = data.reverse();
+            
+            $.each(reversedData, function(key, value){
                 var graph = new Object();
                 graph.x = value.fields.run_time;
                 graph.y = value.fields.humidity;

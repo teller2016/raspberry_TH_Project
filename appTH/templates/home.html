@@ -523,6 +523,7 @@
         chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));
 
+        chart.useInteractiveGuideline(true);
         
 
         d3.select('#chart svg')
@@ -558,7 +559,8 @@
                                         var dataList = new Array();
                                         var dataList2 = new Array();
                                         
-                                        $.each(data, function(key, value){
+                                        let reversedData = data.reverse(); //reverse data in correct order;
+                                        $.each(reversedData, function(key, value){
                                             
                                             var graph = new Object();
                                             graph.x = value.fields.run_time;
