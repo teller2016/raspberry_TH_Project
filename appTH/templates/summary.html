@@ -356,132 +356,7 @@
         </div><!-- ALL SUMMARY END -->
         
         
-        <div class="pi-list">
         
-        <!-- DATA SUMMARY 1 -->
-        <div class="content-summary" id="summary-pi1">
-        <a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
-        
-        <p class="home-title bt1">PI ONE</p>
-		<p class="home-title">측정 상태 요약</p>
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_state1">
-                
-            </tr>
-        </table>
-        
-        
-        <p class="home-title">실시간 수치</p>
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_value1">
-                
-            </tr>
-        </table>
-   
-        
-        <br>
-        </div><!-- DATA SUMMARY 1 END -->
-        
-        <!-- DATA SUMMARY 2 -->
-        <div class="content-summary" id="summary-pi2">
-        <a href='http://192.168.243.2:8000/result'><button class="button2">현재 데이터 조회</button></a>
-        <a href='http://192.168.243.2:8000/beforeResult'><button class="button2">과거 데이터 조회</button></a>
-            
-        <p class="home-title bt1">PI TWO</p>
-		<p class="home-title">측정 상태 요약</p>
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_state2">
-                
-            </tr>
-        </table>
-        
-        
-        <p class="home-title">실시간 수치</p>
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_value2">
-                
-            </tr>
-        </table>
-   
-        
-        <br>
-        </div><!-- DATA SUMMARY 2 END -->
-        
-        <!-- DATA SUMMARY 3 -->
-        <div class="content-summary" id="summary-pi3">
-        <a href='http://192.168.243.3:8000/result'><button class="button2">현재 데이터 조회</button></a>
-        <a href='http://192.168.243.3:8000/beforeResult'><button class="button2">과거 데이터 조회</button></a>
-        
-        <p class="home-title bt1">PI THREE</p>
-		<p class="home-title">측정 상태 요약</p>
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_state3">
-                
-            </tr>
-        </table>
-        
-        
-        <p class="home-title">실시간 수치</p>
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_value3">
-                
-            </tr>
-        </table>
-   
-        
-        <br>
-        </div><!-- DATA SUMMARY 3 END -->
-        
-        </div>
         
         <br>
         
@@ -591,15 +466,7 @@
                                     $('#curHumidity'+piNum).html(data[0].fields.humidity);
                                     $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                     
-                                    $('#cur_value'+piNum).empty();
-                                    $('#cur_value'+piNum).append(
-                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
-                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>")
                                 }
-                                
                                 
                                 
                                 getLastThData(piNum+1);
@@ -622,7 +489,7 @@
                          },
                     success: function(data){ //data == run_state
 						if(data == 2){
-							$('#summary-pi'+piNum).hide();
+							
                             $('#summary'+piNum).hide();
 						}
                     },
@@ -654,15 +521,7 @@
                                 $('#maxHumidity'+piNum).html(data[0].fields.max_hum);
                                 $('#maxRunTime'+piNum).html(data[0].fields.run_time_str);
                                 
-                                $('#cur_state'+piNum).empty();
                             
-                                $('#cur_state'+piNum).append(
-                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
-                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
-                                )
                             }
                             
                             getAllThState(piNum+1);
@@ -771,6 +630,8 @@
         }
         
         //****** Graph END
+        
+
         
         function checkRunning(){ //check the running state and change color of the box
             
