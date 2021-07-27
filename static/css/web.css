@@ -332,6 +332,16 @@ input{
 	background-color:#f59b42;
 	border:1px solid #f59b42;
 }
+.button5{
+
+	font-size: 12px;
+	width: 50px;
+	height: 30px;
+	color:#ffffff;
+	box-shadow: 0px 0px 2px 0px #4A74D7;
+	background-color:#4A74D7;
+	border:1px solid #4A74D7;
+}
 .bt1{
 	margin-left: 265px;
 }
@@ -380,6 +390,7 @@ td{
 
 .ver-line{
 	border: 1px solid #a8a8a8;
+	padding:10px;
 }
 
 .thick{

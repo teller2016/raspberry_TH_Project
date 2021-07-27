@@ -51,7 +51,7 @@
                 
                 let dateAndTime = currentDate + " " + currentTime;
                 //dateAndTime: ex> "2021-07-06 17:13:00"
-                
+
                 let second = document.getElementById('cycle').value;
                 
                 //start all checked pi
@@ -61,7 +61,7 @@
                 //if start fails, refresh page
                 setTimeout(function(){
                     location.reload();
-                },5000); // refresh page after 2 seconds
+                },5000); 
                 return true;
                 //checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
 
@@ -91,7 +91,7 @@
                             requestPi_start(index+1, checkedList, time, second);
                         },
                         error: function(){
-                            console.log(`Ajax requestPi_start-${pi_num} Error!!`);
+                            console.log(`Ajax requestPi_start-${index+1} Error!!`);
                         }
                 });
             
@@ -149,7 +149,7 @@
             if(date.length<2)
                 date='0'+date;
             
-            return `${year}/${month}/${date}`;
+            return `${year}-${month}-${date}`;
            
         }
         
@@ -256,13 +256,13 @@
             <div class='pi-list'>
                 <div class='content-summary2'>
                     <div class='time-box'>시작시간</div>
-                    <span class='time-title2'>{{th_state.start_time|date:"Y/m/d H:i:s"}}</span>
+                    <span class='time-title2'>{{th_state.start_time|date:"Y-m-d H:i:s"}}</span>
                 </div>
                 
                 {% if run_state == 2 %}
                 <div class='content-summary2'>
                     <div class='time-box'>종료시간</div>
-                    <span class='time-title2'>{{th_state.end_time|date:"Y/m/d H:i:s"}}</span>
+                    <span class='time-title2'>{{th_state.end_time|date:"Y-m-d H:i:s"}}</span>
                 </div>
                 {% else %}
                 <div class='content-summary2'>
@@ -283,7 +283,7 @@
         <p class="home-title">전체 요약</p>
         
         <table class="table-th">
-            
+            <br/>
             <tr>
                 <th class='thick'></th>
                 <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
@@ -299,6 +299,8 @@
                 <th class="ver-line"><font>현재 습도(%)</font></th>
                 <th class="ver-line thick"><font>온도(°C)</font></th>
                 
+                <th class="ver-line thick" style='border-top: 3px solid' colspan=2>데이터 조회</th>
+                
             </tr>
             <!-- PI No.1 -->
             <tr id="summary1">
@@ -310,6 +312,10 @@
                 <td class='ver-line' id='curHumidity1'>-</td>
                 <td class='ver-line thick' id='curTemperature1'>-</td>
                 
+                <td class='ver-line thick' colspan=2>
+                <a href='http://192.168.243.1:8000/result'><button class="button5">현재</button></a>
+                <a href='http://192.168.243.1:8000/beforeResult'><button class="button5">과거</button></a>
+                </td>
             </tr>
             
             <!-- PI No.2 -->
@@ -322,6 +328,10 @@
                 <td class='ver-line' id='curHumidity2'>-</td>
                 <td class='ver-line thick' id='curTemperature2'>-</td>
                 
+                <td class='ver-line thick' colspan=2>
+                <a href='http://192.168.243.2:8000/result'><button class="button5">현재</button></a>
+                <a href='http://192.168.243.2:8000/beforeResult'><button class="button5">과거</button></a>
+                </td>
             </tr>
             
             <!-- PI No.3 -->
@@ -334,6 +344,10 @@
                 <td class='ver-line' id='curHumidity3'>-</td>
                 <td class='ver-line thick' id='curTemperature3'>-</td>
                 
+                <td class='ver-line thick' colspan=2>
+                <a href='http://192.168.243.3:8000/result'><button class="button5">현재</button></a>
+                <a href='http://192.168.243.3:8000/beforeResult'><button class="button5">과거</button></a>
+                </td>
             </tr>
             
         </table
@@ -609,6 +623,7 @@
                     success: function(data){ //data == run_state
 						if(data == 2){
 							$('#summary-pi'+piNum).hide();
+                            $('#summary'+piNum).hide();
 						}
                     },
                     error: function(){
@@ -631,9 +646,6 @@
                         success:function(data){
                             //console.log(data);
                             $('#error-pi'+piNum).remove();
-                            
-                            // change connection state color to green
-                            $('.connection'+piNum).css('background-color','#6eff3d');
                             
                             if(data == 'None'){
                                 //console.log(`PI No.${piNum} not running`);
@@ -878,8 +890,9 @@
         //hide Table when checkbox is not checked
         $(document).ready(function(){
             $('input[type="checkbox"]').click(function(){
-                let inputValue = $(this).attr("value");
+                let inputValue = $(this).attr("value"); // == piNum
                 $('#summary-pi'+inputValue).toggle();
+                $('#summary'+inputValue).toggle();
             });
         });
         </script>
