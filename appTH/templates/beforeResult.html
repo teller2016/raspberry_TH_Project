@@ -59,6 +59,12 @@
             height: 450px;
             width: 98%;
         }  
+         #allChart, svg{
+            margin: 0px;
+            padding: 0px;
+            height: 450px;
+            width: 98%;
+         }
         
     </style>
 </head>
@@ -145,16 +151,72 @@
 <div id='myModal' class='modal'>
     <div class='modal-content'>
         <div class='close' style='float:right'>&times;</div>
+        
+        <p class="home-title">모든 PI 측정 결과 그래프</p>
+        <div id="allChart" class='with-3d-shadow with-transitions'>
+        <svg></svg>
+        </div>
     </div>
 </div>
 
 <!-- Modal End -->
 
 <script type="text/javascript">
+    //NUMBER OF PI
+    const PI = 3
     
+    //globalData (csvfile data for all PI's)
+    var all_th_data=[]
+        
+    // Get all PI's Data and show it on graph
     function showAllGraph(fileName){
         $('#myModal').css('display', 'block');
+        
+        getAllCsvData(1, fileName);
+        
     }
+    
+    $('.close').click(()=>{
+      $('#myModal').css('display', 'none');
+    })
+        
+    function getAllCsvData(piNum, name){
+                
+                let param = {
+                    'csv_name' : name,
+                }
+                
+                if(piNum>PI){
+                    
+                    d3.select('#allChart svg')
+                        .datum(all_th_data)
+                        .call(allChart); //draw chart when getting data is done
+
+                    nv.utils.windowResize(allChart.update);
+                    all_th_data = [];
+                    return;
+                }
+                
+                $.ajax({
+                            url: 'http://192.168.243.'+piNum+':8000/getDataByName/',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            data: JSON.stringify(param),
+                            success:function(data){
+                                //console.log(data);
+                                updateAllGraph(data, piNum);
+                                getAllCsvData(piNum+1, name);
+                                
+                            },
+                            error: function(){
+                                console.log(`PI No.${piNum} Ajax getAllCsvData Error!!`);
+                                getAllCsvData(piNum+1, name);
+                            }
+                        });
+            
+            }
 
     function getDataByTime(){ //ajax call ( get csv file name list)
         
@@ -209,7 +271,7 @@
                 $('#table_select_data').append( table_head_html )
 
                 if(data.length==0){
-                    $('#table_select_data').append("<tr><td colspan='4'><font>No Files</font></td></tr>");
+                    $('#table_select_data').append("<tr><td colspan='5'><font>No Files</font></td></tr>");
                         
                     return;
                 }
@@ -328,6 +390,7 @@
     
     //graph initalise
     var chart = nv.models.lineChart();
+    var allChart = nv.models.lineWithFocusChart();
     
     nv.addGraph(function(){
         
@@ -347,9 +410,7 @@
           }
         ];
         
-        //chart.xAxis.tickFormat(d3.format(',f')).axisLabel("시간(초)");
-        //chart.x2Axis.tickFormat(d3.format(',f'));
-        chart.xAxis.tickFormat(function(time){
+        function xAxisLabel(time){
                 var hours = Math.floor(time / 3600);
                 time = time - hours * 3600;
                 var minutes = Math.floor(time/60);
@@ -371,7 +432,9 @@
                         str = seconds + "초";
                 
                 return str;
-            }).axisLabel("시간(분, 초)");
+        }
+
+        chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
         chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));
 
@@ -382,11 +445,31 @@
             .call(chart);
 
         nv.utils.windowResize(chart.update);
+        //////
+	
+        var all_th_data = [
+        {
+            "key": "습도(%)",
+            "color": "#00ace6",
+            "values": dataList
+        }]
+        
+        allChart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
+        allChart.x2Axis.tickFormat((time)=> xAxisLabel(time));
 
+        allChart.yTickFormat(d3.format(',.1f'));
+        allChart.useInteractiveGuideline(true);
+        d3.select('#allChart svg')
+            .datum(all_th_data) //push in datat
+            .call(allChart); // render chart
+
+        nv.utils.windowResize(allChart.update);
+        
         return chart;
         
     });
     
+    //show one graph
     function makeGraph(data){
         
         var dataList = new Array();
@@ -432,6 +515,37 @@
         nv.utils.windowResize(chart.update);
 
         return chart;  
+        
+    }
+    
+    //update data for all PI's graph
+    function updateAllGraph(data, piNum){
+        
+        var dataList = new Array();
+                                          
+        for(const row of data.slice(0,-1)){
+             
+             let run_time = getSecond(row[0]);
+               
+             var graph = new Object();
+             graph.x = run_time;
+             graph.y = parseFloat(row[1]);
+             graph.series = 0;
+             dataList.push(graph);
+             
+        }
+        
+        //make fixed color for each PI data
+        let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
+        
+        all_th_data.push({
+                "key": `PI-${piNum} 습도(%)`,
+                "color": "#"+fixedColor,
+                "values": dataList
+            });
+
+
+        return allChart;  
         
     }
     
