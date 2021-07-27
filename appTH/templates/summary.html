@@ -462,10 +462,18 @@
                                     updateGraph(data, piNum);
                                     
                                     
+                                    let lastHumidity = $(`#curHumidity${piNum}`).text();
+                                    let lastTemperature = $(`#curTemperature${piNum}`).text();
+                                    
                                     //add data to the table
                                     $('#curHumidity'+piNum).html(data[0].fields.humidity);
                                     $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                     
+                                    // if Data is changed - change color
+                                    if(lastHumidity != data[0].fields.humidity || lastTemperature != data[0].fields.temperature){ 
+                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
+                                    }
                                 }
                                 
                                 
@@ -518,8 +526,16 @@
                                 //console.log(`PI No.${piNum} not running`);
                             }
                             else{
+                                let lastRunTime = $(`#maxRunTime${piNum}`).text();
+                                
                                 $('#maxHumidity'+piNum).html(data[0].fields.max_hum);
                                 $('#maxRunTime'+piNum).html(data[0].fields.run_time_str);
+                                
+                                // if Data is changed - change color
+                                if(lastRunTime != data[0].fields.run_time_str){ 
+                                    d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','red');
+                                    d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).transition().style('color','black').duration(3000);
+                                }
                                 
                             
                             }
@@ -630,7 +646,6 @@
         }
         
         //****** Graph END
-        
 
         
         function checkRunning(){ //check the running state and change color of the box
