@@ -96,6 +96,14 @@ def getLastThData(request, state):
     
     return HttpResponse(data, content_type='text/json-comment-filtered')
 
+def getLastTwoThData(request):
+    TH = th_model.instance()
+    run_state = TH.getRunState()
+    
+    th_data = TH_data.objects.all().order_by('-id')[:2]
+    data = serializers.serialize('json', th_data)
+    
+    return HttpResponse(data, content_type='text/json-comment-filtered')
 
 def getThData(request): # ajax call (get 40 current data for Table)
     th_list_mini = TH_data.objects.all().order_by('-id')[:40]

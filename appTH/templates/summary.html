@@ -436,7 +436,7 @@
 
                     nv.utils.windowResize(chart.update);
                     
-                    th_data=[];
+                    //th_data=[];
                     return;
                 }
                 
@@ -458,15 +458,8 @@
                                 else{
                                     
                                     //show cycle
-                                    if(piNum==1 && data.length>1){
-                                        let last = data[0].fields.run_time;
-                                        let before = data[1].fields.run_time;
-                                        let cycleHtml = document.getElementById('dataCycle');
-                                        cycleHtml.innerHTML = `측정주기: 약 ${last-before}초`
-                                    }
-                                    
-                                    
-                                    
+                                    updateCycle(piNum, data);
+
                                     let lastRunId = $(`#curRunId${piNum}`).text();
 
                                     // if Data is new - change Data and Color
@@ -480,7 +473,7 @@
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                     }
                                     
-                                    //show data on graph
+                                    //add data on graph
                                     updateGraph(data, piNum);
                                     
                                 }
@@ -492,6 +485,70 @@
                             error: function(){
                                 console.log(`PI No.${piNum} Ajax getLastThData Error!!`);
                                 getLastThData(piNum+1);
+                            }
+                        });
+            
+            }
+            
+        function getLastTwoThData(piNum){
+                
+                if(piNum>PI){
+                    d3.select('#chart svg')
+                        .datum(th_data)
+                        .call(chart); //draw chart when getting data is done
+
+                    nv.utils.windowResize(chart.update);
+                    
+                    return;
+                }
+                
+                $.ajax({
+                            url: 'http://192.168.243.'+piNum+':8000/getLastTwoThData',
+                            type: 'POST',
+                            headers:{
+                                'X-CSRFToken': '{{csrf_token}}'
+                                },
+                            success:function(data){
+                                
+                                //show data on table
+                                if(data.length==0){
+                                    //console.log(`PI No.${piNum} no data`);
+                                }
+                                else if(data == "None"){
+                                    //console.log(`PI No.${piNum} not running`);
+                                }
+                                else{
+                                    
+                                    //show cycle
+                                    updateCycle(piNum, data);
+                                    
+                                    let lastRunId = $(`#curRunId${piNum}`).text();
+
+                                    // if Data is new - change Data and Color
+                                    if(lastRunId != data[0].fields.run_id){ 
+                                        //add data to the table
+                                        $('#curHumidity'+piNum).html(data[0].fields.humidity);
+                                        $('#curTemperature'+piNum).html(data[0].fields.temperature);
+                                        $('#curRunId'+piNum).html(data[0].fields.run_id);
+                                        
+                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
+                                        
+                                        //show data on graph
+                                        pushDataToGraph(data, piNum);
+                                    }
+                                    
+                                    
+                                    
+                                }
+                                
+                                
+                                getLastTwoThData(piNum+1);
+                                
+                            },
+                            error: function(){
+                                console.log(`PI No.${piNum} Ajax getLastTwoThData Error!!`);
+                                getLastTwoThData(piNum+1);
                             }
                         });
             
@@ -572,18 +629,12 @@
         var chart = nv.models.lineWithFocusChart();
         
         //globalData
-        var th_data=[]
+        var th_data=[] // holds graph's data (uses in graph)
+        var th_data_save = {} // save graph data (uses to distinguish which pi's data)
         
         nv.addGraph(function() {
         var dataList = new Array();
 
-	
-        var th_data = [
-        {
-            "key": "습도(%)",
-            "color": "#00ace6",
-            "values": dataList
-        }]
 	
         function xAxisLabel(time){
                 var hours = Math.floor(time / 3600);
@@ -612,10 +663,10 @@
         chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
         chart.x2Axis.tickFormat((time)=> xAxisLabel(time));
 
-
         //chart.yDomain([50,100]);
         chart.yTickFormat(d3.format(',.1f'));
         chart.useInteractiveGuideline(true);
+        
         d3.select('#chart svg')
             .datum(th_data) //push in datat
             .call(chart); // render chart
@@ -656,6 +707,25 @@
             
         }
         
+        function pushDataToGraph(data, piNum){
+            console.log(`PI No.${piNum} PUSHDATA`);
+            //console.log(th_data);
+            let values = th_data[piNum-1].values;
+            //console.log(values);
+            //console.log(`PI No.${piNum} DATA ADD!!`);
+            values.push({
+               x: data[0].fields.run_time,
+               y: data[0].fields.humidity,
+               series: piNum 
+            });
+
+            return chart;
+
+        }
+        
+        function moveData(){
+            
+        }
         //****** Graph END
 
         
@@ -691,17 +761,30 @@
             
         }
         
+        function updateCycle(piNum, data){
+            if(piNum==1 && data.length>1){
+                let last = data[0].fields.run_time;
+                let before = data[1].fields.run_time;
+                let cycleHtml = document.getElementById('dataCycle');
+                cycleHtml.innerHTML = `측정주기: 약 ${last-before}초`
+            }
+        }
+        
         checkRunning();
         setInterval(checkRunning, 5000);
+        
+        getAllThState(1);
+        getLastThData(1);
         
         function refreshData(){
             
             getAllThState(1);
-            getLastThData(1);
+            //getLastThData(1);
+            getLastTwoThData(1);
 
         }
         
-        refreshData();
+        //refreshData();
 
 			
         if( {{run_state}} == 1){
