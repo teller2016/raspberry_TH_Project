@@ -436,7 +436,7 @@
 
                     nv.utils.windowResize(chart.update);
                     
-                    //th_data=[];
+                    th_data=[];
                     return;
                 }
                 
@@ -493,12 +493,15 @@
         function getLastTwoThData(piNum){
                 
                 if(piNum>PI){
+                    moveData(); // update th_data by th_data_save
+                    
                     d3.select('#chart svg')
                         .datum(th_data)
                         .call(chart); //draw chart when getting data is done
 
                     nv.utils.windowResize(chart.update);
                     
+                    th_data=[];
                     return;
                 }
                 
@@ -625,12 +628,12 @@
             
         }
         
-        //******GRAPH
+        //******GRAPH Functions
         var chart = nv.models.lineWithFocusChart();
         
         //globalData
-        var th_data=[] // holds graph's data (uses in graph)
-        var th_data_save = {} // save graph data (uses to distinguish which pi's data)
+        var th_data=[] // (uses to push in data to graph)
+        var th_data_save = {} // holds datas used in graph (uses to distinguish which pi's data)
         
         nv.addGraph(function() {
         var dataList = new Array();
@@ -694,12 +697,14 @@
             //make fixed color for each PI data
             let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
             
-            th_data.push({
+            let graphData = {
                 "key": `PI-${piNum} 습도(%)`,
                 "color": "#"+fixedColor,
                 "values": dataList
-            });
+            }
             
+            th_data.push(graphData);
+            th_data_save[piNum] = graphData;
             
 
             return chart;
@@ -707,26 +712,35 @@
             
         }
         
-        function pushDataToGraph(data, piNum){
-            console.log(`PI No.${piNum} PUSHDATA`);
-            //console.log(th_data);
-            let values = th_data[piNum-1].values;
-            //console.log(values);
-            //console.log(`PI No.${piNum} DATA ADD!!`);
+        function pushDataToGraph(data, piNum){ // add newest data to th_data_save
+            
+            if(th_data_save[piNum] == undefined){
+                let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
+            
+                let graphData = {
+                    "key": `PI-${piNum} 습도(%)`,
+                    "color": "#"+fixedColor,
+                    "values": []
+                }
+                th_data_save[piNum] = graphData;
+            }
+            
+            let values = th_data_save[piNum].values;
+
             values.push({
                x: data[0].fields.run_time,
                y: data[0].fields.humidity,
                series: piNum 
             });
-
-            return chart;
-
+            return;
         }
         
-        function moveData(){
-            
+        function moveData(){ // move 'th_data_save' datas to 'th_data' (( th_data is empty ))
+            for(const piNum in th_data_save){
+                th_data.push(th_data_save[piNum]);
+            }
         }
-        //****** Graph END
+        //****** Graph Functions END
 
         
         function checkRunning(){ //check the running state and change color of the box

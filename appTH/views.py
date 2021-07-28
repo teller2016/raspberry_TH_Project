@@ -100,6 +100,10 @@ def getLastTwoThData(request):
     TH = th_model.instance()
     run_state = TH.getRunState()
     
+    #block returning datas that are not running
+    if run_state == 2:
+        return HttpResponse(None)
+    
     th_data = TH_data.objects.all().order_by('-id')[:2]
     data = serializers.serialize('json', th_data)
     
