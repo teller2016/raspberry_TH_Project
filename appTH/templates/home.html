@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="{% static 'wickedpicker/stylesheets/wickedpicker.css' %}">
     <script src="{% static 'wickedpicker/src/wickedpicker.js' %}"></script>
     
+    <!-- javascript on static file -->
+    <script src="{% static 'js/functions.js' %}"></script>
     
     <script type="text/javascript">
     
@@ -34,15 +36,7 @@
             return this.split(org).join(dest);
         }
         
-        function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
-            if(userInput == null){
-                alert("취소되었습니다.");
-            } else{
-                alert("다운로드를 시작합니다.");
-                location.href="/th_csv/"+userInput;
-            }
-        }
+        
         
         function start_check(){
             var result = confirm("정말로 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
@@ -111,41 +105,6 @@
                         });
             
             }
-        
-        
-        function getDate(){
-            let time = new Date();
-
-            let year = time.getFullYear();
-            let month = '' + (time.getMonth()+1);
-            let date = '' + time.getDate();
-            
-            if(month.length<2)
-                month = '0' + month;
-            if(date.length<2)
-                date='0'+date;
-            
-            return `${year}-${month}-${date}`;
-           
-        }
-        
-        function getTime(){
-            let time = new Date();
-        
-            let hours = '' + time.getHours();
-            let minutes = '' + time.getMinutes();
-            let seconds = '' + time.getSeconds();
-            
-            if(hours.length<2)
-                hours = '0'+hours;
-            if(minutes.length<2)
-                minutes = '0'+minutes;
-            if(seconds.length<2)
-                seconds = '0'+seconds;
-                
-            return `${hours}:${minutes}:${seconds}`;
-        }
-        
         
         
     </script>
@@ -271,16 +230,6 @@
         <hr class="hr-div">
         <br>
         
-        <script type="text/javascript">
-              function setCycle(){
-                  let cycle = document.getElementById('cycle');
-                  
-                  let cycleLabel = document.getElementById('cycleLabel');
-                  cycleLabel.innerHTML = cycle.value+'초';
-                           
-                  }
-                   
-        </script>
         
         <table class="table-start">
            <tr>
@@ -346,19 +295,6 @@
     </div>
 
     <script type="text/javascript">
-        function getHMS(HMS){
-
-            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
-            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
-            
-            let hours = ('0' + date.getHours()).slice(-2);
-            let minutes = ('0' + date.getMinutes()).slice(-2);
-            let seconds = ('0' + date.getSeconds()).slice(-2);
-            
-            let time = hours+':'+minutes+':'+seconds;
-            
-            return time;
-        }
         
         function getThData(){
                 

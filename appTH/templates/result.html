@@ -15,18 +15,13 @@
     <script type="text/javascript" src="{% static 'js/nv.d3.min.js' %}"></script>
     <script src="{% static 'js/stream_layers.js' %}"></script>
     <script src="{% static 'datetimepicker/jquery.js' %}"></script>
+    
+    <!-- javascript on static file -->
+    <script src="{% static 'js/functions.js' %}"></script>
+    
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
-        }
-        function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
-            if(userInput == null){
-                alert("취소되었습니다.");
-            } else{
-                alert("다운로드를 시작합니다.");
-                location.href="/th_csv/"+userInput;
-            }
         }
     </script>
     
@@ -68,19 +63,6 @@
 <br><br>
 
 <script type="text/javascript">
-        function getHMS(HMS){
-
-            var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
-            var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
-            
-            let hours = ('0' + date.getHours()).slice(-2);
-            let minutes = ('0' + date.getMinutes()).slice(-2);
-            let seconds = ('0' + date.getSeconds()).slice(-2);
-            
-            let time = hours+':'+minutes+':'+seconds;
-            
-            return time;
-        }
         
         function getThData(){
                 
