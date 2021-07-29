@@ -156,6 +156,26 @@
         <div id="allChart" class='with-3d-shadow with-transitions'>
         <svg></svg>
         </div>
+        
+        <br/>
+        
+        <div class="content-summary">
+            <p class="home-title">전체 요약</p>
+            <table class="table-th">
+                <tr class="tr-bar">
+                    <th class="ver-line thick"><font>PI NO.</font></th>
+                
+                    <th class="ver-line"><font>최대 습도(%)</font></th>
+                    <th class="ver-line thick"><font>온도(°C)</font></th>
+                    <th class="ver-line thick"><font>경과 시간</font></th>
+                    <th class="ver-line"><font>측정 시간</font></th>
+                </tr>
+                
+                
+                
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -167,6 +187,9 @@
     
     //globalData (csvfile data for all PI's)
     var all_th_data=[]
+    
+    //global variable ( Object to save PI's Max Datas )
+    var maxData = {}
         
     // Get all PI's Data and show it on graph
     function showAllGraph(fileName){
@@ -177,14 +200,11 @@
     }
     
     $('.close').click(()=>{
+        $('.tr-max').remove();
       $('#myModal').css('display', 'none');
     })
         
     function getAllCsvData(piNum, name){
-                
-                let param = {
-                    'csv_name' : name,
-                }
                 
                 if(piNum>PI){
                     
@@ -194,8 +214,15 @@
 
                     nv.utils.windowResize(allChart.update);
                     
+                    //put maxDatas on Table
+                    pushDataToTable();
+                    
                     all_th_data = [];
                     return;
+                }
+                
+                let param = {
+                    'csv_name' : name,
                 }
                 
                 $.ajax({
@@ -521,16 +548,24 @@
     
     //update data for all PI's graph
     function updateAllGraph(data, piNum){
-        
+        let maxHumidity = -1
         var dataList = new Array();
                                           
         for(const row of data.slice(0,-1)){
              
              let run_time = getSecond(row[0]);
+             let curHumidity = parseFloat(row[1]);
+             
+             //find Data that has max humidity
+             if(curHumidity >= maxHumidity){
+                 maxHumidity = curHumidity;
+                 maxData[piNum]=row;
+             }
+             //
                
              var graph = new Object();
              graph.x = run_time;
-             graph.y = parseFloat(row[1]);
+             graph.y = curHumidity;
              graph.series = 0;
              dataList.push(graph);
              
@@ -547,6 +582,28 @@
 
 
         return allChart;  
+        
+    }
+    
+    function pushDataToTable(){
+        console.log(maxData);
+        let total_html = '';
+        
+        for(const piNum in maxData){
+            let data = maxData[piNum];
+            
+            let tr_html= '<tr class="tr-max">'+
+                        '<td class="ver-line thick"><font>' + piNum + '</font></td>' +
+                        '<td class="ver-line"><font>' + data[1] + '</font></td>' + //Max Humidity
+                        '<td class="ver-line thick"><font>' + data[2] + '</font></td>' + //Temperature
+                        '<td class="ver-line thick"><font>' + data[0] + '</font></td>' + //run time
+                        '<td class="ver-line"><font>' + data[3].slice(0,19) + '</font></td>' + //time
+                        '</tr>';
+            
+            total_html += tr_html;
+        }
+        
+        $('.table-th').append(total_html);
         
     }
     
