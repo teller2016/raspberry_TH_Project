@@ -131,9 +131,7 @@ def getAllThData(request): # ajax call (get all th_data for All data table)
 def home(request):
     TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
     run_state = TH.getRunState() #th_model의 getRunState()메소드... run_state값 반환
-    pi_date = TH.getPiDate() # pi_date값 반환 (현재 시간?)
-
-    th_list = TH_data.objects.all().order_by('-id') # th_data를 id 내림차순으로 정렬 (가장 최근 데이터부터 정렬)
+    
     th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
 
     # create new th_state when there is no data (*prevent error)
@@ -154,16 +152,10 @@ def home(request):
             th_state.end_time = th_update.run_time_date #th_state의 end_time을 가장 마지막에 측정한 '진행시간'으로 변경
             th_state.save() #값 수정후 저장
     
-    num = th_state.run_id #th_state의 run_id값
-    th_list_mini = TH_data.objects.all().order_by('-id')[:40]
-    
     # run_state: 현재 pi의 진행시간
-    # th_list: 가장 최근 데이터부터 정렬된 th_data
-    # pi_date: 라즈베리파이의 현재시간?
     # th_state: th_state 데이터
-    # th_state_mini: th_data의 가장 최신 40개?의 데이터
-    return render(request,'home.html',{'run_state':run_state, 'th_list':th_list,
-                                       'pi_date':pi_date, 'th_state':th_state, 'th_list_mini':th_list_mini})
+    return render(request,'home.html',{'run_state':run_state,
+                                       'th_state':th_state})
 
 def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
 

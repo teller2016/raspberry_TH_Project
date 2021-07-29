@@ -1,4 +1,8 @@
 
+//NUMBER OF PI
+		const PI = 3
+
+
 function getDate(){
             let time = new Date();
 
