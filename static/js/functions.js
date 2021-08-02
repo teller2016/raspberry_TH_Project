@@ -2,6 +2,12 @@
 //NUMBER OF PI
 		const PI = 3
 
+//Color of PI's GRAPH
+const fixedColor = {
+        '1' : '#eb4034',
+        '2' : '#36c93e',
+        '3' : '#493af2',
+    }
 
 function getDate(){
             let time = new Date();
@@ -57,7 +63,38 @@ function setCycle(){
             cycleLabel.innerHTML = cycle.value+'초';
                            
                   }
+                  
+function clock(startTime, run_state){
 
+            let currentDate = document.getElementById("cur_date");
+            let currentTime = document.getElementById("cur_time");
+
+            if(run_state == 1){
+                getRunTime(startTime);
+            }
+           
+           currentDate.innerText = getDate();
+           currentTime.innerText = getTime();
+        }
+
+function getRunTime(startTime){ //경과 시간 계산하여 출력
+            let runTime = document.getElementById('run_time');
+            
+            let end = new Date(startTime);
+            
+            let cur = new Date();
+            let milisecond = cur-end;
+            let run = new Date(milisecond);
+            
+            let hours = ('0' + parseInt(milisecond /1000 /60/60)).slice(-2);
+            let minutes = ('0' + run.getMinutes()).slice(-2);
+            let seconds = ('0' + run.getSeconds()).slice(-2);
+            
+            let time = hours+':'+minutes+':'+seconds;
+            //console.log(time);
+            runTime.innerText = time;
+
+        }
 
 //*********** summary.html, beforeResult.html ***********//
 function updateCycle(piNum, data){

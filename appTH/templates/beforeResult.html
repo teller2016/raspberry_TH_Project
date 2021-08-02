@@ -538,7 +538,6 @@
                  maxHumidity = curHumidity;
                  maxData[piNum]=row;
              }
-             //
                
              var graph = new Object();
              graph.x = run_time;
@@ -548,12 +547,9 @@
              
         }
         
-        //make fixed color for each PI data
-        let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
-        
         all_th_data.push({
                 "key": `PI-${piNum} 습도(%)`,
-                "color": "#"+fixedColor,
+                "color": fixedColor[piNum],
                 "values": dataList
             });
 

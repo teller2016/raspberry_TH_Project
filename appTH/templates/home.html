@@ -198,14 +198,9 @@
         <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");
         let currentTime = document.getElementById("cur_time");
-        function clock(){
-            
-           
-           currentDate.innerText = getDate();
-           currentTime.innerText = getTime();
-        }
-        clock();
-        setInterval(clock,1000);
+        
+	clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}');
+        setInterval(()=>clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}'),1000);
         
         
             
