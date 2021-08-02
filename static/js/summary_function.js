@@ -183,7 +183,7 @@ function getAllThState(piNum, run_state){
                             
                             }
                             
-                            getAllThState(piNum+1);
+                            getAllThState(piNum+1, run_state);
                             
                         },
                         error: function(){
@@ -196,14 +196,14 @@ function getAllThState(piNum, run_state){
                                 )
                             }
                             
-                            getAllThState(piNum+1);
+                            getAllThState(piNum+1, run_state);
                         }
                     });
             
         }
 
 function getLastThData(piNum, run_state){
-                
+          
                 if(piNum>PI){
                     d3.select('#chart svg')
                         .datum(th_data)
@@ -231,7 +231,6 @@ function getLastThData(piNum, run_state){
                                     //console.log(`PI No.${piNum} not running`);
                                 }
                                 else{
-                                    
                                     //show cycle
                                     updateCycle(piNum, data);
 
@@ -254,12 +253,12 @@ function getLastThData(piNum, run_state){
                                 }
                                 
                                 
-                                getLastThData(piNum+1);
+                                getLastThData(piNum+1, run_state);
                                 
                             },
                             error: function(){
                                 console.log(`PI No.${piNum} Ajax getLastThData Error!!`);
-                                getLastThData(piNum+1);
+                                getLastThData(piNum+1, run_state);
                             }
                         });
             
