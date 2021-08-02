@@ -19,6 +19,9 @@
     <script src="{% static 'datetimepicker/jquery.js' %}"></script>
     <script src="{% static 'datetimepicker/build/jquery.datetimepicker.full.min.js' %}"></script>
     
+    <!-- javascript on static file -->
+    <script src="{% static 'js/functions.js' %}"></script>
+    
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
@@ -182,8 +185,6 @@
 <!-- Modal End -->
 
 <script type="text/javascript">
-    //NUMBER OF PI
-    const PI = 3
     
     //globalData (csvfile data for all PI's)
     var all_th_data=[]
@@ -437,30 +438,6 @@
             "values": dataList2
           }
         ];
-        
-        function xAxisLabel(time){
-                var hours = Math.floor(time / 3600);
-                time = time - hours * 3600;
-                var minutes = Math.floor(time/60);
-                var seconds = time - minutes * 60;
-                
-                if(hours<10)
-                    hours = '0' + hours;
-                if(minutes<10)
-                    minutes = '0' + minutes;
-                if(seconds<10)
-                    seconds = '0' + seconds;
-
-                if(hours>0)
-                    str = hours + "시간 " + minutes+ "분 ";
-                else
-                    if(minutes>0)
-                        str = minutes+ "분 " + seconds + "초";
-                    else
-                        str = seconds + "초";
-                
-                return str;
-        }
 
         chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
         chart.yDomain([0,100]);
