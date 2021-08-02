@@ -2,6 +2,12 @@
 //NUMBER OF PI
 		const PI = 3
 
+//Color of PI's GRAPH
+const fixedColor = {
+        '1' : '#eb4034',
+        '2' : '#36c93e',
+        '3' : '#493af2',
+    }
 
 function getDate(){
             let time = new Date();

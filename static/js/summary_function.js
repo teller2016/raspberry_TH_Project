@@ -347,13 +347,11 @@ function updateGraph(data, piNum){
                                           
                 dataList.push(graph);                            
                 })
-                
-            //make fixed color for each PI data
-            let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
+             
             
             let graphData = {
                 "key": `PI-${piNum} 습도(%)`,
-                "color": "#"+fixedColor,
+                "color": fixedColor[piNum],
                 "values": dataList
             }
             
@@ -369,11 +367,10 @@ function updateGraph(data, piNum){
 function pushDataToGraph(data, piNum){ // add newest data to th_data_save
             
             if(th_data_save[piNum] == undefined){
-                let fixedColor = Math.floor(piNum*0.001152*16777215).toString(16);
-            
+
                 let graphData = {
                     "key": `PI-${piNum} 습도(%)`,
-                    "color": "#"+fixedColor,
+                    "color": fixedColor[piNum],
                     "values": []
                 }
                 th_data_save[piNum] = graphData;
