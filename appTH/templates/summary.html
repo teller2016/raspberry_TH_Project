@@ -746,19 +746,10 @@
     
     
     <script type="text/javascript">
-        let currentDate = document.getElementById("cur_date");
-        let currentTime = document.getElementById("cur_time");
-        function clock(){
-
-            if({{run_state}} == 1){
-                getRunTime();
-            }
-           
-           currentDate.innerText = getDate();
-           currentTime.innerText = getTime();
-        }
-        clock();
-        setInterval(clock,1000);
+        
+        
+        clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}', {{run_state}});
+        setInterval(()=>clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}', {{run_state}}),1000);
         
         function getRunTime(){ //경과 시간 계산하여 출력
             let runTime = document.getElementById('run_time');
