@@ -131,8 +131,9 @@ function xAxisLabel(time){
         }
 
 //************** home.html, result.html ******************//
-function csv_name(){
-            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)")
+function csv_name(piNum, date){
+            let defaultName = `Pi.${piNum}_${date}`
+            var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)", defaultName);
             if(userInput == null){
                 alert("취소되었습니다.");
             } else{

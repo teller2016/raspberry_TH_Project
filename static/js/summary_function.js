@@ -21,10 +21,6 @@ function start_pi(){ //start selected pi
                 
                 requestPi_start(0,checkedList, dateAndTime, second);
                 
-                //if start fails, refresh page
-                setTimeout(function(){
-                    location.reload();
-                },5000); 
                 return true;
                 //checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
 
@@ -36,7 +32,11 @@ function start_pi(){ //start selected pi
         }
         
         function requestPi_start(index, checkedList, time, second){
-
+			//when last one from the pi list started, refresh page
+            if(index > checkedList.length - 1){
+                 location.reload();
+                 return;
+            }
             $.ajax({
                         url: 'http://192.168.243.' + checkedList[index] +':8000/restartAll/'+ time + '/' + second,
                         type: 'POST',
@@ -44,17 +44,14 @@ function start_pi(){ //start selected pi
                             'X-CSRFToken': '{{csrf_token}}',
                             
                             },
+                        timeout: 3000,
                         success:function(data){
-                            //when last one from the pi list started, refresh page
-                            if(index >= checkedList.length - 1){
-                                location.reload();
-                                return;
-                            }
-                                
                             requestPi_start(index+1, checkedList, time, second);
                         },
                         error: function(){
                             console.log(`Ajax requestPi_start-${index+1} Error!!`);
+                            alert(`No.${checkedList[index]} failed to start!!!\n***Please Restart or Turn On Manually***`);
+                            requestPi_start(index+1, checkedList, time, second);
                         }
                 });
             
@@ -84,6 +81,7 @@ function start_pi(){ //start selected pi
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}',
                                 },
+                            timeout: 4000,
                             success:function(data){
                                     
                                 console.log(data);
@@ -108,6 +106,7 @@ function checkRunning(){ //check the running state and change color of the box
                     headers:{
                         'X-CSRFToken': '{{csrf_token}}'
                          },
+                    timeout: 3000,
                     success: function(data){ //data == run_state
 						if(data == 2){ // not running
 							$('.connection'+piNum).css('background-color','#6eff3d');
@@ -138,6 +137,7 @@ function hideElement(piNum){// hide data that is not running
                     headers:{
                         'X-CSRFToken': '{{csrf_token}}'
                          },
+                    timeout: 3000,
                     success: function(data){ //data == run_state
 						if(data == 2){
 							
@@ -161,6 +161,7 @@ function getAllThState(piNum, run_state){
                         headers:{
                             'X-CSRFToken': '{{csrf_token}}'
                             },
+                        timeout: 3000,
                         success:function(data){
                             //console.log(data);
                             $('#error-pi'+piNum).remove();
@@ -174,9 +175,13 @@ function getAllThState(piNum, run_state){
                                 $('#maxHumidity'+piNum).html(data[0].fields.max_hum);
                                 $('#maxRunTime'+piNum).html(data[0].fields.run_time_str);
                                 
+                                
                                 // if Data is changed - change color
                                 if(lastRunTime != data[0].fields.run_time_str){ 
-                                    d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','red');
+									if(lastRunTime == '-')
+										d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','gray');
+									else
+										d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','red');
                                     d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).transition().style('color','black').duration(3000);
                                 }
                                 
@@ -221,6 +226,7 @@ function getLastThData(piNum, run_state){
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
+                            timeout: 3000,
                             success:function(data){
                                 
                                 //show data on table
@@ -243,7 +249,7 @@ function getLastThData(piNum, run_state){
                                         $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                         $('#curRunId'+piNum).html(data[0].fields.run_id);
                                         
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','gray');
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                     }
                                     
@@ -285,6 +291,7 @@ function getLastTwoThData(piNum){
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
+                            timeout: 3000,
                             success:function(data){
                                 
                                 //show data on table
@@ -300,6 +307,7 @@ function getLastTwoThData(piNum){
                                     updateCycle(piNum, data);
                                     
                                     let lastRunId = $(`#curRunId${piNum}`).text();
+                                    let lastHumidity = $(`#curHumidity${piNum}`).text();
 
                                     // if Data is new - change Data and Color
                                     if(lastRunId != data[0].fields.run_id){ 
@@ -308,7 +316,13 @@ function getLastTwoThData(piNum){
                                         $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                         $('#curRunId'+piNum).html(data[0].fields.run_id);
                                         
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+                                        if(lastHumidity > data[0].fields.humidity)
+											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','blue');
+										else if(lastHumidity == data[0].fields.humidity)
+											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','gray');
+										else
+											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+												
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                         
                                         //show data on graph

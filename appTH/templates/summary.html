@@ -149,7 +149,9 @@
             <tr>
                 <th class='thick'></th>
                 <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
+                <th rowspan=5 class='thick2'></th>
                 <th class='ver-line' style='border:3px solid' colspan=2>실시간 데이터</th>
+                <th rowspan=5 class='thick2'></th>
             </tr>
             
             <tr class="tr-bar">
@@ -169,10 +171,10 @@
                 <td class='ver-line thick'>1</td>
                 
                 <td class='ver-line' id='maxHumidity1'>-</td>
-                <td class='ver-line thick' id='maxRunTime1'>-</td>
+                <td class='ver-line' id='maxRunTime1'>-</td>
                 
                 <td class='ver-line' id='curHumidity1'>-</td>
-                <td class='ver-line thick' id='curTemperature1'>-</td>
+                <td class='ver-line' id='curTemperature1'>-</td>
                 
                 <td style='display:none' id='curRunId1'>-</td>
                 
@@ -187,10 +189,10 @@
                 <td class='ver-line thick'>2</td>
                 
                 <td class='ver-line' id='maxHumidity2'>-</td>
-                <td class='ver-line thick' id='maxRunTime2'>-</td>
+                <td class='ver-line' id='maxRunTime2'>-</td>
                 
                 <td class='ver-line' id='curHumidity2'>-</td>
-                <td class='ver-line thick' id='curTemperature2'>-</td>
+                <td class='ver-line' id='curTemperature2'>-</td>
                 
                 <td style='display:none' id='curRunId2'>-</td>
                 
@@ -205,10 +207,10 @@
                <td class='ver-line thick'>3</td>
                 
                 <td class='ver-line' id='maxHumidity3'>-</td>
-                <td class='ver-line thick' id='maxRunTime3'>-</td>
+                <td class='ver-line' id='maxRunTime3'>-</td>
                 
                 <td class='ver-line' id='curHumidity3'>-</td>
-                <td class='ver-line thick' id='curTemperature3'>-</td>
+                <td class='ver-line' id='curTemperature3'>-</td>
                 
                 <td style='display:none' id='curRunId3'>-</td>
                 
@@ -302,7 +304,7 @@
         chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
         chart.x2Axis.tickFormat((time)=> xAxisLabel(time));
 
-        //chart.yDomain([50,100]);
+        chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));
         chart.useInteractiveGuideline(true);
         

@@ -118,7 +118,7 @@ input{
 }
 
 .table-th{
-	width: 320px;
+	width: 370px;
 	height: 60px;
 	font-size: 12px;
 	border: 2px solid #a8a8a8;
@@ -364,6 +364,11 @@ input{
 
 .thick{
 	border-right:3px solid;
+}
+
+.thick2{
+	border-right:3px solid;
+	border-left:3px solid;
 }
 
 .peak{

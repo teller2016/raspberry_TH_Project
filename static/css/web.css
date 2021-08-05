@@ -188,7 +188,7 @@ button {
 }
 
 .table-th{
-	width: 680px;
+	width: 700px;
 	height: 100px;
 	font-size: 18px;
 	border: 2px solid #949494;
@@ -395,6 +395,11 @@ td{
 
 .thick{
 	border-right:3px solid;
+}
+
+.thick2{
+	border-right:3px solid;
+	border-left:3px solid;
 }
 
 .modal{
