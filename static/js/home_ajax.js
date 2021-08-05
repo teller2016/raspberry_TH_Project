@@ -51,6 +51,7 @@
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}',
                                 },
+                            timeout: 3000,
                             success:function(data){
                                     
                                 console.log(data);
