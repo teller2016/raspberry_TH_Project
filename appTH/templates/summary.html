@@ -302,7 +302,7 @@
         chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
         chart.x2Axis.tickFormat((time)=> xAxisLabel(time));
 
-        //chart.yDomain([50,100]);
+        chart.yDomain([0,100]);
         chart.yTickFormat(d3.format(',.1f'));
         chart.useInteractiveGuideline(true);
         

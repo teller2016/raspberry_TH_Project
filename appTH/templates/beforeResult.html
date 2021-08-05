@@ -462,6 +462,7 @@
         allChart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
         allChart.x2Axis.tickFormat((time)=> xAxisLabel(time));
 
+        allChart.yDomain([0,100]);
         allChart.yTickFormat(d3.format(',.1f'));
         allChart.useInteractiveGuideline(true);
         d3.select('#allChart svg')
@@ -559,7 +560,7 @@
     }
     
     function pushDataToTable(){
-        console.log(maxData);
+        //console.log(maxData);
         let total_html = '';
         
         for(const piNum in maxData){
