@@ -66,55 +66,91 @@
 		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
 		</div>
         <br>
+	
+	<!-- 현재시간 -->
+        <div class='pi-list'>
+            <div class='content-summary2'>
+                <div class='time-box'>현재시간</div>
+                <span class="time-title2" id="cur_date" >date</span>
+                <span class="time-title2" id="cur_time" >time</span>
+            </div>
+        </div>
+	
+	<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
+        <div>
+            <p class="time-title2" style="font-size:15px">PI No.1 기준</p>
+            
+            <div class='pi-list'>
+                <div class='content-summary2'>
+                    <div class='time-box'>시작시간</div>
+                    <span class='time-title2'>{{th_state.start_time|date:"Y-m-d H:i:s"}}</span>
+                </div>
+                
+                {% if run_state == 2 %}
+                <div class='content-summary2'>
+                    <div class='time-box'>종료시간</div>
+                    <span class='time-title2'>{{th_state.end_time|date:"Y-m-d H:i:s"}}</span>
+                </div>
+                {% else %}
+                <div class='content-summary2'>
+                    <div class='time-box'>경과시간</div>
+                    <span class='time-title2' id='run_time'>run_time</span>
+                </div>
+                {% endif %}
+            
+            </div>
+            
+            <p class="time-title2" id="dataCycle">측정주기: N/A</p>
+        </div>
+	
+	
         <div class="content-summary">
+	    
         <a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
         <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
-		<p class="home-title bt1">측정 상태 요약</p>
-        <p class="time-title">시작시간: {{th_state.start_time|date:"Y/m/d H:i:s"}}</p>
-        
-        {% if run_state == 2 %}
-        <!--    측정이 종료되었을 시 종료시간 표시-->
-        <p class="time-title">종료시간: {{th_state.end_time|date:"Y/m/d H:i:s"}}</p>
-        {% endif %}
+	
+	<p class="home-title bt1">측정 상태 요약</p>
 
-        
-        
-        <table class="table-th">
+	<table class="table-th">
+            <br/>
+            <tr>
+                <th class='thick'></th>
+                <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
+                <th rowspan=5 class='thick2'></th>
+                <th class='ver-line' style='border:3px solid' colspan=2>실시간 데이터</th>
+                <th rowspan=5 class='thick2' style='border-right:0px'></th>
+            </tr>
+            
             <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
+                <th class="ver-line thick"><font>PI NO.</font></th>
+                
                 <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_state">
+                <th class="ver-line thick"><font>경과 시간</font></th>
+                
+                <th class="ver-line"><font>현재 습도(%)</font></th>
+                <th class="ver-line thick"><font>온도(°C)</font></th>
+                
                 
             </tr>
-        </table>
-        
-        
-        
-        
-        <br>
-        {% if run_state == 2 %}
-        <p class="home-title">마지막 수치</p>
-        {% else %}
-        <p class="home-title">실시간 수치</p>
-        {% endif %}
-        
-        
-        <table class="table-th">
-            <tr class="tr-bar">
-                <th class="ver-line"><font>NO.</font></th>
-                <th class="ver-line"><font>경과 시간</font></th>
-                <th class="ver-line"><font>습도(%)</font></th>
-                <th class="ver-line"><font>온도(°C)</font></th>
-                <th class="ver-line"><font>측정 시간</font></th>
-            </tr>
-            <tr id="cur_value">
+            <!-- PI Data -->
+            <tr id="summary1">
+                <td class='ver-line thick'>{{pi_num}}</td>
+                
+                <td class='ver-line' id='maxHumidity'>-</td>
+                <td class='ver-line' id='maxRunTime'>-</td>
+                
+                <td class='ver-line' id='curHumidity'>-</td>
+                <td class='ver-line' id='curTemperature'>-</td>
+                
+                <td style='display:none' id='curRunId'>-</td>
                 
             </tr>
+            
+
+            
         </table>
+
+
         
         <br>
         </div>
@@ -130,26 +166,11 @@
         <br>
         <hr class="hr-div">
         <br>
-        
-        <table class="table-start">
-           <tr>
-              <td>날짜</td>
-              <td>
-                <span id="cur_date" style="color:gray;">date</span>
-              </td>
-              <td rowspan="3"><button class="btn-end" onclick="end_check();">개별 종료</button></td>
-              <td rowspan="3"><button class="btn-endAll" onclick="end_all();">전체 종료</button></td>
-           </tr>
-           <tr><td colspan="2"><hr></td></tr>
-           <tr>
-              <td>시간</td>
-              <td>
-                <span id="cur_time" style="color:gray; padding:10px;">time</span>
-              </td>
-           </tr>
-        </table>
-        
-        
+	
+	<div class='content-summary2'>
+	    <button class="btn-end" onclick="end_check();">개별 종료</button>
+            <button class="btn-endAll" onclick="end_all();">전체 종료</button>
+        </div>
         
         {% else %}
         <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
@@ -158,38 +179,25 @@
         <hr class="hr-div">
         <br>
         
+	<div class='content-summary2'>
+            <table class='table-start'>
         
-        <table class="table-start">
-           <tr>
-              <td>날짜</td>
-              <td>
-                <span id="cur_date" style="color:gray;">date</span>
-              </td>
-              
-              <td>
-                  측정 주기
-              </td>  
-              
-              <td rowspan="3"><button class="btn-start" onclick="start_check();">개별 측정<br>시작</button></td>
-           </tr>
-           
-           <tr>
-               <td colspan="2"><hr></td>
-               <td rowspan="2">
-                   
-                  <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
-                  <label for="cycle" id="cycleLabel">30초</label>
-              
-              </td>   
-           </tr>
-           
-           <tr>
-              <td>시간</td>
-              <td>
-                <span id="cur_time" style="color:gray; padding:10px;">time</span>
-              </td>
-           </tr>
-        </table>
+            <tr>
+                <td>
+                    측정 주기
+                </td>
+            </tr>
+            <tr>
+                <td>
+                 <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+                <label for="cycle" id="cycleLabel">30초</label>
+                </td>
+                
+            </tr>
+            </table>
+            
+            <button class="btn-start" onclick="start_check();">개별 측정<br>시작</button>
+        </div>
         
         
         {% endif %}
@@ -199,8 +207,8 @@
         let currentDate = document.getElementById("cur_date");
         let currentTime = document.getElementById("cur_time");
         
-	clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}');
-        setInterval(()=>clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}'),1000);
+	clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}', {{run_state}});
+        setInterval(()=>clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}', {{run_state}}),1000);
         
         
             

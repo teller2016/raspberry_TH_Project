@@ -80,16 +80,27 @@ function getThData(){
                             success:function(data){
                                 if(data.length==0)
                                     return;
-                                
-                                $('#cur_value').empty();
+                                    
+                                let lastRunId = $(`#curRunId`).text();
+                                let lastHumidity = $(`#curHumidity`).text();
+                  
+                                // if Data is new - change Data and Color
+                                if(lastRunId != data[0].fields.run_id){
+                                    //add data to the table
+                                    $('#curHumidity').html(data[0].fields.humidity);
+                                    $('#curTemperature').html(data[0].fields.temperature);
+                                    $('#curRunId').html(data[0].fields.run_id);
+                                    
+                                    if(lastHumidity > data[0].fields.humidity)
+                                        d3.selectAll(`#curHumidity, #curTemperature`).style('color','blue');
+                                    else if(lastHumidity == data[0].fields.humidity || lastHumidity == '-')
+                                        d3.selectAll(`#curHumidity, #curTemperature`).style('color','gray');
+                                    else
+                                        d3.selectAll(`#curHumidity, #curTemperature`).style('color','red');
+                                    
+                                    d3.selectAll(`#curHumidity, #curTemperature`).transition().style('color','black').duration(3000);
+                                }
 
-                                $('#cur_value').append(
-                                    "<td class='ver-line'>" + data[0].fields.run_id + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.humidity + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.temperature + "</td>" +
-                                    "<td class='ver-line'>" + getHMS(data[0].fields.run_time_date)+ "</td>" 
-                                )
                                 
                                  $('#table_data').empty();
                                     
@@ -150,18 +161,21 @@ function getThState(){
                                 'X-CSRFToken': '{{csrf_token}}'
                                 },
                             success:function(data){
+                                
+                                let lastRunTime = $(`#maxRunTime`).text();
+                                
+                                $('#maxHumidity').html(data[0].fields.max_hum);
+                                $('#maxRunTime').html(data[0].fields.run_time_str);
+                                
+                                if(lastRunTime != data[0].fields.run_time_str){
+                                    if(lastRunTime == '-')
+                                        d3.selectAll(`#maxHumidity, #maxRunTime`).style('color','gray');
+                                    else
+                                        d3.selectAll(`#maxHumidity, #maxRunTime`).style('color','red');
+                                        
+                                    d3.selectAll(`#maxHumidity, #maxRunTime`).transition().style('color','black').duration(3000);
+                                }
 
-                               $('#cur_state').empty();
-                                
-                                $('#cur_state').append(
-                                    "<td class='ver-line' id='state_id'>" + data[0].fields.run_id + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.run_time_str + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum + "</td>" +
-                                    "<td class='ver-line'>" + data[0].fields.max_hum_temp + "</td>" +
-                                    "<td class='ver-line'>" + getHMS(data[0].fields.max_hum_time) + "</td>" 
-                                )
-                                
-                                
                             },
                             error: function(){
                                 console.log('Ajax getThState Error!!');
@@ -178,7 +192,7 @@ function getAllThData(){
                         'X-CSRFToken': '{{csrf_token}}'
                          },
                     success: function(data){
-                        
+                        updateCycle(1, data);
                         update(data);
 
                     },

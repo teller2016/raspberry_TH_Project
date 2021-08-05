@@ -97,7 +97,7 @@ function getRunTime(startTime){ //경과 시간 계산하여 출력
         }
 
 //*********** summary.html, beforeResult.html ***********//
-function updateCycle(piNum, data){
+function updateCycle(piNum, data){ //+home_ajax.js
             if(piNum==1 && data.length>1){
                 let last = data[0].fields.run_time;
                 let before = data[1].fields.run_time;
