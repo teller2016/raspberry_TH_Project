@@ -131,6 +131,7 @@ def getAllThData(request): # ajax call (get all th_data for All data table)
 def home(request):
     TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
     run_state = TH.getRunState() #th_model의 getRunState()메소드... run_state값 반환
+    pi_num = TH.getPiNum()
     
     th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
 
@@ -155,7 +156,7 @@ def home(request):
     # run_state: 현재 pi의 진행시간
     # th_state: th_state 데이터
     return render(request,'home.html',{'run_state':run_state,
-                                       'th_state':th_state})
+                                       'th_state':th_state, 'pi_num':pi_num})
 
 def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
 
@@ -327,8 +328,9 @@ def result(request): # ajax call
     run_state = TH.getRunState()
     pi_num = TH.getPiNum()
     
+    th_state = TH_state.objects.first()
             
-    return render(request, 'result.html', {'run_state':run_state, 'pi_num':pi_num})
+    return render(request, 'result.html', {'run_state':run_state, 'th_state':th_state, 'pi_num':pi_num})
 
 # backup files path in local
 path = "/home/pi/Project/backup/" 
@@ -400,7 +402,7 @@ def getDataByName(request): # ajax call ( return data that matches the csv file 
     return JsonResponse(csv_list, safe=False)
 
 
-def save_csv(request, saveName, csvName): # save request from before Data lookup
+def save_csv(request, saveName, csvName): # save csv request from beforeData lookup
     
     
     wrapper = FileWrapper(open(path+csvName))
