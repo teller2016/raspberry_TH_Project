@@ -174,9 +174,13 @@ function getAllThState(piNum, run_state){
                                 $('#maxHumidity'+piNum).html(data[0].fields.max_hum);
                                 $('#maxRunTime'+piNum).html(data[0].fields.run_time_str);
                                 
+                                
                                 // if Data is changed - change color
                                 if(lastRunTime != data[0].fields.run_time_str){ 
-                                    d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','red');
+									if(lastRunTime == '-')
+										d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','gray');
+									else
+										d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).style('color','red');
                                     d3.selectAll(`#maxHumidity${piNum}, #maxRunTime${piNum}`).transition().style('color','black').duration(3000);
                                 }
                                 
@@ -243,7 +247,7 @@ function getLastThData(piNum, run_state){
                                         $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                         $('#curRunId'+piNum).html(data[0].fields.run_id);
                                         
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','gray');
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                     }
                                     
@@ -300,6 +304,7 @@ function getLastTwoThData(piNum){
                                     updateCycle(piNum, data);
                                     
                                     let lastRunId = $(`#curRunId${piNum}`).text();
+                                    let lastHumidity = $(`#curHumidity${piNum}`).text();
 
                                     // if Data is new - change Data and Color
                                     if(lastRunId != data[0].fields.run_id){ 
@@ -308,7 +313,13 @@ function getLastTwoThData(piNum){
                                         $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                         $('#curRunId'+piNum).html(data[0].fields.run_id);
                                         
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+                                        if(lastHumidity > data[0].fields.humidity)
+											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','blue');
+										else if(lastHumidity == data[0].fields.humidity)
+											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','gray');
+										else
+											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+												
                                         d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
                                         
                                         //show data on graph
