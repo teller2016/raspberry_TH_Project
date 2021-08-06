@@ -58,13 +58,13 @@
 		{% include 'header.html' %}
 	
 	<div class="content-container">
-		<div class="pi-select">
-        <p class="home-title">온습도계 선택</p>
-        <a href="http://192.168.243.1:8000/summary"><button>전체 확인</button></a>
-		<a href="http://192.168.243.1:8000/"><button class="btn-me">1번</button></a>
-		<a href="http://192.168.243.2:8000/"><button>2번</button></a>
-		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
-		</div>
+	    <div class="pi-select">
+		<p class="home-title">온습도계 선택</p>
+		<a href="http://192.168.243.1:8000/summary"><button>전체 확인</button></a>
+		<a href="http://192.168.243.1:8000/" class='connection-box connection1'><button class='connection-status btn-me'>1번</button></a>
+		<a href="http://192.168.243.2:8000/" class='connection-box connection2'><button class='connection-status'>2번</button></a>
+		<a href="http://192.168.243.3:8000/" class='connection-box connection3'><button class='connection-status'>3번</button></a>
+	    </div>
         <br>
 	
 	<!-- 현재시간 -->
@@ -275,6 +275,9 @@
                 
             }
         
+	checkRunning();
+        setInterval(checkRunning, 5000);
+	
         refreshData();
         if( {{run_state}} == 1)
             setInterval(refreshData, 2000); // refresh every x seconds
