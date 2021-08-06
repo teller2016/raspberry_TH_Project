@@ -33,7 +33,7 @@ pymysql.install_as_MySQLdb()
 def summary(request):
     TH = th_model.instance() #th_model의 인스턴스 생성? (라즈베리파이 데이터 생성?)
     run_state = TH.getRunState() #th_model의 getRunState()메소드... run_state값 반환
-    
+    pi_num = TH.getPiNum()
 
     th_state = TH_state.objects.first() #th_state의 처음에 있는 데이터 가지고 오기
 
@@ -57,7 +57,7 @@ def summary(request):
     
 
     return render(request,'summary.html',{'run_state':run_state, 
-                                       'th_state':th_state,})
+                                       'th_state':th_state, 'pi_num':pi_num})
 
 def checkRunning(request):
     TH = th_model.instance()
