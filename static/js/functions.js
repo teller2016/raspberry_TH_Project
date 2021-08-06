@@ -95,9 +95,44 @@ function getRunTime(startTime){ //경과 시간 계산하여 출력
             runTime.innerText = time;
 
         }
+        
+//*********** summary.html , home.html **************
+function checkRunning(){ //check the running state and change color of the box
+            
+            function changeColor(piNum){
+                $.ajax({
+                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
+                    type: 'POST',
+                    headers:{
+                        'X-CSRFToken': '{{csrf_token}}'
+                         },
+                    timeout: 3000,
+                    success: function(data){ //data == run_state
+						if(data == 2){ // not running
+							$('.connection'+piNum).css('border-bottom-color','#6eff3d');
+						}
+                        else if(data == 1){
+                            $('.connection'+piNum).css('border-bottom-color','#0ea800');
+                        }
+                    },
+                    error: function(){
+                        // error - change connection state to red
+                        $('.connection'+piNum).css('border-bottom-color','#ff2b2b');
+                        console.log("checkRunning Error occured!!");
+                    }
+                })
+            }
+            
+            for(piNum=1; piNum <= PI; piNum++)
+            {
+                changeColor(piNum);
+            }
+            
+        }
+
 
 //*********** summary.html, beforeResult.html ***********//
-function updateCycle(piNum, data){
+function updateCycle(piNum, data){ //+home_ajax.js
             if(piNum==1 && data.length>1){
                 let last = data[0].fields.run_time;
                 let before = data[1].fields.run_time;

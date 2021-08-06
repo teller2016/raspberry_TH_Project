@@ -97,38 +97,7 @@ function start_pi(){ //start selected pi
             
             }
 
-function checkRunning(){ //check the running state and change color of the box
-            
-            function changeColor(piNum){
-                $.ajax({
-                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
-                    type: 'POST',
-                    headers:{
-                        'X-CSRFToken': '{{csrf_token}}'
-                         },
-                    timeout: 3000,
-                    success: function(data){ //data == run_state
-						if(data == 2){ // not running
-							$('.connection'+piNum).css('background-color','#6eff3d');
-						}
-                        else if(data == 1){
-                            $('.connection'+piNum).css('background-color','#0ea800');
-                        }
-                    },
-                    error: function(){
-                        // error - change connection state to red
-                        $('.connection'+piNum).css('background-color','#ff2b2b');
-                        console.log("checkRunning Error occured!!");
-                    }
-                })
-            }
-            
-            for(piNum=1; piNum <= PI; piNum++)
-            {
-                changeColor(piNum);
-            }
-            
-        }
+
 
 function hideElement(piNum){// hide data that is not running
 			$.ajax({
