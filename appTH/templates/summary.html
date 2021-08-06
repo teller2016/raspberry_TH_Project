@@ -59,9 +59,9 @@
 		<div class="pi-select">
         <p class="home-title">온습도계 선택</p>
         <a href="http://192.168.243.1:8000/summary"><button class="btn-me">전체 확인</button></a>
-		<a href="http://192.168.243.1:8000/"><button>1번</button></a>
-		<a href="http://192.168.243.2:8000/"><button>2번</button></a>
-		<a href="http://192.168.243.3:8000/"><button>3번</button></a>
+		<a href="http://192.168.243.1:8000/" class='connection-box connection1'><button class='connection-status'>1번</button></a>
+		<a href="http://192.168.243.2:8000/" class='connection-box connection2'><button class='connection-status'>2번</button></a>
+		<a href="http://192.168.243.3:8000/" class='connection-box connection3'><button class='connection-status'>3번</button></a>
 		</div>
         
         
@@ -80,27 +80,6 @@
             </div>
         </div>
         {% endif %}
-        
-        <!-- 연결상태 -->
-        <div class='pi-list connection'>
-            <div class='content-summary2'>
-                <div style='margin:5px 0px 5px 0px;'>연결상태</div>
-                
-                <table class='table-connection'>
-                    <tr>
-                        <td class='td-connection connection1'>
-                            PI.1
-                        </td>
-                        <td class='td-connection connection2'>
-                            PI.2
-                        </td>
-                        <td class='td-connection connection3'>
-                            PI.3
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
         
         <!-- 현재시간 -->
         <div class='pi-list'>

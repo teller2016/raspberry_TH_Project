@@ -8,6 +8,14 @@ body{
 	left: 0;
 }
 
+.connection-box{
+	border-bottom-style: solid;
+    border-bottom-width: 12px;
+    padding-bottom: 16px;
+    border-radius: 15px;
+    border-bottom-color: #6eff3d;
+}
+
 .checkbox-list{
 	flex-direction:row;
 	margin-bottom:15px;
@@ -24,12 +32,6 @@ body{
 	flex-wrap: wrap;
 	flex-direction: row;
 	
-}
-
-.connection{
-	position:absolute;
-	right: 20px;
-	top:40px;
 }
 
 .hr-div{
@@ -197,21 +199,7 @@ button {
 	background: #ffffff;
 }
 
-.table-connection{
-	font-size: 18px;
-	border: 2px solid #949494;
-	margin: 0 auto;
-	background: #ffffff;
-	width:120px;
-	height:40px;
-}
 
-.td-connection{
-	border: 1px solid #a8a8a8;
-	width:20px;
-	height:20px;
-	background-color: #6eff3d;
-}
 
 .time-box{
 	margin:3px 0px 0px 0px;
