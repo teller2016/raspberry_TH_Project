@@ -46,7 +46,7 @@
             }
             
                 $.ajax({
-                            url: 'http://192.168.243.' + pi_num +':8000/endAll',
+                            url: 'http://192.168.243.' + pi_num +':80/endAll',
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}',

@@ -38,7 +38,7 @@ function start_pi(){ //start selected pi
                  return;
             }
             $.ajax({
-                        url: 'http://192.168.243.' + checkedList[index] +':8000/restartAll/'+ time + '/' + second,
+                        url: 'http://192.168.243.' + checkedList[index] +':80/restartAll/'+ time + '/' + second,
                         type: 'POST',
                         headers:{
                             'X-CSRFToken': '{{csrf_token}}',
@@ -76,7 +76,7 @@ function start_pi(){ //start selected pi
             }
             
                 $.ajax({
-                            url: 'http://192.168.243.' + pi_num +':8000/endAll',
+                            url: 'http://192.168.243.' + pi_num +':80/endAll',
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}',
@@ -101,7 +101,7 @@ function start_pi(){ //start selected pi
 
 function hideElement(piNum){// hide data that is not running
 			$.ajax({
-                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
+                    url: 'http://192.168.243.' + piNum +':80/checkRunning',
                     type: 'POST',
                     headers:{
                         'X-CSRFToken': '{{csrf_token}}'
@@ -125,7 +125,7 @@ function getAllThState(piNum, run_state){
                 return;
             
             $.ajax({
-                        url: 'http://192.168.243.'+piNum+':8000/getAllThState/'+ run_state,
+                        url: 'http://192.168.243.'+piNum+':80/getAllThState/'+ run_state,
                         type: 'POST',
                         headers:{
                             'X-CSRFToken': '{{csrf_token}}'
@@ -190,7 +190,7 @@ function getLastThData(piNum, run_state){
                 }
                 
                 $.ajax({
-                            url: 'http://192.168.243.'+piNum+':8000/getLastThData/'+ run_state,
+                            url: 'http://192.168.243.'+piNum+':80/getLastThData/'+ run_state,
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'
@@ -255,7 +255,7 @@ function getLastTwoThData(piNum){
                 }
                 
                 $.ajax({
-                            url: 'http://192.168.243.'+piNum+':8000/getLastTwoThData',
+                            url: 'http://192.168.243.'+piNum+':80/getLastTwoThData',
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'

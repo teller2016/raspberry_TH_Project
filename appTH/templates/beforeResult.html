@@ -228,7 +228,7 @@
                 }
                 
                 $.ajax({
-                            url: 'http://192.168.243.'+piNum+':8000/getDataByName/',
+                            url: 'http://192.168.243.'+piNum+':80/getDataByName/',
                             type: 'POST',
                             headers:{
                                 'X-CSRFToken': '{{csrf_token}}'

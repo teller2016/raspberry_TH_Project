@@ -101,7 +101,7 @@ function checkRunning(){ //check the running state and change color of the box
             
             function changeColor(piNum){
                 $.ajax({
-                    url: 'http://192.168.243.' + piNum +':8000/checkRunning',
+                    url: 'http://192.168.243.' + piNum +':80/checkRunning',
                     type: 'POST',
                     headers:{
                         'X-CSRFToken': '{{csrf_token}}'
