@@ -160,10 +160,9 @@ def home(request):
 
 def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
 
-    print('***HttpResponse restart all***')
-    
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
     run_state = TH.getRunState() #th_model의 run_state값 반환
+    piNum = TH.getPiNum()
     
     ### end all running pi
     if run_state == 1: # if current pi is running save current data
@@ -185,6 +184,8 @@ def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // secon
     conn = pymysql.connect(host='localhost', user='pi', password='8302' ,db='th_db', charset='utf8')
     query = 'SELECT run_time_str, humidity, temperature, run_time_date FROM appTH_th_data' # th_data 전체 데이터 쿼리
     df = pd.read_sql_query(query,conn) # 쿼리 요청에 대한 데이터를 pandas dataframe으로 가져온다
+    df['Pi Num']= piNum # add Pi Number to backup file
+    
     filename = th_state.start_time.strftime("%Y%m%d_%H%M%S")+".csv" #엑셀 파일이름 지정
     path = "/home/pi/Project/backup/" # 엑셀 파일 저장 경로
     df.to_csv(path+filename, header=True, index=False) # dataframe을 csv 파일로 내보내기
@@ -217,12 +218,15 @@ def restart(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: 
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
     th_state = TH_state.objects.all() #th_state 데이터 테이블 전체 불러옴
     TH.setPiDate(time) #라즈베리파이 정보 객체 pi_date값 할당
+    piNum = TH.getPiNum()
     
     #backup last data
     th_state = TH_state.objects.first()
     conn = pymysql.connect(host='localhost', user='pi', password='8302' ,db='th_db', charset='utf8')
     query = 'SELECT run_time_str, humidity, temperature, run_time_date FROM appTH_th_data' # th_data 전체 데이터 쿼리
     df = pd.read_sql_query(query,conn) # 쿼리 요청에 대한 데이터를 pandas dataframe으로 가져온다
+    df['Pi Num']= piNum # add Pi Number to backup file
+
     filename = th_state.start_time.strftime("%Y%m%d_%H%M%S")+".csv" #엑셀 파일이름 지정
     path = "/home/pi/Project/backup/" # 엑셀 파일 저장 경로
     df.to_csv(path+filename, header=True, index=False) # dataframe을 csv 파일로 내보내기
@@ -297,22 +301,22 @@ def th_csv(request, word):
 
     #write the headers
     writer.writerow([
-            smart_str(u"파이번호"),
             smart_str(u"경과시간"),
             smart_str(u"습도"),
             smart_str(u"온도"),
             smart_str(u"실제시간"),
+            smart_str(u"파이번호"),
     ])
     #get data from database or from text file....
     #events = event_services.get_events_by_year(year) #dummy function to fetch data
     th_list = TH_data.objects.all()
     for th_data in th_list:
             writer.writerow([
-                    smart_str(pi_num),
                     smart_str(th_data.run_time_str),
                     smart_str(th_data.humidity),
                     smart_str(th_data.temperature),
                     smart_str(th_data.run_time_date.strftime("%Y-%m-%d %H:%M:%S")),
+                    smart_str(pi_num),
             ])
     return response
 

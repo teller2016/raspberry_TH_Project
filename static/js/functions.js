@@ -97,6 +97,30 @@ function getRunTime(startTime){ //경과 시간 계산하여 출력
         }
         
 //*********** summary.html , home.html **************
+function redirectPage(piNum){ //Redirct Page if PI no.1 is disconnected
+    
+    if(piNum > PI){
+        alert('All failed to connect Summary Page!');
+    }
+    
+    $.ajax({
+      url: 'http://192.168.243.' + piNum + ':80/checkRunning',
+      type: 'POST',
+      headers:{
+          'X-CSRFToken': '{{csrf_token}}'
+      },
+      timeout: 1000,
+      success: function(data){
+          //alert(`redirect to ${piNum}`);
+          location.href= 'http://192.168.243.' + piNum + ':80/summary';
+      },
+      error: function(){
+          console.log(`PI no.${piNum} Summary Page Connect Failed`);
+          redirectPage(piNum + 1);
+      }
+    })
+}
+
 function checkRunning(){ //check the running state and change color of the box
             
             function changeColor(piNum){

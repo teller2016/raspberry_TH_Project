@@ -35,7 +35,7 @@
             }
             
             let csv_name = csv_name_element.innerHTML
-            let defaultName = 'Pi-' + '{{pi_num}}' + '_' + csv_name_element.innerHTML.split('.')[0];
+            let defaultName = 'Pi.' + '{{pi_num}}' + '_' + csv_name_element.innerHTML.split('.')[0];
              
             var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)", defaultName)
             if(userInput == null){
