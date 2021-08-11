@@ -114,13 +114,13 @@ def getThData(request): # ajax call (get 40 current data for Table)
     data = serializers.serialize('json', th_list_mini)
     
     return HttpResponse(data, content_type='text/json-commnet-filtered')
-    
+'''
 def getThState(request): # ajax call (get th_state data to show max data)
     th_state = TH_state.objects.all() 
     data = serializers.serialize('json', th_state)
 
     return HttpResponse(data, content_type='text/json-commnet-filtered')
-
+'''
 def getAllThData(request): # ajax call (get all th_data for All data table)
     th_list = TH_data.objects.all().order_by('-id')
     data = serializers.serialize('json', th_list)
@@ -213,7 +213,7 @@ def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // secon
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
     
     return HttpResponse('***HttpResponse restart all***')
-
+'''
 def restart(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
     TH = th_model.instance() #라즈베리파이 정보 객체 생성
     th_state = TH_state.objects.all() #th_state 데이터 테이블 전체 불러옴
@@ -253,7 +253,8 @@ def restart(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: 
     conn.close()
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
     return redirect('home')
-
+'''
+'''
 def end(request):
     TH = th_model.instance()
     pi_date = TH.getPiDate()
@@ -267,7 +268,7 @@ def end(request):
 
     TH.setRunState(2) # run_state 1 -> 2
     return redirect('home')
-
+'''
 def endAll(request):
     TH = th_model.instance()
     pi_date = TH.getPiDate()

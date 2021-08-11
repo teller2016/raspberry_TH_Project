@@ -27,14 +27,13 @@
     <script src="{% static 'js/functions.js' %}"></script>
     <!-- home.html ajax functions -->
     <script src="{% static 'js/home_ajax.js' %}"></script>
+    <!-- summary functions -->
+    <script src="{% static 'js/summary_function.js' %}"></script>
     
     <script type="text/javascript">
-    
-    
         String.prototype.replaceAll = function(org, dest) {
             return this.split(org).join(dest);
         }
-
     </script>
     
     <style>
@@ -45,26 +44,25 @@
             display: block;
         }
         #chart, svg {
-            margin: 0 auto;
+            margin: 0;
             padding: 0px;
-            height: 300px;
-            max-width: 700px;
-            width: 100%;
+            height: 450px;
+            width: 98%;
         }
     </style>
 </head>
 <body>
 	
-		{% include 'header.html' %}
+	{% include 'header.html' %}
 	
-	<div class="content-container">
-	    <div class="pi-select">
-		<p class="home-title">온습도계 선택</p>
-		<a href="http://192.168.243.1:80/summary"><button>전체 확인</button></a>
-		<a href="http://192.168.243.1:80/" class='connection-box connection1'><button class='connection-status btn-me'>1번</button></a>
-		<a href="http://192.168.243.2:80/" class='connection-box connection2'><button class='connection-status'>2번</button></a>
-		<a href="http://192.168.243.3:80/" class='connection-box connection3'><button class='connection-status'>3번</button></a>
-	    </div>
+    <div class="content-container">
+	<div class="pi-select">
+	    <p class="home-title">온습도계 선택</p>
+	    <!--<a href="http://192.168.243.1:80/summary"><button>전체 확인</button></a>-->
+	    <a href="http://192.168.243.1:80/" class='connection-box connection1'><button class='connection-status btn-me'>1번</button></a>
+	    <a href="http://192.168.243.2:80/" class='connection-box connection2'><button class='connection-status'>2번</button></a>
+	    <a href="http://192.168.243.3:80/" class='connection-box connection3'><button class='connection-status'>3번</button></a>
+	</div>
         <br>
 	
 	<!-- 현재시간 -->
@@ -78,7 +76,8 @@
 	
 	<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
         <div>
-            
+            <p class="time-title2" style="font-size:15px">PI No.{{pi_num}} 기준</p>
+	    
             <div class='pi-list'>
                 <div class='content-summary2'>
                     <div class='time-box'>시작시간</div>
@@ -102,22 +101,18 @@
             <p class="time-title2" id="dataCycle">측정주기: N/A</p>
         </div>
 	
-	
+	<!-- ALL SUMMARY -->
         <div class="content-summary">
-	    
-        <a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
-	
-	<p class="home-title bt1">측정 상태 요약</p>
-
-	<table class="table-th">
+        
+        <p class="home-title">전체 요약</p>
+        
+        <table class="table-th">
             <br/>
             <tr>
                 <th class='thick'></th>
                 <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
                 <th rowspan=5 class='thick2'></th>
-                <th class='ver-line' style='border:3px solid' colspan=2>실시간 데이터</th>
-                <th rowspan=5 class='thick2' style='border-right:0px'></th>
+                <th class='ver-line' style='border:3px solid'>실시간 데이터</th>
             </tr>
             
             <tr class="tr-bar">
@@ -127,56 +122,62 @@
                 <th class="ver-line thick"><font>경과 시간</font></th>
                 
                 <th class="ver-line"><font>현재 습도(%)</font></th>
-                <th class="ver-line thick"><font>온도(°C)</font></th>
                 
                 
             </tr>
-            <!-- PI Data -->
+            <!-- PI No.1 -->
             <tr id="summary1">
-                <td class='ver-line thick'>{{pi_num}}</td>
+                <td class='ver-line thick'>1</td>
                 
-                <td class='ver-line' id='maxHumidity'>-</td>
-                <td class='ver-line' id='maxRunTime'>-</td>
+                <td class='ver-line' id='maxHumidity1'>-</td>
+                <td class='ver-line' id='maxRunTime1'>-</td>
                 
-                <td class='ver-line' id='curHumidity'>-</td>
-                <td class='ver-line' id='curTemperature'>-</td>
+                <td class='ver-line' id='curHumidity1'>-</td>
                 
-                <td style='display:none' id='curRunId'>-</td>
+                <td style='display:none' id='curRunId1'>-</td>
                 
             </tr>
             
-
+            <!-- PI No.2 -->
+            <tr id="summary2">
+                <td class='ver-line thick'>2</td>
+                
+                <td class='ver-line' id='maxHumidity2'>-</td>
+                <td class='ver-line' id='maxRunTime2'>-</td>
+                
+                <td class='ver-line' id='curHumidity2'>-</td>
+                
+                <td style='display:none' id='curRunId2'>-</td>
+                
+            </tr>
+            
+            <!-- PI No.3 -->
+            <tr id="summary3">
+               <td class='ver-line thick'>3</td>
+                
+                <td class='ver-line' id='maxHumidity3'>-</td>
+                <td class='ver-line' id='maxRunTime3'>-</td>
+                
+                <td class='ver-line' id='curHumidity3'>-</td>
+                
+                <td style='display:none' id='curRunId3'>-</td>
+                
+            </tr>
             
         </table>
-
-
         
         <br>
-        </div>
-        <br>
-        
-		<div class="pi-state">
-		
+        </div><!-- ALL SUMMARY END -->
+	
+	<br><hr class="hr-div"><br>
 		
         {% if run_state == 1 %}
-        <p>온습도계 실행 상태: <strong style="color:#FF4765">실행중</strong> </p>
-        </div>
-        
-        <br>
-        <hr class="hr-div">
-        <br>
-	
+
 	<div class='content-summary2'>
-	    <button class="btn-end" onclick="end_check();">개별 종료</button>
             <button class="btn-endAll" onclick="end_all();">전체 종료</button>
         </div>
         
         {% else %}
-        <p>온습도계 실행 상태: <strong style="color:blue">대기중</strong> </p>
-        </div>
-        <br>
-        <hr class="hr-div">
-        <br>
         
 	<div class='content-summary2'>
             <table class='table-start'>
@@ -195,105 +196,103 @@
             </tr>
             </table>
             
-            <button class="btn-start" onclick="start_check();">개별 측정<br>시작</button>
+            <button class="btn-startAll" onclick="start_pi();">측정<br>시작</button>
         </div>
         
-        
         {% endif %}
+
+    </div> <!-- content-container END -->
+    
+    <br><br>
+    
+    <!--- GRAPH POSITION --->
+    <p class="home-title">측정 결과 그래프</p>
+    <div id="chart" class='with-3d-shadow with-transitions'>
+	<svg></svg>
+    </div>
+    <!--- GRAPH POSITION END --->
+
+    <br><br><br><br>
+	
+    <div class="table-div">
+
+	<p class="home-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
+	
+	<a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
+        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
+	
+        <table class="table-result" id="table_data">
+        </table>
+	
+        <br><br>
+    </div>
+    
+    <br><br>
+    
+    
+    <script type="text/javascript">
+        //******GRAPH Functions
+        var chart = nv.models.lineWithFocusChart();
+        
+        //globalData
+        var th_data=[] // (uses to push in data to graph)
+        var th_data_save = {} // holds datas used in graph (uses to distinguish which pi's data)
+        
+        nv.addGraph(function() {
+            var dataList = new Array();
+
+            //d3.format(',f') ex) 68.12 -> 68
+            chart.xAxis.tickFormat((time)=> xAxisLabel(time)).axisLabel("시간(시, 분, 초)");
+            chart.x2Axis.tickFormat((time)=> xAxisLabel(time));
+
+            chart.yDomain([0,100]);
+            chart.yTickFormat(d3.format(',.1f'));
+            chart.useInteractiveGuideline(true);
+        
+            d3.select('#chart svg')
+                .datum(th_data) //push in datat
+                .call(chart); // render chart
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+            }
+        );
+    
+
+        
+	checkRunning();
+        setInterval(checkRunning, 5000);
+	
+	getAllThState(1, {{run_state}}); // Get Most recent data when page is loaded to show Max value talbe
+        getLastThData(1, {{run_state}}); // Get Most recent data when page is loaded to Load Graph and Table
+	getThData(); // to show most recent 40 data
+	
+	function refreshData(){
+            
+            getAllThState(1, {{run_state}});
+            getLastTwoThData(1); // Get Recent 2 Data and update Table and Graph
+	    getThData();
+        }
         
 
-        <script type="text/javascript">
+			
+        if( {{run_state}} == 1){
+	    for(piNum=1; piNum <= PI; piNum++){
+		hideElement(piNum); //hide pi tables that are not running
+	    }
+			
+            setInterval(refreshData, 2000); // refresh every x seconds
+	}
+
+    </script>
+    
+    <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");
         let currentTime = document.getElementById("cur_time");
         
 	clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}', {{run_state}});
         setInterval(()=>clock('{{th_state.start_time|date:"Y/m/d H:i:s"}}', {{run_state}}),1000);
-        
-        
-            
-        </script>
-        
-        
-    <div class="graph-div">
-    <br><br>
-    <a href="{% url 'graph' %}"><button class="button2">더보기</button></a>
-    <p class="home-title bt2">측정 결과 그래프</p>
-    
-    
-    <div id="chart" class='with-3d-shadow with-transitions'>
-        <svg></svg>
-    </div>
-
-    <script type="text/javascript">
-        
-
-        var chart = nv.models.lineChart();
-        
-        nv.addGraph(function() {
-        
-	
-	var dataList = new Array();
-	var dataList2 = new Array();
-	
-	var th_data = [
-	  {
-	    "key": "습도(%)",
-	    "color": "#00ace6",
-	    "values": dataList
-	  },
-	  {
-	    "key": "온도(°C)",
-	    "color": "#FF4765",
-	    "values": dataList2
-	  }
-	]
-	
-	
-        chart.xAxis.tickFormat((time)=>xAxisLabel(time)).axisLabel("시간(분, 초)");
-        
-        chart.yDomain([0,100]);
-        chart.yTickFormat(d3.format(',.1f'));
-
-        chart.useInteractiveGuideline(true);
-        
-
-        d3.select('#chart svg')
-            .datum(th_data)
-            .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-    });   
-
-        
-        function refreshData(){
-                getThState();
-                getThData();
-                getAllThData();
-                
-            }
-        
-	checkRunning();
-        setInterval(checkRunning, 5000);
-	
-        refreshData();
-        if( {{run_state}} == 1)
-            setInterval(refreshData, 2000); // refresh every x seconds
-
-
     </script>
-    <br><br><br><br>
-	</div>
-    <div class="table-div">
-	<button class="button2" onclick="csv_name({{pi_num}}, '{{th_state.start_time|date:'Ymd_His'}}')">엑셀 파일 저장</button>
-    <p class="home-title bt2">측정 결과 미리보기</p>
-        <table class="table-result" id="table_data">
-            
-        
-        
-        </table>
-        <br><br>
-    </div>
-    <br><br>
+    
 </body>
