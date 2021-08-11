@@ -193,7 +193,6 @@ function getAllThData(){
                          },
                     success: function(data){
                         updateCycle(1, data);
-                        update(data);
 
                     },
                     error: function(){
@@ -202,45 +201,3 @@ function getAllThData(){
                 })
             }
             
-function update(data) {
-                                         
-                var dataList = new Array();
-                var dataList2 = new Array();
-                                        
-                let reversedData = data.reverse(); //reverse data in correct order;
-                $.each(reversedData, function(key, value){
-                    
-                    var graph = new Object();
-                    graph.x = value.fields.run_time;
-                    graph.y = value.fields.humidity;
-                    graph.series = 0;
-                    dataList.push(graph);
-                                            
-                    var graph2 = new Object();
-                    graph2.x = value.fields.run_time;
-                    graph2.y = value.fields.temperature;
-                    graph2.series = 1;
-                    dataList2.push(graph2);
-                                            
-                    })
-                var th_data = [
-                    {
-                        "key": "습도(%)",
-                        "color": "#00ace6",
-                        "values": dataList
-                        },
-                {
-                        "key": "온도(°C)",
-                        "color": "#FF4765",
-                        "values": dataList2
-                        }
-                ]
-
-                d3.select('#chart svg')
-                .datum(th_data)
-                .call(chart);
-
-                nv.utils.windowResize(chart.update);
-        
-                return chart;
-                }
