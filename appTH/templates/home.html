@@ -172,68 +172,11 @@
         <br>
         </div><!-- ALL SUMMARY END -->
 	
-	
-        <div class="content-summary">
-	    
-        <a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
-	
-	<p class="home-title bt1">측정 상태 요약</p>
-
-	<table class="table-th">
-            <br/>
-            <tr>
-                <th class='thick'></th>
-                <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
-                <th rowspan=5 class='thick2'></th>
-                <th class='ver-line' style='border:3px solid' colspan=2>실시간 데이터</th>
-                <th rowspan=5 class='thick2' style='border-right:0px'></th>
-            </tr>
-            
-            <tr class="tr-bar">
-                <th class="ver-line thick"><font>PI NO.</font></th>
-                
-                <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line thick"><font>경과 시간</font></th>
-                
-                <th class="ver-line"><font>현재 습도(%)</font></th>
-                <th class="ver-line thick"><font>온도(°C)</font></th>
-                
-                
-            </tr>
-            <!-- PI Data -->
-            <tr id="summary1">
-                <td class='ver-line thick'>{{pi_num}}</td>
-                
-                <td class='ver-line' id='maxHumidity'>-</td>
-                <td class='ver-line' id='maxRunTime'>-</td>
-                
-                <td class='ver-line' id='curHumidity'>-</td>
-                <td class='ver-line' id='curTemperature'>-</td>
-                
-                <td style='display:none' id='curRunId'>-</td>
-                
-            </tr>
-            
-
-            
-        </table>
-
-
-        
-        <br>
-        </div>
-        <br>
-        
-	
-	<br>
-        <hr class="hr-div">
-        <br>
+	<br><hr class="hr-div"><br>
 		
         {% if run_state == 1 %}
 
 	<div class='content-summary2'>
-	    <button class="btn-end" onclick="end_check();">개별 종료</button>
             <button class="btn-endAll" onclick="end_all();">전체 종료</button>
         </div>
         
@@ -256,7 +199,7 @@
             </tr>
             </table>
             
-            <button class="btn-start" onclick="start_check();">개별 측정<br>시작</button>
+            <button class="btn-startAll" onclick="start_pi();">측정<br>시작</button>
         </div>
         
         {% endif %}
@@ -276,7 +219,10 @@
 	
     <div class="table-div">
 
-	<p class="home-title">측정 결과 미리보기</p>
+	<p class="home-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
+	
+	<a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
+        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
 	
         <table class="table-result" id="table_data">
         </table>
@@ -320,23 +266,21 @@
         //****** Graph Functions END
         //function refreshData(){
         //        getThState();
-        //        getThData();
-        //        getAllThData();
-        //        
         //    }
         
 	checkRunning();
         setInterval(checkRunning, 5000);
 	
-	getAllThState(1, {{run_state}});
-        getLastThData(1, {{run_state}});
+	getAllThState(1, {{run_state}}); // Get Most recent data when page is loaded to show Max value talbe
+        getLastThData(1, {{run_state}}); // Get Most recent data when page is loaded to Load Graph and Table
+	getThData(); // to show most recent 40 data
 	
 	function refreshData(){
             
             getAllThState(1, {{run_state}});
-            //getLastThData(1);
             getLastTwoThData(1);
-
+	    
+	    getThData();
         }
         
 
@@ -348,14 +292,8 @@
 			
             setInterval(refreshData, 2000); // refresh every x seconds
 	}
-	
-        //refreshData();
-        //if( {{run_state}} == 1)
-        //    setInterval(refreshData, 2000); // refresh every x seconds
-
 
     </script>
-    
     
     <script type="text/javascript">
         let currentDate = document.getElementById("cur_date");

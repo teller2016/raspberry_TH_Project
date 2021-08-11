@@ -22,14 +22,14 @@ urlpatterns = [
     
     path('admin/', admin.site.urls),
     path('', appTH.views.home, name="home"),
-    path('restart/<time>/<second>', appTH.views.restart, name="restart"),
-    path('end', appTH.views.end, name="end"),
+    #path('restart/<time>/<second>', appTH.views.restart, name="restart"),
+    #path('end', appTH.views.end, name="end"),
     path('th_csv/<word>/', appTH.views.th_csv, name="th_csv"),
     path('graph', appTH.views.graph, name="graph"),
     path('result', appTH.views.result, name="result"),
     
     path('getThData/', appTH.views.getThData, name="getThData"),
-    path('getThState/', appTH.views.getThState, name="getThState"),
+    #path('getThState/', appTH.views.getThState, name="getThState"),
     path('getAllThData/', appTH.views.getAllThData, name="getAllThData"),
     
     path('beforeResult', appTH.views.beforeResult, name="beforeResult"),
