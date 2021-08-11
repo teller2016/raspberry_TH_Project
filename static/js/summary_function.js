@@ -1,13 +1,6 @@
 function start_pi(){ //start selected pi
             var result = confirm("측정을 시작하시겠습니까? 시작시 이전의 데이터는 모두 백업됩니다.");
             if(result){
-                
-                
-                let checkedList = ['1'];// pi 1 is necessary
-                //get list of checked pi
-                $("input:checkbox[name=checkbox_pi]:checked").each(function(){
-					checkedList.push($(this).val());
-				});
             
                 let currentDate = getDate();
                 let currentTime = getTime();
@@ -17,28 +10,26 @@ function start_pi(){ //start selected pi
 
                 let second = document.getElementById('cycle').value;
                 
-                //start all checked pi
-                
-                requestPi_start(0,checkedList, dateAndTime, second);
+                requestPi_start(1, dateAndTime, second);                
+    
                 
                 return true;
-                //checkedList.forEach( piNum => requestPi_start(piNum, dateAndTime, second));
-
-                return true;
+                
             }
             
             
             return false;
         }
         
-        function requestPi_start(index, checkedList, time, second){
+        function requestPi_start(piNum, time, second){
 			//when last one from the pi list started, refresh page
-            if(index > checkedList.length - 1){
-                 location.reload();
-                 return;
+            if(piNum > PI){
+                location.reload();
+                return;
             }
+            
             $.ajax({
-                        url: 'http://192.168.243.' + checkedList[index] +':80/restartAll/'+ time + '/' + second,
+                        url: 'http://192.168.243.' + piNum +':80/restartAll/'+ time + '/' + second,
                         type: 'POST',
                         headers:{
                             'X-CSRFToken': '{{csrf_token}}',
@@ -46,12 +37,12 @@ function start_pi(){ //start selected pi
                             },
                         timeout: 3000,
                         success:function(data){
-                            requestPi_start(index+1, checkedList, time, second);
+                            requestPi_start(piNum+1, time, second);
                         },
                         error: function(){
-                            console.log(`Ajax requestPi_start-${index+1} Error!!`);
-                            alert(`No.${checkedList[index]} failed to start!!!\n***Please Restart or Turn On Manually***`);
-                            requestPi_start(index+1, checkedList, time, second);
+                            console.log(`Ajax requestPi_start-${piNum} Error!!`);
+                            alert(`No.${piNum} failed to start!!!\n***Please Restart or Turn On Manually***`);
+                            requestPi_start(piNum+1, time, second);
                         }
                 });
             
@@ -215,11 +206,10 @@ function getLastThData(piNum, run_state){
                                     if(lastRunId != data[0].fields.run_id){ 
                                         //add data to the table
                                         $('#curHumidity'+piNum).html(data[0].fields.humidity);
-                                        $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                         $('#curRunId'+piNum).html(data[0].fields.run_id);
                                         
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','gray');
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
+                                        d3.selectAll(`#curHumidity${piNum}`).style('color','gray');
+                                        d3.selectAll(`#curHumidity${piNum}`).transition().style('color','black').duration(3000);
                                     }
                                     
                                     //add data on graph
@@ -282,17 +272,16 @@ function getLastTwoThData(piNum){
                                     if(lastRunId != data[0].fields.run_id){ 
                                         //add data to the table
                                         $('#curHumidity'+piNum).html(data[0].fields.humidity);
-                                        $('#curTemperature'+piNum).html(data[0].fields.temperature);
                                         $('#curRunId'+piNum).html(data[0].fields.run_id);
                                         
                                         if(lastHumidity > data[0].fields.humidity)
-											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','blue');
+											d3.selectAll(`#curHumidity${piNum}`).style('color','blue');
 										else if(lastHumidity == data[0].fields.humidity)
-											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','gray');
+											d3.selectAll(`#curHumidity${piNum}`).style('color','gray');
 										else
-											d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).style('color','red');
+											d3.selectAll(`#curHumidity${piNum}`).style('color','red');
 												
-                                        d3.selectAll(`#curHumidity${piNum}, #curTemperature${piNum}`).transition().style('color','black').duration(3000);
+                                        d3.selectAll(`#curHumidity${piNum}`).transition().style('color','black').duration(3000);
                                         
                                         //show data on graph
                                         pushDataToGraph(data, piNum);
