@@ -8,6 +8,35 @@ body{
 	left: 0;
 }
 
+.logo-header{
+	background-color: #ffe5ba;
+	
+}
+
+.logo-img{
+	width: 200px;
+	height: 75px;
+	margin-top: 30px;
+}
+
+.main-title-container{
+	display: inline-block;
+	vertical-align: middle;
+    width:600px;
+  
+    border-radius: 5% / 50%;
+
+    border-bottom: solid #ff5c33;
+}
+
+.main-title{
+	font-size:24px;
+	text-align: center;
+	
+}
+
+
+
 .connection-box{
 	border-bottom-style: solid;
     border-bottom-width: 12px;
@@ -78,39 +107,8 @@ body{
 	margin-top: 70px;
 }
 
-.logo{
-	top: 31px;
-	left: 46px;
-	width: 155px;
-	height: 60px;
-	float: left;
-}
 
-.logo-img{
-	width: 100%;
-	height: 100%;
-	margin: 20px 0px 0px 20px;
-}
 
-.main-title{
-	color: #fff;
-	font-size:24px;
-	text-align: center;
-	margin-top:24px;
-}
-
-.main-title-container{
-	display: inline-block;
-	vertical-align: middle;
-	height:80px;
-    width:600px;
-    margin-left:-155px;
-    margin-top:-20px;
-    border-radius: 50% / 100%;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-    background:#4A74D7;
-}
 
 .result{clear:both;}
 
