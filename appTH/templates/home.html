@@ -53,11 +53,68 @@
 </head>
 <body>
 	
-	{% include 'header.html' %}
+    {% include 'header.html' %}
+    
+    <div class='information-container'>
+	<div class='container-padding'>
+	    <div class='select-pi'>
+	    <p class="home-title">온습도계 선택</p>
+	    </div>
+	    
+	    <div style='border:solid; display:flex; text-align:left'>
+		<!-- Div( Pi href Button) -->
+		<div style='width:30%'>
+		    <div class = 'information-box'>
+			<div class = 'connection-status-box connection1'></div>
+			<a href="http://192.168.243.1:80/">
+			    <button class = 'pi-select-button'>1</button>
+			</a>
+		    </div>
+		    
+		    <div class = 'information-box'>
+			<div class = 'connection-status-box connection2'></div>
+			<a href="http://192.168.243.2:80/">
+			    <button class = 'pi-select-button'>2</button>
+			</a>
+			
+		    </div>
+		    
+		    <div class = 'information-box'>
+			<div class = 'connection-status-box connection3'></div>
+			<a href="http://192.168.243.3:80/">
+			    <button class = 'pi-select-button'>3</button>
+			</a>
+		    </div>
+		</div>
+		
+		<!-- Div( Time Info ) -->
+		<div style='border:solid blue; width:70%'>
+		    <div class = 'information-box'>
+			
+		    </div>
+		    
+		    <div class = 'information-box'>
+			
+		    </div>
+		    
+		    <div class = 'information-box'>
+			
+		    </div>
+		</div>
+		
+		
+	    </div>
+	    
+	    <div class='start-button-container'>
+		
+	    </div>
+	</div>
+	
+	
+    </div>
 	
     <div class="content-container">
 	<div class="pi-select">
-	    <p class="home-title">온습도계 선택</p>
 	    <!--<a href="http://192.168.243.1:80/summary"><button>전체 확인</button></a>-->
 	    <a href="http://192.168.243.1:80/" class='connection-box connection1'><button class='connection-status btn-me'>1번</button></a>
 	    <a href="http://192.168.243.2:80/" class='connection-box connection2'><button class='connection-status'>2번</button></a>

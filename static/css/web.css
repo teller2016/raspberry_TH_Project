@@ -8,6 +8,7 @@ body{
 	left: 0;
 }
 
+/* Header Css */
 .logo-header{
 	background-color: #ffe5ba;
 	
@@ -22,7 +23,7 @@ body{
 .main-title-container{
 	display: inline-block;
 	vertical-align: middle;
-    width:600px;
+    width:650px;
   
     border-radius: 5% / 50%;
 
@@ -34,8 +35,56 @@ body{
 	text-align: center;
 	
 }
+/* Header Css End */
+
+/* Pi Button, Time, Start Button CSS */
+.information-container{
+	display: inline-block;
+	background-color: #f0f0f0;
+	width: 650px;
+}
+
+.container-padding{
+	padding-left:45px;
+	padding-right:45px;
+}
+
+.home-title{
+	font-weight: bold;
+	font-size: 23px;
+	margin-top:40px;
+	text-align:left;
+}
+
+.information-box{
+	margin-bottom: 25px;
+	position: relative;
+	height:90px;
+}
+
+/* Pi Button */
+.pi-select-button{
+	width: 160px;
+	height: 90px;
+	border-radius: 10px;
+	font-size: 30px;
+	color: black;
+}
+
+.connection-status-box{
+	width:23px;
+	height:23px;
+	border-radius: 7px;
+	background-color:gray;
+	position:absolute;
+	top:7px;
+	right:6px;
+}
 
 
+.start-button-container{
+	border: solid;
+}
 
 .connection-box{
 	border-bottom-style: solid;
@@ -160,13 +209,6 @@ button {
 	width: 140px;
 	height: 50px;
 }
-
-.home-title{
-	font-weight: bold;
-	font-size: 20px;
-	margin-top: 30px;
-}
-
 
 .home-title-mini{
 	font-weight:normal;
