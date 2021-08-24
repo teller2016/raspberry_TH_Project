@@ -53,160 +53,187 @@
 </head>
 <body>
 	
-	{% include 'header.html' %}
-	
-    <div class="content-container">
-	<div class="pi-select">
-	    <p class="home-title">온습도계 선택</p>
-	    <!--<a href="http://192.168.243.1:80/summary"><button>전체 확인</button></a>-->
-	    <a href="http://192.168.243.1:80/" class='connection-box connection1'><button class='connection-status btn-me'>1번</button></a>
-	    <a href="http://192.168.243.2:80/" class='connection-box connection2'><button class='connection-status'>2번</button></a>
-	    <a href="http://192.168.243.3:80/" class='connection-box connection3'><button class='connection-status'>3번</button></a>
-	</div>
-        <br>
-	
-	<!-- 현재시간 -->
-        <div class='pi-list'>
-            <div class='content-summary2'>
-                <div class='time-box'>현재시간</div>
-                <span class="time-title2" id="cur_date" >date</span>
-                <span class="time-title2" id="cur_time" >time</span>
-            </div>
-        </div>
-	
-	<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
-        <div>
-            <p class="time-title2" style="font-size:15px">PI No.{{pi_num}} 기준</p>
+    {% include 'header.html' %}
+    
+    <div class='information-container'>
+	<div class='container-padding'>
 	    
-            <div class='pi-list'>
-                <div class='content-summary2'>
-                    <div class='time-box'>시작시간</div>
-                    <span class='time-title2'>{{th_state.start_time|date:"Y-m-d H:i:s"}}</span>
-                </div>
-                
-                {% if run_state == 2 %}
-                <div class='content-summary2'>
-                    <div class='time-box'>종료시간</div>
-                    <span class='time-title2'>{{th_state.end_time|date:"Y-m-d H:i:s"}}</span>
-                </div>
-                {% else %}
-                <div class='content-summary2'>
-                    <div class='time-box'>경과시간</div>
-                    <span class='time-title2' id='run_time'>run_time</span>
-                </div>
-                {% endif %}
-            
-            </div>
-            
-            <p class="time-title2" id="dataCycle">측정주기: N/A</p>
-        </div>
-	
-	<!-- ALL SUMMARY -->
-        <div class="content-summary">
-        
-        <p class="home-title">전체 요약</p>
-        
-        <table class="table-th">
-            <br/>
-            <tr>
-                <th class='thick'></th>
-                <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
-                <th rowspan=5 class='thick2'></th>
-                <th class='ver-line' style='border:3px solid'>실시간 데이터</th>
-            </tr>
-            
-            <tr class="tr-bar">
-                <th class="ver-line thick"><font>PI NO.</font></th>
-                
-                <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line thick"><font>경과 시간</font></th>
-                
-                <th class="ver-line"><font>현재 습도(%)</font></th>
-                
-                
-            </tr>
-            <!-- PI No.1 -->
-            <tr id="summary1">
-                <td class='ver-line thick'>1</td>
-                
-                <td class='ver-line' id='maxHumidity1'>-</td>
-                <td class='ver-line' id='maxRunTime1'>-</td>
-                
-                <td class='ver-line' id='curHumidity1'>-</td>
-                
-                <td style='display:none' id='curRunId1'>-</td>
-                
-            </tr>
-            
-            <!-- PI No.2 -->
-            <tr id="summary2">
-                <td class='ver-line thick'>2</td>
-                
-                <td class='ver-line' id='maxHumidity2'>-</td>
-                <td class='ver-line' id='maxRunTime2'>-</td>
-                
-                <td class='ver-line' id='curHumidity2'>-</td>
-                
-                <td style='display:none' id='curRunId2'>-</td>
-                
-            </tr>
-            
-            <!-- PI No.3 -->
-            <tr id="summary3">
-               <td class='ver-line thick'>3</td>
-                
-                <td class='ver-line' id='maxHumidity3'>-</td>
-                <td class='ver-line' id='maxRunTime3'>-</td>
-                
-                <td class='ver-line' id='curHumidity3'>-</td>
-                
-                <td style='display:none' id='curRunId3'>-</td>
-                
-            </tr>
-            
-        </table>
-        
-        <br>
-        </div><!-- ALL SUMMARY END -->
-	
-	<br><hr class="hr-div"><br>
+	    <p class="home-title">온습도계 선택</p>
+	    
+	    <div style='display:flex; text-align:left'>
+		<!-- Div( Pi href Button) -->
+		<div style='width:30%'>
+		    <div class = 'information-box'>
+			<div class = 'connection-status-box connection1'></div>
+			<a href="http://192.168.243.1:80/">
+			    <button class = 'pi-select-button'>1</button>
+			</a>
+		    </div>
+		    
+		    <div class = 'information-box'>
+			<div class = 'connection-status-box connection2'></div>
+			<a href="http://192.168.243.2:80/">
+			    <button class = 'pi-select-button'>2</button>
+			</a>
+			
+		    </div>
+		    
+		    <div class = 'information-box'>
+			<div class = 'connection-status-box connection3'></div>
+			<a href="http://192.168.243.3:80/">
+			    <button class = 'pi-select-button'>3</button>
+			</a>
+		    </div>
+		</div>
 		
-        {% if run_state == 1 %}
+		<!-- Div( Time Info ) -->
+		<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
+		<div style='width:70%'>
+		    <div class = 'information-box'>
+			<div class='information-text-box text-bold text-gray'>PI No.{{pi_num}} 기준</div>
+			<div class='information-text-box text-bold text-gray' id="dataCycle">측정주기: N/A</div>
+		    </div>
+		    
+		    <div class = 'information-box'>
+			<div class='information-text-box text-bold'>현재시간</div>
+			<div style='display:flex'>
+			    <div class='information-text-box' style='color:#355dcc' id='cur_date'>date</div>
+			    <div class='information-text-box text-bold' style='color:#355dcc;' id='cur_time'>date</div>
+			</div>
+		    </div>
+		    
+		    <div class = 'information-box'>
+			<div style='display:flex'>
+			    <div class='information-text-box'>
+				<div class='text-bold'>시작시간</div>
+				<div class='text-gray'>{{th_state.start_time|date:"Y-m-d"}}</div>
+				<div class='text-bold text-gray'>{{th_state.start_time|date:"H:i:s"}}</div>
+			    </div>
+			    
+			    
+			    <div class='information-text-box' style='margin-left:50px'>
+				{% if run_state == 2 %}
+				<div class='text-bold'>종료시간</div>
+				<div class='text-gray'>{{th_state.end_time|date:"Y-m-d"}}</div>
+				<div class='text-bold text-gray'>{{th_state.end_time|date:"H:i:s"}}</div>
+				{% else %}
+				<div class='text-bold'>경과시간</div>
+				<div class='text-bold text-gray' id='run_time'>run_time</div>
+				{% endif %}
 
-	<div class='content-summary2'>
-            <button class="btn-endAll" onclick="end_all();">전체 종료</button>
-        </div>
-        
-        {% else %}
-        
-	<div class='content-summary2'>
-            <table class='table-start'>
-        
-            <tr>
-                <td>
-                    측정 주기
-                </td>
-            </tr>
-            <tr>
-                <td>
-                 <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
-                <label for="cycle" id="cycleLabel">30초</label>
-                </td>
+			    </div>
+			    
+			</div>
+			
+		    </div>
+		</div>
+		
+		
+	    </div>
+	    
+	</div>
+	
+	<div class='start-button-container'>
+	    <div style='display:flex; padding:20px; padding-bottom:0px;'>
+		{% if run_state == 2 %}
+		<div style='width:50%'>
+		    <div>
+			<input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+		    </div>
+		    <div style='width:100%'>
+			<div class='information-text-box' style='float:left; padding-left:0px'>측정주기</div>
+			<div class='information-text-box' style='float:right; padding-left:3px'>초</div>
+			<div style='float:right; border:solid 2px; width:40px; border-radius:5px;'>
+			    <div class='information-text-box' style='float:right'>
+			    <label for="cycle" id="cycleLabel">30</label>
+			    </div>
+			</div>
+		    </div>
+		</div>
+		
+		<div style='width:50%'>
+		    <button class="btn-startAll" onclick="start_pi();">측정 시작</button>
+		</div>
+		{% else %}
+		
+		<div style='width:100%'>
+			<button class="btn-endAll" onclick="end_all();">전체 종료</button>
+		</div>
+		{% endif %}
+	    </div>
+	</div>
+	
+    </div>
+    
+    <!-- ALL SUMMARY -->
+    <div class='information-container'style='background-color: white'>
+	<div class='container-padding'>
+	    <p class="home-title">전체 요약</p>
+	    
+	    <table class='summary-table'>
+		<tr>
+		    <th></th>
+		    <th rowspan=5 style='width:20px'></th>
+		    
+		    <th colspan=2><div class='th-title'>최대값 데이터</div></th>
+		    <th rowspan=5 style='width:40px'></th>
+		    
+		    <th><div class='th-title'>실시간 데이터</div></th>
+		</tr>
+		
+		<tr>
+		    <th class='bottom-border'><font>NO.</font></th>
                 
-            </tr>
-            </table>
+		    <th class='bottom-border'><font>최대 습도(%)</font></th>
+		    <th class='bottom-border'><font>경과 시간</font></th>
+		    
+		    <th class='bottom-border'><font>현재 습도(%)</font></th>
+		</tr>
+		
+		<!-- PI No.1 -->
+		<tr id="summary1" class='bottom-margin'>
+		    <td>1</td>
+                
+		    <td  id='maxHumidity1'>-</td>
+		    <td  id='maxRunTime1'>-</td>
+                
+		    <td  id='curHumidity1'>-</td>
+                
+		    <td style='display:none' id='curRunId1'>-</td>
+		</tr>
             
-            <button class="btn-startAll" onclick="start_pi();">측정<br>시작</button>
-        </div>
-        
-        {% endif %}
-
-    </div> <!-- content-container END -->
+		<!-- PI No.2 -->
+		<tr id="summary2">
+		    <td >2</td>
+                
+		    <td id='maxHumidity2'>-</td>
+		    <td id='maxRunTime2'>-</td>
+                
+		    <td id='curHumidity2'>-</td>
+                
+		    <td style='display:none' id='curRunId2'>-</td>
+		</tr>
+            
+		<!-- PI No.3 -->
+		<tr id="summary3">
+		    <td class='bottom-border bottom-padding'>3</td>
+                
+		    <td class='bottom-border bottom-padding' id='maxHumidity3'>-</td>
+		    <td class='bottom-border bottom-padding' id='maxRunTime3'>-</td>
+                
+		    <td class='bottom-border bottom-padding' id='curHumidity3'>-</td>
+                
+		    <td style='display:none' id='curRunId3'>-</td>
+		</tr>
+		
+	    </table>
+	</div>
+    </div>
+    <!-- ALL SUMMARY END -->
     
-    <br><br>
-    
+    <br>
     <!--- GRAPH POSITION --->
-    <p class="home-title">측정 결과 그래프</p>
+    <p class="home-title" style='text-align:center; margin-bottom:5px;'>측정 결과 그래프</p>
     <div id="chart" class='with-3d-shadow with-transitions'>
 	<svg></svg>
     </div>
@@ -216,7 +243,7 @@
 	
     <div class="table-div">
 
-	<p class="home-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
+	<p class="sub-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
 	
 	<a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
         <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>

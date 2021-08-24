@@ -8,12 +8,183 @@ body{
 	left: 0;
 }
 
-.connection-box{
-	border-bottom-style: solid;
-    border-bottom-width: 12px;
-    padding-bottom: 14px;
-    border-radius: 15px;
-    border-bottom-color: gray;
+/* Header Css */
+.logo-header{
+	background-color: #fff2e4;
+}
+
+.logo-img{
+	width: 170px;
+	height: 55px;
+	margin-top: 30px;
+	margin-bottom: 15px;
+}
+
+.main-title-container{
+	display: inline-block;
+	vertical-align: middle;
+    width:650px;
+  
+    border-radius: 5% / 50%;
+
+    border-bottom: solid #ff5c33;
+}
+
+.main-title{
+	font-size:24px;
+	text-align: center;
+	
+}
+/* Header Css End */
+
+/* Pi Button, Time, Start Button CSS */
+.information-container{
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #f0f0f0;
+	width: 650px;
+}
+
+.container-padding{
+	padding-left:45px;
+	padding-right:45px;
+}
+
+.home-title{
+	font-weight: bold;
+	font-size: 26px;
+	margin-top:40px;
+	text-align:left;
+}
+
+.sub-title{
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
+}
+
+.information-box{
+	margin-bottom: 25px;
+	position: relative;
+	height:90px;
+}
+
+/* Pi Button */
+.pi-select-button{
+	width: 160px;
+	height: 90px;
+	border-radius: 10px;
+	font-size: 30px;
+	color: black;
+}
+
+.connection-status-box{
+	width:23px;
+	height:23px;
+	border-radius: 7px;
+	background-color:gray;
+	position:absolute;
+	top:7px;
+	right:7px;
+}
+
+.start-button-container{
+	margin-top: 40px;
+	display: inline-block;
+	width:95%;
+	background-color:white;
+	border-radius:20px;
+}
+
+/* Time, cycle */
+.information-text-box{
+	padding-left: 15px;
+	font-size: 22px;
+	color: black;
+}
+
+.text-bold{
+	font-weight: bold;
+}
+.text-gray{
+	color:gray;
+}
+
+/* Start Button Box */
+#cycle{
+	width:100%;
+	margin:0px;
+	background: #5c7bd1;
+	margin-bottom: 13px;
+}
+
+.btn-startAll{
+	background-color:#2243a1;
+	color:#ffffff;
+	font-size: 22px;
+	font-weight:bold;
+	height: 65px;
+	width: 170px;
+	border-radius:50px;
+}
+
+.btn-endAll{
+	background-color:#ff4750;
+	color:#ffffff;
+	font-size: 22px;
+	font-weight:bold;
+	height: 65px;
+	width: 170px;
+	border-radius:50px;
+}
+
+/* Summary Table */
+
+.summary-table{
+	width: 100%;
+	font-size: 19px;
+	border-spacing: 0 13px;
+}
+
+.bottom-border{
+	border-bottom: 3px solid #cccccc;
+}
+
+.bottom-padding{
+	padding-bottom: 13px;
+}
+
+.th-title{
+	background-color: #e0e0e0;
+	border-radius: 8px;
+
+}
+
+
+/*************************************************************/
+.table-th{
+	width: 700px;
+	height: 100px;
+	font-size: 18px;
+	border: 2px solid #949494;
+	border-collapse: collapse;
+	margin: 0 auto;
+	background: #ffffff;
+}
+
+.tr-bar{
+	margin: 0 auto;
+	border: 1px solid #a8a8a8;
+}
+
+.ver-line{
+	border: 1px solid #a8a8a8;
+	padding:10px;
+}
+
+.thick{
+	border-right:3px solid;
 }
 
 .checkbox-list{
@@ -24,13 +195,6 @@ body{
 .checkbox-item{
 	display: inline-block;
 	zoom:1.8;
-	
-}
-
-.pi-list{
-	display:block;
-	flex-wrap: wrap;
-	flex-direction: row;
 	
 }
 
@@ -55,62 +219,13 @@ body{
 	text-shadow:0px 1px 0px #F6F6F6;
 }
 
-.content-summary2{
-	width: content-fit;
-	margin: 4px;
-	padding: 5px 10px 5px 10px;
-	box-shadow: 0px 0px 4px 0px #00000029;
-	background-color:#F6F6F6;
-	border-radius:2px;
-	border:1px solid #F6F6F6;
-	display:inline-block;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #F6F6F6;
-}
-
 .content-container{
 	display: block;
 	vertical-align: middle;
 	text-align:center;
 }
 
-.pi-select{
-	margin-top: 70px;
-}
 
-.logo{
-	top: 31px;
-	left: 46px;
-	width: 155px;
-	height: 60px;
-	float: left;
-}
-
-.logo-img{
-	width: 100%;
-	height: 100%;
-	margin: 20px 0px 0px 20px;
-}
-
-.main-title{
-	color: #fff;
-	font-size:24px;
-	text-align: center;
-	margin-top:24px;
-}
-
-.main-title-container{
-	display: inline-block;
-	vertical-align: middle;
-	height:80px;
-    width:600px;
-    margin-left:-155px;
-    margin-top:-20px;
-    border-radius: 50% / 100%;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-    background:#4A74D7;
-}
 
 .result{clear:both;}
 
@@ -163,13 +278,6 @@ button {
 	height: 50px;
 }
 
-.home-title{
-	font-weight: bold;
-	font-size: 20px;
-	margin-top: 30px;
-}
-
-
 .home-title-mini{
 	font-weight:normal;
 	font-size: 18px;
@@ -182,33 +290,6 @@ button {
 	color: #949494;
 }
 
-.time-title2{
-	font-size: 18px;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	color: #949494;
-}
-
-.table-th{
-	width: 700px;
-	height: 100px;
-	font-size: 18px;
-	border: 2px solid #949494;
-	border-collapse: collapse;
-	margin: 0 auto;
-	background: #ffffff;
-}
-
-
-
-.time-box{
-	margin:3px 0px 0px 0px;
-}
-
-.tr-bar{
-	margin: 0 auto;
-	border: 1px solid #a8a8a8;
-}
 
 .table-result{
 	width: 600px;
@@ -225,11 +306,6 @@ button {
 	border-bottom: 1px solid #a8a8a8;
 }
 
-.table-start{
-	margin: 0 auto;
-	border: 0px solid #a8a8a8;
-	border-collapse: collapse;
-}
 
 .pi-state{
 	float:right;
@@ -239,42 +315,6 @@ button {
 	width: 250px;
 	height: auto;
 	margin: 20px 0px 20px 0px;
-}
-
-.btn-end{
-	box-shadow: 0px 0px 4px 0px #FF4765;
-	background-color:#FF4765;
-	border:1px solid #FF4765;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
-}
-
-.btn-endAll{
-	box-shadow: 0px 0px 4px 0px #FF4765;
-	background-color:#ff4750;
-	border:1px solid #ff4750;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
-}
-
-.btn-start{
-	box-shadow: 0px 0px 4px 0px #4A74D7;
-	background-color:#4A74D7;
-	border:1px solid #4A74D7;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
-}
-
-.btn-startAll{
-	box-shadow: 0px 0px 4px 0px #4A74D7;
-	background-color:#5655d4;
-	border:1px solid #5655d4;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
 }
 
 input{
@@ -374,20 +414,6 @@ th{
 
 td{
 	font-weight:normal;
-}
-
-.ver-line{
-	border: 1px solid #a8a8a8;
-	padding:10px;
-}
-
-.thick{
-	border-right:3px solid;
-}
-
-.thick2{
-	border-right:3px solid;
-	border-left:3px solid;
 }
 
 .modal{

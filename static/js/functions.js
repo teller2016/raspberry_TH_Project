@@ -60,7 +60,7 @@ function setCycle(){
             let cycle = document.getElementById('cycle');
                   
             let cycleLabel = document.getElementById('cycleLabel');
-            cycleLabel.innerHTML = cycle.value+'초';
+            cycleLabel.innerHTML = cycle.value;
                            
                   }
                   
@@ -133,10 +133,10 @@ function checkRunning(){ //check the running state and change color of the box
                     timeout: 3000,
                     success: function(data){ //data == run_state
 						if(data == 2){ // not running
-							$('.connection'+piNum).css('border-bottom-color','#6eff3d');
+							$('.connection'+piNum).css('background-color','#6eff3d');
 						}
                         else if(data == 1){
-                            $('.connection'+piNum).css('border-bottom-color','#0ea800');
+                            $('.connection'+piNum).css('background-color','#0ea800');
                         }
                     },
                     error: function(){
