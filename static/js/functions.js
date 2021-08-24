@@ -60,7 +60,7 @@ function setCycle(){
             let cycle = document.getElementById('cycle');
                   
             let cycleLabel = document.getElementById('cycleLabel');
-            cycleLabel.innerHTML = cycle.value+'초';
+            cycleLabel.innerHTML = cycle.value;
                            
                   }
                   

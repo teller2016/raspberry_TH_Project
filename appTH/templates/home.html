@@ -57,9 +57,9 @@
     
     <div class='information-container'>
 	<div class='container-padding'>
-	    <div class='select-pi'>
+	    
 	    <p class="home-title">온습도계 선택</p>
-	    </div>
+	    
 	    
 	    <div style='display:flex; text-align:left'>
 		<!-- Div( Pi href Button) -->
@@ -121,8 +121,7 @@
 				<div class='text-bold'>경과시간</div>
 				<div class='text-bold text-gray' id='run_time'>run_time</span>
 				{% endif %}
-				
-				
+
 			    </div>
 			    
 			</div>
@@ -133,11 +132,37 @@
 		
 	    </div>
 	    
-	    <div class='start-button-container'>
-		
-	    </div>
 	</div>
 	
+	<div class='start-button-container'>
+	    <div style='display:flex; padding:20px;'>
+		{% if run_state == 2 %}
+		<div style='width:40%'>
+		    <div>
+			<input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
+		    </div>
+		    <div style='width:100%'>
+			<div class='information-text-box' style='float:left; padding-left:0px'>측정 주기</div>
+			<div class='information-text-box' style='float:right; padding-left:3px'>초</div>
+			<div style='float:right; border:solid 2px; width:40px; border-radius:5px;'>
+			    <div class='information-text-box' style='float:right'>
+			    <label for="cycle" id="cycleLabel">30</label>
+			    </div>
+			</div>
+		    </div>
+		</div>
+		
+		<div style='width:60%'>
+		    <button class="btn-startAll" onclick="start_pi();">측정 시작</button>
+		</div>
+		{% else %}
+		
+		<div style='width:100%'>
+			<button class="btn-endAll" onclick="end_all();">전체 종료</button>
+		</div>
+		{% endif %}
+	    </div>
+	</div>
 	
     </div>
 	
@@ -164,7 +189,6 @@
                 <th class="ver-line thick"><font>경과 시간</font></th>
                 
                 <th class="ver-line"><font>현재 습도(%)</font></th>
-                
                 
             </tr>
             <!-- PI No.1 -->
@@ -212,36 +236,7 @@
         </div><!-- ALL SUMMARY END -->
 	
 	<br><hr class="hr-div"><br>
-		
-        {% if run_state == 1 %}
-
-	<div class='content-summary2'>
-            <button class="btn-endAll" onclick="end_all();">전체 종료</button>
-        </div>
-        
-        {% else %}
-        
-	<div class='content-summary2'>
-            <table class='table-start'>
-        
-            <tr>
-                <td>
-                    측정 주기
-                </td>
-            </tr>
-            <tr>
-                <td>
-                 <input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
-                <label for="cycle" id="cycleLabel">30초</label>
-                </td>
-                
-            </tr>
-            </table>
-            
-            <button class="btn-startAll" onclick="start_pi();">측정<br>시작</button>
-        </div>
-        
-        {% endif %}
+	
 
     </div> <!-- content-container END -->
     
