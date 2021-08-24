@@ -60,7 +60,6 @@
 	    
 	    <p class="home-title">온습도계 선택</p>
 	    
-	    
 	    <div style='display:flex; text-align:left'>
 		<!-- Div( Pi href Button) -->
 		<div style='width:30%'>
@@ -137,7 +136,7 @@
 	<div class='start-button-container'>
 	    <div style='display:flex; padding:20px;'>
 		{% if run_state == 2 %}
-		<div style='width:40%'>
+		<div style='width:50%'>
 		    <div>
 			<input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
 		    </div>
@@ -152,7 +151,7 @@
 		    </div>
 		</div>
 		
-		<div style='width:60%'>
+		<div style='width:50%'>
 		    <button class="btn-startAll" onclick="start_pi();">측정 시작</button>
 		</div>
 		{% else %}
@@ -165,83 +164,74 @@
 	</div>
 	
     </div>
-	
-    <div class="content-container">
-	
-	<!-- ALL SUMMARY -->
-        <div class="content-summary">
-        
-        <p class="home-title">전체 요약</p>
-        
-        <table class="table-th">
-            <br/>
-            <tr>
-                <th class='thick'></th>
-                <th class='ver-line thick' style='border:3px solid' colspan=2>최대값 데이터</th>
-                <th rowspan=5 class='thick2'></th>
-                <th class='ver-line' style='border:3px solid'>실시간 데이터</th>
-            </tr>
-            
-            <tr class="tr-bar">
-                <th class="ver-line thick"><font>PI NO.</font></th>
-                
-                <th class="ver-line"><font>최대 습도(%)</font></th>
-                <th class="ver-line thick"><font>경과 시간</font></th>
-                
-                <th class="ver-line"><font>현재 습도(%)</font></th>
-                
-            </tr>
-            <!-- PI No.1 -->
-            <tr id="summary1">
-                <td class='ver-line thick'>1</td>
-                
-                <td class='ver-line' id='maxHumidity1'>-</td>
-                <td class='ver-line' id='maxRunTime1'>-</td>
-                
-                <td class='ver-line' id='curHumidity1'>-</td>
-                
-                <td style='display:none' id='curRunId1'>-</td>
-                
-            </tr>
-            
-            <!-- PI No.2 -->
-            <tr id="summary2">
-                <td class='ver-line thick'>2</td>
-                
-                <td class='ver-line' id='maxHumidity2'>-</td>
-                <td class='ver-line' id='maxRunTime2'>-</td>
-                
-                <td class='ver-line' id='curHumidity2'>-</td>
-                
-                <td style='display:none' id='curRunId2'>-</td>
-                
-            </tr>
-            
-            <!-- PI No.3 -->
-            <tr id="summary3">
-               <td class='ver-line thick'>3</td>
-                
-                <td class='ver-line' id='maxHumidity3'>-</td>
-                <td class='ver-line' id='maxRunTime3'>-</td>
-                
-                <td class='ver-line' id='curHumidity3'>-</td>
-                
-                <td style='display:none' id='curRunId3'>-</td>
-                
-            </tr>
-            
-        </table>
-        
-        <br>
-        </div><!-- ALL SUMMARY END -->
-	
-	<br><hr class="hr-div"><br>
-	
-
-    </div> <!-- content-container END -->
     
-    <br><br>
+    <!-- ALL SUMMARY -->
+    <div class='information-container'style='background-color: white'>
+	<div class='container-padding'>
+	    <p class="home-title">전체 요약</p>
+	    
+	    <table class='summary-table'>
+		<tr>
+		    <th></th>
+		    <th rowspan=5 style='width:20px'></th>
+		    
+		    <th colspan=2><div class='th-title'>최대값 데이터</div></th>
+		    <th rowspan=5 style='width:40px'></th>
+		    
+		    <th><div class='th-title'>실시간 데이터</div></th>
+		</tr>
+		
+		<tr>
+		    <th class='bottom-border'><font>NO.</font></th>
+                
+		    <th class='bottom-border'><font>최대 습도(%)</font></th>
+		    <th class='bottom-border'><font>경과 시간</font></th>
+		    
+		    <th class='bottom-border'><font>현재 습도(%)</font></th>
+		</tr>
+		
+		<!-- PI No.1 -->
+		<tr id="summary1" class='bottom-margin'>
+		    <td>1</td>
+                
+		    <td  id='maxHumidity1'>-</td>
+		    <td  id='maxRunTime1'>-</td>
+                
+		    <td  id='curHumidity1'>-</td>
+                
+		    <td style='display:none' id='curRunId1'>-</td>
+		</tr>
+            
+		<!-- PI No.2 -->
+		<tr id="summary2">
+		    <td >2</td>
+                
+		    <td id='maxHumidity2'>-</td>
+		    <td id='maxRunTime2'>-</td>
+                
+		    <td id='curHumidity2'>-</td>
+                
+		    <td style='display:none' id='curRunId2'>-</td>
+		</tr>
+            
+		<!-- PI No.3 -->
+		<tr id="summary3">
+		    <td class='bottom-border bottom-padding'>3</td>
+                
+		    <td class='bottom-border bottom-padding' id='maxHumidity3'>-</td>
+		    <td class='bottom-border bottom-padding' id='maxRunTime3'>-</td>
+                
+		    <td class='bottom-border bottom-padding' id='curHumidity3'>-</td>
+                
+		    <td style='display:none' id='curRunId3'>-</td>
+		</tr>
+		
+	    </table>
+	</div>
+    </div>
+    <!-- SUMMARY END -->
     
+    <br>
     <!--- GRAPH POSITION --->
     <p class="home-title">측정 결과 그래프</p>
     <div id="chart" class='with-3d-shadow with-transitions'>
