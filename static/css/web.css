@@ -10,14 +10,14 @@ body{
 
 /* Header Css */
 .logo-header{
-	background-color: #ffe5ba;
-	
+	background-color: #fff2e4;
 }
 
 .logo-img{
-	width: 200px;
-	height: 65px;
+	width: 170px;
+	height: 55px;
 	margin-top: 30px;
+	margin-bottom: 15px;
 }
 
 .main-title-container{
@@ -56,6 +56,12 @@ body{
 	font-size: 26px;
 	margin-top:40px;
 	text-align:left;
+}
+
+.sub-title{
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
 }
 
 .information-box{
@@ -157,6 +163,30 @@ body{
 
 
 /*************************************************************/
+.table-th{
+	width: 700px;
+	height: 100px;
+	font-size: 18px;
+	border: 2px solid #949494;
+	border-collapse: collapse;
+	margin: 0 auto;
+	background: #ffffff;
+}
+
+.tr-bar{
+	margin: 0 auto;
+	border: 1px solid #a8a8a8;
+}
+
+.ver-line{
+	border: 1px solid #a8a8a8;
+	padding:10px;
+}
+
+.thick{
+	border-right:3px solid;
+}
+
 .checkbox-list{
 	flex-direction:row;
 	margin-bottom:15px;

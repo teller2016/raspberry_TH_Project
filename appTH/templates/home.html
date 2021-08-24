@@ -229,11 +229,11 @@
 	    </table>
 	</div>
     </div>
-    <!-- SUMMARY END -->
+    <!-- ALL SUMMARY END -->
     
     <br>
     <!--- GRAPH POSITION --->
-    <p class="home-title">측정 결과 그래프</p>
+    <p class="home-title" style='text-align:center; margin-bottom:5px;'>측정 결과 그래프</p>
     <div id="chart" class='with-3d-shadow with-transitions'>
 	<svg></svg>
     </div>
@@ -243,7 +243,7 @@
 	
     <div class="table-div">
 
-	<p class="home-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
+	<p class="sub-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
 	
 	<a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
         <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
