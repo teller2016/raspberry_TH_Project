@@ -7,13 +7,163 @@ body{
 	left: 0;
 }
 
-.connection-box{
-	border-bottom-style: solid;
-    border-bottom-width: 8px;
-    padding-bottom: 7px;
-    border-radius: 11px;
-    border-bottom-color: #6eff3d;
+/* Header Css */
+.logo-header{
+	background-color: #fff2e4;
+	width:100%;
 }
+
+.logo-img{
+	width: 110px;
+	height: 35px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.main-title-container{
+	display: inline-block;
+	vertical-align: middle;
+    width:100%;
+  
+    border-radius: 5% / 50%;
+
+    border-bottom: solid #ff5c33;
+}
+
+.main-title{
+	font-size:18px;
+	text-align: center;
+	font-weight: bold;
+}
+/* Header Css End */
+
+/* Pi Button, Time, Start Button CSS */
+.information-container{
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #f0f0f0;
+	
+}
+
+.container-padding{
+	padding-left:45px;
+	padding-right:45px;
+}
+
+.home-title{
+	font-weight: bold;
+	font-size: 21px;
+	margin-top:40px;
+	text-align:left;
+}
+
+.sub-title{
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+}
+
+.information-box{
+	margin-bottom: 15px;
+	position: relative;
+	height:90px;
+}
+
+/* Pi Button */
+.pi-select-button{
+	width: 140px;
+	height: 80px;
+	border-radius: 10px;
+	font-size: 27px;
+	color: black;
+}
+
+.connection-status-box{
+	width:23px;
+	height:23px;
+	border-radius: 7px;
+	background-color:gray;
+	position:absolute;
+	top:7px;
+	right:-2px;
+}
+
+.start-button-container{
+	margin-top: 40px;
+	display: inline-block;
+	width:95%;
+	background-color:white;
+	border-radius:20px;
+}
+
+/* Time, cycle */
+.information-text-box{
+	padding-left: 20px;
+	font-size: 21px;
+	color: black;
+}
+
+.text-bold{
+	font-weight: bold;
+}
+.text-gray{
+	color:gray;
+}
+
+/* Start Button Box */
+#cycle{
+	width:100%;
+	margin:0px;
+	background: #5c7bd1;
+	margin-bottom: 13px;
+}
+
+.btn-startAll{
+	background-color:#2243a1;
+	color:#ffffff;
+	font-size: 22px;
+	font-weight:bold;
+	height: 65px;
+	width: 170px;
+	border-radius:50px;
+}
+
+.btn-endAll{
+	background-color:#ff4750;
+	color:#ffffff;
+	font-size: 22px;
+	font-weight:bold;
+	height: 65px;
+	width: 170px;
+	border-radius:50px;
+}
+
+/* Summary Table */
+
+.summary-table{
+	width: 100%;
+	font-size: 19px;
+	border-spacing: 0 13px;
+}
+
+.bottom-border{
+	border-bottom: 3px solid #cccccc;
+}
+
+.bottom-padding{
+	padding-bottom: 13px;
+}
+
+.th-title{
+	background-color: #e0e0e0;
+	border-radius: 8px;
+
+}
+
+
+/*************************************************************/
+
 
 .checkbox-list{
 	flex-direction:row;
@@ -58,32 +208,6 @@ input{
 	float: left;
 }
 
-.logo-img{
-	width: 100%;
-	height: 100%;
-	margin: 5px 0px 0px 2px;
-}
-
-.main-title{
-	color: #fff;
-	font-size:11px;
-	text-align: center;
-	margin-top:8px;
-}
-
-.main-title-container{
-	display: inline-block;
-	vertical-align: middle;
-	height:35px;
-    width:230px;
-    margin-left:-50px;
-    margin-top:-10px;
-    border-radius: 50% / 100%;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-    background:#4A74D7;
-}
-
 .content-container{
 	display: inline-block;
 	vertical-align: middle;
@@ -98,12 +222,6 @@ input{
 	background-color:#4A74D7;
 	border:1px solid #4A74D7;
 	color:#ffffff;
-}
-
-.home-title{
-	font-weight: bold;
-	font-size: 16px;
-	margin-top: 30px;
 }
 
 .time-title{
@@ -167,44 +285,6 @@ input{
 	border-collapse: collapse;
 }
 
-.btn-start{
-	box-shadow: 0px 0px 4px 0px #4A74D7;
-	background-color:#4A74D7;
-	border:1px solid #4A74D7;
-	color:#ffffff;
-	font-size: 14px;
-	height: 70px;
-	width: 80px;
-}
-
-.btn-startAll{
-	box-shadow: 0px 0px 4px 0px #4A74D7;
-	background-color:#5655d4;
-	border:1px solid #5655d4;
-	color:#ffffff;
-	font-size: 14px;
-	height: 70px;
-	width: 80px;
-}
-
-.btn-end{
-	box-shadow: 0px 0px 4px 0px #FF4765;
-	background-color:#FF4765;
-	border:1px solid #FF4765;
-	color:#ffffff;
-	font-size: 14px;
-	height: 70px;
-	width: 100px;
-}
-
-.btn-endAll{
-	box-shadow: 0px 0px 4px 0px #FF4765;
-	background-color:#ff4750;
-	border:1px solid #ff4750;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
-}
 
 .button2{
 	margin-top:30px;
@@ -335,19 +415,6 @@ input{
 	border:1px solid #F6F6F6;
 	display:inline-block;
 	text-decoration:none;
-}
-
-.content-summary2{
-	width: content-fit;
-	margin: 4px;
-	padding: 5px 10px 5px 10px;
-	box-shadow: 0px 0px 4px 0px #00000029;
-	background-color:#F6F6F6;
-	border-radius:2px;
-	border:1px solid #F6F6F6;
-	display:inline-block;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #F6F6F6;
 }
 
 .ver-line{
