@@ -16,14 +16,14 @@ body{
 
 .logo-img{
 	width: 200px;
-	height: 75px;
+	height: 65px;
 	margin-top: 30px;
 }
 
 .main-title-container{
 	display: inline-block;
 	vertical-align: middle;
-    width:600px;
+    width:650px;
   
     border-radius: 5% / 50%;
 
@@ -41,7 +41,7 @@ body{
 .information-container{
 	display: inline-block;
 	background-color: #f0f0f0;
-	width: 600px;
+	width: 650px;
 }
 
 .container-padding{
@@ -78,7 +78,7 @@ body{
 	background-color:gray;
 	position:absolute;
 	top:7px;
-	right:6px;
+	right:7px;
 }
 
 .start-button-container{
@@ -92,7 +92,7 @@ body{
 /* Time, cycle */
 .information-text-box{
 	padding-left: 15px;
-	font-size: 19px;
+	font-size: 22px;
 	color: black;
 }
 
@@ -112,9 +112,17 @@ body{
 }
 
 .btn-startAll{
-	box-shadow: 0px 0px 4px 0px #2243a1;
 	background-color:#2243a1;
-	border:1px solid #5655d4;
+	color:#ffffff;
+	font-size: 22px;
+	font-weight:bold;
+	height: 65px;
+	width: 170px;
+	border-radius:50px;
+}
+
+.btn-endAll{
+	background-color:#ff4750;
 	color:#ffffff;
 	font-size: 22px;
 	font-weight:bold;
@@ -272,26 +280,6 @@ button {
 	height: auto;
 	margin: 20px 0px 20px 0px;
 }
-
-.btn-end{
-	box-shadow: 0px 0px 4px 0px #FF4765;
-	background-color:#FF4765;
-	border:1px solid #FF4765;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
-}
-
-.btn-endAll{
-	box-shadow: 0px 0px 4px 0px #FF4765;
-	background-color:#ff4750;
-	border:1px solid #ff4750;
-	color:#ffffff;
-	height: 70px;
-	width: 100px;
-}
-
-
 
 input{
 	margin-left: 20px;
