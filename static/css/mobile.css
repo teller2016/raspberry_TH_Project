@@ -47,8 +47,8 @@ body{
 }
 
 .container-padding{
-	padding-left:45px;
-	padding-right:45px;
+	padding-left:10px;
+	padding-right:10px;
 }
 
 .home-title{
@@ -72,7 +72,7 @@ body{
 
 /* Pi Button */
 .pi-select-button{
-	width: 140px;
+	width: 130px;
 	height: 80px;
 	border-radius: 10px;
 	font-size: 27px;
@@ -86,7 +86,7 @@ body{
 	background-color:gray;
 	position:absolute;
 	top:7px;
-	right:-2px;
+	right:3px;
 }
 
 .start-button-container{
@@ -340,7 +340,7 @@ input{
 .table-div{
 	margin: 0 auto;
 	border:1px solid #a8a8a8;
-	width: 320px;
+	width: 400px;
 }
 
 .table-div2{
