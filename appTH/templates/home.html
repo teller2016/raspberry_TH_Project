@@ -61,7 +61,7 @@
 	    <p class="home-title">온습도계 선택</p>
 	    </div>
 	    
-	    <div style='border:solid; display:flex; text-align:left'>
+	    <div style='display:flex; text-align:left'>
 		<!-- Div( Pi href Button) -->
 		<div style='width:30%'>
 		    <div class = 'information-box'>
@@ -88,16 +88,44 @@
 		</div>
 		
 		<!-- Div( Time Info ) -->
-		<div style='border:solid blue; width:70%'>
+		<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
+		<div style='width:70%'>
 		    <div class = 'information-box'>
-			
+			<div class='information-text-box text-bold text-gray'>PI No.{{pi_num}} 기준</div>
+			<div class='information-text-box text-bold text-gray' id="dataCycle">측정주기: N/A</div>
 		    </div>
 		    
 		    <div class = 'information-box'>
-			
+			<div class='information-text-box text-bold'>현재시간</div>
+			<div style='display:flex'>
+			    <div class='information-text-box' style='color:#355dcc' id='cur_date'>date</div>
+			    <div class='information-text-box text-bold' style='color:#355dcc;' id='cur_time'>date</div>
+			</div>
 		    </div>
 		    
 		    <div class = 'information-box'>
+			<div style='display:flex'>
+			    <div class='information-text-box'>
+				<div class='text-bold'>시작시간</div>
+				<div class='text-gray'>{{th_state.start_time|date:"Y-m-d"}}</div>
+				<div class='text-bold text-gray'>{{th_state.start_time|date:"H:i:s"}}</div>
+			    </div>
+			    
+			    
+			    <div class='information-text-box' style='margin-left:50px'>
+				{% if run_state == 2 %}
+				<div class='text-bold'>종료시간</div>
+				<div class='text-gray'>{{th_state.end_time|date:"Y-m-d"}}</div>
+				<div class='text-bold text-gray'>{{th_state.end_time|date:"H:i:s"}}</div>
+				{% else %}
+				<div class='text-bold'>경과시간</div>
+				<div class='text-bold text-gray' id='run_time'>run_time</span>
+				{% endif %}
+				
+				
+			    </div>
+			    
+			</div>
 			
 		    </div>
 		</div>
@@ -114,49 +142,6 @@
     </div>
 	
     <div class="content-container">
-	<div class="pi-select">
-	    <!--<a href="http://192.168.243.1:80/summary"><button>전체 확인</button></a>-->
-	    <a href="http://192.168.243.1:80/" class='connection-box connection1'><button class='connection-status btn-me'>1번</button></a>
-	    <a href="http://192.168.243.2:80/" class='connection-box connection2'><button class='connection-status'>2번</button></a>
-	    <a href="http://192.168.243.3:80/" class='connection-box connection3'><button class='connection-status'>3번</button></a>
-	</div>
-        <br>
-	
-	<!-- 현재시간 -->
-        <div class='pi-list'>
-            <div class='content-summary2'>
-                <div class='time-box'>현재시간</div>
-                <span class="time-title2" id="cur_date" >date</span>
-                <span class="time-title2" id="cur_time" >time</span>
-            </div>
-        </div>
-	
-	<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
-        <div>
-            <p class="time-title2" style="font-size:15px">PI No.{{pi_num}} 기준</p>
-	    
-            <div class='pi-list'>
-                <div class='content-summary2'>
-                    <div class='time-box'>시작시간</div>
-                    <span class='time-title2'>{{th_state.start_time|date:"Y-m-d H:i:s"}}</span>
-                </div>
-                
-                {% if run_state == 2 %}
-                <div class='content-summary2'>
-                    <div class='time-box'>종료시간</div>
-                    <span class='time-title2'>{{th_state.end_time|date:"Y-m-d H:i:s"}}</span>
-                </div>
-                {% else %}
-                <div class='content-summary2'>
-                    <div class='time-box'>경과시간</div>
-                    <span class='time-title2' id='run_time'>run_time</span>
-                </div>
-                {% endif %}
-            
-            </div>
-            
-            <p class="time-title2" id="dataCycle">측정주기: N/A</p>
-        </div>
 	
 	<!-- ALL SUMMARY -->
         <div class="content-summary">
