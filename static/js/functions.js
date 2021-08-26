@@ -141,7 +141,7 @@ function checkRunning(){ //check the running state and change color of the box
                     },
                     error: function(){
                         // error - change connection state to red
-                        $('.connection'+piNum).css('border-bottom-color','#ff2b2b');
+                        $('.connection'+piNum).css('background-color','#ff2b2b');
                         console.log("checkRunning Error occured!!");
                     }
                 })
