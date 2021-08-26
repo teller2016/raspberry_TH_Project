@@ -11,6 +11,10 @@ body{
 	font-family: 'NanumSquare', sans-serif;
 }
 
+#chart{
+	transform: translate(-20px, 0px);
+}
+
 /* Header Css */
 .logo-header{
 	background-color: #fff2e4;
@@ -47,7 +51,7 @@ body{
 	vertical-align: middle;
 	text-align: center;
 	background-color: #f0f0f0;
-	
+	width:100%;
 }
 
 .container-padding{
@@ -76,11 +80,12 @@ body{
 
 /* Pi Button */
 .pi-select-button{
-	width: 130px;
+	width: 100%;
 	height: 80px;
 	border-radius: 10px;
 	font-size: 27px;
 	color: black;
+	position: relative;
 }
 
 .connection-status-box{
@@ -89,8 +94,8 @@ body{
 	border-radius: 7px;
 	background-color:gray;
 	position:absolute;
-	top:7px;
-	right:3px;
+	top:4px;
+	right:4px;
 }
 
 .start-button-container{
@@ -104,8 +109,12 @@ body{
 /* Time, cycle */
 .information-text-box{
 	padding-left: 20px;
-	font-size: 21px;
+	font-size: 18px;
 	color: black;
+}
+
+.information-text-box.two{
+	padding-left: 10px;
 }
 
 .text-bold{
@@ -129,7 +138,7 @@ body{
 	font-size: 22px;
 	font-weight:bold;
 	height: 65px;
-	width: 170px;
+	width: 95%;
 	border-radius:50px;
 }
 
@@ -147,7 +156,7 @@ body{
 
 .summary-table{
 	width: 100%;
-	font-size: 19px;
+	font-size: 17px;
 	border-spacing: 0 13px;
 }
 
@@ -344,7 +353,7 @@ input{
 .table-div{
 	margin: 0 auto;
 	border:1px solid #a8a8a8;
-	width: 400px;
+	width: 95%;
 }
 
 .table-div2{

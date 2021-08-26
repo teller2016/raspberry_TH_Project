@@ -12,7 +12,6 @@ body{
 	font-family: 'NanumSquare', sans-serif;
 }
 
-
 /* Header Css */
 .logo-header{
 	background-color: #fff2e4;
@@ -82,6 +81,7 @@ body{
 	border-radius: 10px;
 	font-size: 30px;
 	color: black;
+	position: relative;
 }
 
 .connection-status-box{
@@ -90,8 +90,8 @@ body{
 	border-radius: 7px;
 	background-color:gray;
 	position:absolute;
-	top:7px;
-	right:7px;
+	top:4px;
+	right:4px;
 }
 
 .start-button-container{
@@ -104,9 +104,13 @@ body{
 
 /* Time, cycle */
 .information-text-box{
-	padding-left: 15px;
+	padding-left: 20px;
 	font-size: 22px;
 	color: black;
+}
+
+.information-text-box.two{
+	padding-left: 35px;
 }
 
 .text-bold{
