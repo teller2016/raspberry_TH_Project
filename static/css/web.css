@@ -8,6 +8,11 @@ body{
 	left: 0;
 }
 
+*{
+	font-family: 'NanumSquare', sans-serif;
+}
+
+
 /* Header Css */
 .logo-header{
 	background-color: #fff2e4;
