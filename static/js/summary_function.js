@@ -198,7 +198,7 @@ function getLastThData(piNum, run_state){
                                 }
                                 else{
                                     //show cycle
-                                    updateCycle(piNum, data);
+                                    //updateCycle(piNum, data);
 
                                     let lastRunId = $(`#curRunId${piNum}`).text();
 
