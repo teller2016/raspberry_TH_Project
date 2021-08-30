@@ -29,7 +29,9 @@
     <script src="{% static 'js/home_ajax.js' %}"></script>
     <!-- summary functions -->
     <script src="{% static 'js/summary_function.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+    
+    <!-- NanumSquare Font -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/NanumSquare/nanumsquare.css' %}"/>
 
     <script type="text/javascript">
         String.prototype.replaceAll = function(org, dest) {
@@ -65,24 +67,30 @@
 		<!-- Div( Pi href Button) -->
 		<div style='width:30%'>
 		    <div class = 'information-box'>
-			<div class = 'connection-status-box connection1'></div>
 			<a href="http://192.168.243.1:80/">
-			    <button class = 'pi-select-button'>1</button>
+			    <button class = 'pi-select-button btn-me'>
+				<div class = 'connection-status-box connection1'></div>
+				1
+				</button>
 			</a>
 		    </div>
 		    
 		    <div class = 'information-box'>
-			<div class = 'connection-status-box connection2'></div>
 			<a href="http://192.168.243.2:80/">
-			    <button class = 'pi-select-button'>2</button>
+			    <button class = 'pi-select-button'>
+				<div class = 'connection-status-box connection2'></div>
+				2
+				</button>
 			</a>
 			
 		    </div>
 		    
 		    <div class = 'information-box'>
-			<div class = 'connection-status-box connection3'></div>
 			<a href="http://192.168.243.3:80/">
-			    <button class = 'pi-select-button'>3</button>
+			    <button class = 'pi-select-button'>
+				<div class = 'connection-status-box connection3'></div>
+				3
+				</button>
 			</a>
 		    </div>
 		</div>
@@ -99,7 +107,7 @@
 			<div class='information-text-box text-bold'>현재시간</div>
 			<div style='display:flex'>
 			    <div class='information-text-box' style='color:#355dcc' id='cur_date'>date</div>
-			    <div class='information-text-box text-bold' style='color:#355dcc;' id='cur_time'>date</div>
+			    <div class='information-text-box two text-bold' style='color:#355dcc;' id='cur_time'>date</div>
 			</div>
 		    </div>
 		    
@@ -112,7 +120,7 @@
 			    </div>
 			    
 			    
-			    <div class='information-text-box' style='margin-left:50px'>
+			    <div class='information-text-box two'>
 				{% if run_state == 2 %}
 				<div class='text-bold'>종료시간</div>
 				<div class='text-gray'>{{th_state.end_time|date:"Y-m-d"}}</div>
