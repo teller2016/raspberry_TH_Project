@@ -213,62 +213,7 @@ def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // secon
     os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
     
     return HttpResponse('***HttpResponse restart all***')
-'''
-def restart(request, time, second): #time: ex> "2021-07-06 17:13:00" // second: repeat time
-    TH = th_model.instance() #라즈베리파이 정보 객체 생성
-    th_state = TH_state.objects.all() #th_state 데이터 테이블 전체 불러옴
-    TH.setPiDate(time) #라즈베리파이 정보 객체 pi_date값 할당
-    piNum = TH.getPiNum()
-    
-    #backup last data
-    th_state = TH_state.objects.first()
-    conn = pymysql.connect(host='localhost', user='pi', password='8302' ,db='th_db', charset='utf8')
-    query = 'SELECT run_time_str, humidity, temperature, run_time_date FROM appTH_th_data' # th_data 전체 데이터 쿼리
-    df = pd.read_sql_query(query,conn) # 쿼리 요청에 대한 데이터를 pandas dataframe으로 가져온다
-    df['Pi Num']= piNum # add Pi Number to backup file
 
-    filename = th_state.start_time.strftime("%Y%m%d_%H%M%S")+".csv" #엑셀 파일이름 지정
-    path = "/home/pi/Project/backup/" # 엑셀 파일 저장 경로
-    df.to_csv(path+filename, header=True, index=False) # dataframe을 csv 파일로 내보내기
-    
-    # 1: 온습도계 실행상태
-    # 2: 온습도계 종료상태
-    TH.setRunState(1) # run_state 2 -> 1
-    
-    th_list = TH_data.objects.all() # th_data 데이터 테이블 전체 불러옴
-    th_list.delete() # th_data 전체 삭제
-    th_state.delete() # th_state 삭제
-    
-    # th_state 새로 생성하고 값 초기화 진행
-    new_state = TH_state()
-    new_state.last_run_id = 0
-    new_state.start_time = TH.getPiDate()
-    new_state.end_time = TH.getPiDate()
-    new_state.max_hum_time = TH.getPiDate()
-    new_state.max_hum = 0
-    new_state.max_hum_temp = 0
-    new_state.run_time_str = "-"
-    new_state.save()
-    
-    conn.close()
-    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
-    return redirect('home')
-'''
-'''
-def end(request):
-    TH = th_model.instance()
-    pi_date = TH.getPiDate()
-     
-    th_update = TH_data.objects.last()
-    if th_update:
-        th_update.run_time_date = pi_date + datetime.timedelta(seconds=th_update.run_time)
-        th_update.save()
-    
-    os.system('sudo pkill -9 -ef th_run')
-
-    TH.setRunState(2) # run_state 1 -> 2
-    return redirect('home')
-'''
 def endAll(request):
     TH = th_model.instance()
     pi_date = TH.getPiDate()

@@ -156,8 +156,8 @@ function checkRunning(){ //check the running state and change color of the box
 
 
 //*********** summary.html, beforeResult.html ***********//
-function updateCycle(piNum, data){ //+home_ajax.js
-            if(piNum==1 && data.length>1){
+function updateCycle(data){ //+home_ajax.js
+            if(data.length>1){
                 let last = data[0].fields.run_time;
                 let before = data[1].fields.run_time;
                 let cycleHtml = document.getElementById('dataCycle');

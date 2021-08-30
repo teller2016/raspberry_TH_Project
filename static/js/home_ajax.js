@@ -11,6 +11,8 @@ function getThData(){
                                 if(data.length==0)
                                     return;
                                     
+                                updateCycle(data);
+                                    
                                 $('#table_data').empty();
                                 
                                 let state_run_id = $('#state_id').html();
