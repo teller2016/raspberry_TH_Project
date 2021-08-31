@@ -35,7 +35,7 @@
             }
             
             let csv_name = csv_name_element.innerHTML
-            let defaultName = 'Pi.' + '{{pi_num}}' + '_' + csv_name_element.innerHTML.split('.')[0];
+            let defaultName = 'No.' + '{{pi_num}}' + '_' + csv_name_element.innerHTML.split('.')[0];
              
             var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)", defaultName)
             if(userInput == null){
@@ -82,7 +82,7 @@
 
 <div class="result">
     <a href="{% url 'beforeResult' %}"><button class="btn-re">새로고침</button></a>
-    <p class="graph-title">PI No.{{pi_num}} 과거 결과 확인</p>
+    <p class="graph-title">No.{{pi_num}} 과거 결과 확인</p>
 </div>
 
 <div class="table-div2 result">
@@ -158,7 +158,7 @@
     <div class='modal-content'>
         <div class='close' style='float:right'>&times;</div>
         
-        <p class="sub-title">모든 PI 측정 결과 그래프</p>
+        <p class="sub-title">전체 측정 결과 그래프</p>
         <div id="allChart" class='with-3d-shadow with-transitions'>
         <svg></svg>
         </div>
@@ -167,14 +167,14 @@
         
         <div class="content-summary">
             <p class="sub-title">전체 요약</p>
-            <table class="table-th">
-                <tr class="tr-bar">
-                    <th class="ver-line thick"><font>PI NO.</font></th>
+            <table class="summary-table">
+                <tr>
+                    <th class="bottom-border"><font>NO.</font></th>
                 
-                    <th class="ver-line"><font>최대 습도(%)</font></th>
-                    <th class="ver-line thick"><font>온도(°C)</font></th>
-                    <th class="ver-line thick"><font>경과 시간</font></th>
-                    <th class="ver-line"><font>측정 시간</font></th>
+                    <th class="bottom-border"><font>최대 습도(%)</font></th>
+                    <th class="bottom-border"><font>온도(°C)</font></th>
+                    <th class="bottom-border"><font>경과 시간</font></th>
+                    <th class="bottom-border"><font>측정 시간</font></th>
                 </tr>
                 
                 
@@ -294,10 +294,10 @@
                 let table_head_html =
                     "<tr class='tr-bar2'>" +
                     "<th><font>측정 날짜</font></th>" +
-                    "<th><font>측정 시간</font></th>" +
+                    
                     "<th><font>파일명</font></th>" +
                     "<th><font>조회</font></th>" +
-                    "<th><font>동시조회</font></th>" +
+                    "<th><font>전체조회</font></th>" +
                     "</tr>";
                     
                 $('#table_select_data').append( table_head_html )
@@ -309,12 +309,12 @@
                 }
 
                 data.forEach(function(item){
-                    let date_str = getDate(item);
-                    let time_str = getTime(item);
+                    //let date_str = getDate(item);
+                    //let time_str = getTime(item);
                     
                     $('#table_select_data').append( "<tr>"+
-                        "<td><font>" + date_str + "</font></td>" +
-                        "<td><font>" + time_str + "</font></td>" +
+                        "<td><font>" + getDataAndTime(item) + "</font></td>" +
+                        
                         "<td><font>" + item + "</font></td>" +
                         "<td>"+
                         '<button class="button4" onclick="getDataByName(\'' + item + '\')">조회</button>' +
@@ -322,7 +322,7 @@
                         "</td>"+
                         "<td>"+
                    
-                        '<button class="button4" onclick="showAllGraph(\'' + item + '\')">동시조회</button>' +
+                        '<button class="button4" onclick="showAllGraph(\'' + item + '\')">전체조회</button>' +
                         "</td>"+
                         "</tr>"
                         );
@@ -552,7 +552,7 @@
         }
         
         all_th_data.push({
-                "key": `PI-${piNum} 습도(%)`,
+                "key": `No.${piNum} 습도(%)`,
                 "color": fixedColor[piNum],
                 "values": dataList
             });
@@ -570,17 +570,17 @@
             let data = maxData[piNum];
             
             let tr_html= '<tr class="tr-max">'+
-                        '<td class="ver-line thick"><font>' + piNum + '</font></td>' +
-                        '<td class="ver-line"><font>' + data[1] + '</font></td>' + //Max Humidity
-                        '<td class="ver-line thick"><font>' + data[2] + '</font></td>' + //Temperature
-                        '<td class="ver-line thick"><font>' + data[0] + '</font></td>' + //run time
-                        '<td class="ver-line"><font>' + data[3].slice(0,19) + '</font></td>' + //time
+                        '<td>' + piNum + '</td>' +
+                        '<td>' + data[1] + '</td>' + //Max Humidity
+                        '<td>' + data[2] + '</td>' + //Temperature
+                        '<td>' + data[0] + '</td>' + //run time
+                        '<td>' + data[3].slice(0,19) + '</td>' + //time
                         '</tr>';
             
             total_html += tr_html;
         }
         
-        $('.table-th').append(total_html);
+        $('.summary-table').append(total_html);
         maxData={};
     }
     
@@ -602,7 +602,7 @@
         let month = item.slice(4,6);
         let day = item.slice(6,8);
         
-        return year+"년/" + month+"월/" + day+"일";
+        return year+"/" + month+"/" + day;
     }
     
     function getTime(item){ // change time format
@@ -611,6 +611,22 @@
         let second = item.slice(13,15);
         
         return hour+':'+minute+':'+second;
+    }
+    
+    function getDataAndTime(item){
+        let year = item.slice(0,4);
+        let month = item.slice(4,6);
+        let day = item.slice(6,8);
+        
+        let YMD = year+"/" + month+"/" + day;
+        
+        let hour = item.slice(9,11);
+        let minute = item.slice(11,13);
+        let second = item.slice(13,15);
+        
+        let HMS =  hour+':'+minute+':'+second;
+        
+        return YMD+' '+HMS;
     }
 
         

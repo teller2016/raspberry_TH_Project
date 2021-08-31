@@ -18,7 +18,7 @@ function getThData(){
                                 let state_run_id = $('#state_id').html();
                                 let table_head_html =
                                     "<tr class='tr-bar2'>" +
-                                    "<th><font>NO.</font></th>" +
+                                    "<th><font>Rows</font></th>" +
                                     "<th><font>경과 시간</font></th>" +
                                     "<th><font>습도(%)</font></th>" +
                                     "<th><font>온도(°C)</font></th>" +

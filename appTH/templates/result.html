@@ -94,7 +94,7 @@
                                 let state_run_id = $('#state_id').html();
                                 let table_head_html =
                                     "<tr class='tr-bar2'>" +
-                                    "<th><font>no.</font></th>" +
+                                    "<th><font>Rows</font></th>" +
                                     "<th><font>경과 시간</font></th>" +
                                     "<th><font>습도(%)</font></th>" +
                                     "<th><font>온도(°C)</font></th>" +
@@ -123,7 +123,7 @@
                                         "<td><font>" + run_time_str + "</font></td>" +
                                         "<td><font>" + humidity + "</font></td>" +
                                         "<td><font>" + temperature + "</font></td>" +
-                                        "<td><font>" + getHMS(run_time_date) + "</font></td>" +
+                                        "<td><font>" + getDateHMS(run_time_date) + "</font></td>" +
                                         "</tr>"
                                     );
                                 

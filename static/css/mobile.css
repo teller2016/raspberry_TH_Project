@@ -187,7 +187,7 @@ body{
 
 .th-title{
 	background-color: #f0f0f0;
-	
+	border-radius:2px;
 	padding:7px;
 }
 
@@ -401,7 +401,6 @@ input{
 
 .table-div2{
 	
-	border:1px solid #a8a8a8;
 	justify-content: center;
 }
 
@@ -420,7 +419,7 @@ input{
 
 .table-result{
 	width: 95%;
-	height: 150px;
+	height: 60px;
 	font-size: 13px;
 	border: 0px solid #a8a8a8;
 	border-collapse: collapse;
@@ -468,9 +467,7 @@ input{
 .result{clear:both;}
 
 .content-summary{
-	width: 360px;
-	margin: 4px;
-	padding: 5px 10px 10px 10px;
+	
 	box-shadow: 0px 0px 4px 0px #00000029;
 	background-color:#F6F6F6;
 	border-radius:2px;

@@ -55,6 +55,22 @@ function getHMS(HMS){
             
             return time;
         }
+function getDateHMS(HMS){
+    var gmt = new Date(HMS); //err ( GMT + 9 + 9 is current value)
+    var date = new Date(gmt.getTime() + (gmt.getTimezoneOffset() * 60000)); //-9 hours ( GMT + 9 )
+    
+    let years = date.getFullYear();
+    let months = ('0' + (date.getMonth()+1)).slice(-2);
+    let days = ('0' + date.getDate()).slice(-2);
+    
+    let hours = ('0' + date.getHours()).slice(-2);
+    let minutes = ('0' + date.getMinutes()).slice(-2);
+    let seconds = ('0' + date.getSeconds()).slice(-2);
+            
+    let totalDate = years+'-'+months+'-'+days+' '+hours+':'+minutes+':'+seconds;
+            
+    return totalDate;
+}
 
 function setCycle(){
             let cycle = document.getElementById('cycle');
@@ -191,7 +207,7 @@ function xAxisLabel(time){
 
 //************** home.html, result.html ******************//
 function csv_name(piNum, date){
-            let defaultName = `Pi.${piNum}_${date}`
+            let defaultName = `No.${piNum}_${date}`
             var userInput = prompt("저장을 원하는 csv파일의 이름을 입력해주세요.\n(이름은 영어와 숫자로만 구성되어야 합니다.)", defaultName);
             if(userInput == null){
                 alert("취소되었습니다.");
