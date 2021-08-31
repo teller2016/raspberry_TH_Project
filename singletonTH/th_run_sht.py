@@ -91,13 +91,13 @@ try :
                
             
                 cur.execute(sql,
-                           (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,3),round(humidity,3)))
+                           (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,1),round(humidity,1)))
                 conn.commit()
                 #max database update
-                if max_hum <= round(humidity,3):
+                if max_hum <= round(humidity,1):
                     print('Max Humid value appeared!!')
-                    max_hum = round(humidity,3)
-                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
+                    max_hum = round(humidity,1)
+                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,1),round(temperature,1)))
                     conn.commit()
                 count = count + 1
                 time.sleep(sleepTime)
