@@ -321,7 +321,7 @@ function updateGraph(data, piNum){
              
             
             let graphData = {
-                "key": `PI-${piNum} 습도(%)`,
+                "key": `No.${piNum} 습도(%)`,
                 "color": fixedColor[piNum],
                 "values": dataList
             }
@@ -340,7 +340,7 @@ function pushDataToGraph(data, piNum){ // add newest data to th_data_save
             if(th_data_save[piNum] == undefined){
 
                 let graphData = {
-                    "key": `PI-${piNum} 습도(%)`,
+                    "key": `No.${piNum} 습도(%)`,
                     "color": fixedColor[piNum],
                     "values": []
                 }

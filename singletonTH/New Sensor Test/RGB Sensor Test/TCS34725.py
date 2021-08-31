@@ -7,6 +7,7 @@ sensor = adafruit_tcs34725.TCS34725(i2c)
 
 while True:
     color = sensor.color
+    hexColor = ((color+1)*256)-1
     color_rgb = sensor.color_rgb_bytes
     print(
         "RGB color as 8 bits per channel int: #{0:02X} or as 3-tuple: {1}".format(

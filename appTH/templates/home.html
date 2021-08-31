@@ -99,7 +99,7 @@
 		<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
 		<div style='width:70%'>
 		    <div class = 'information-box padding-add'>
-			<div class='information-text-box text-bold text-gray'>PI No.{{pi_num}} 기준</div>
+			<div class='information-text-box text-bold text-gray'>No.{{pi_num}} 기준</div>
 			<div class='information-text-box text-bold text-gray' id="dataCycle">측정주기: N/A</div>
 		    </div>
 		    
@@ -178,7 +178,7 @@
     <!-- ALL SUMMARY -->
     <div class='information-container'style='background-color: white'>
 	<div class='container-padding'>
-	    <p class="home-title">전체 요약</p>
+	    <p class="home-title" style='margin-bottom:0px'>전체 요약</p>
 	    
 	    <table class='summary-table'>
 		<tr>
@@ -243,7 +243,10 @@
     
     <br>
     <!--- GRAPH POSITION --->
-    <p class="home-title" style='text-align:center; margin-bottom:5px;'>측정 결과 그래프</p>
+    <div class='container-padding'>
+	<p class="home-title" style='margin-bottom:5px;'>측정 결과 그래프</p>
+    </div>
+    
     <div id="chart" class='with-3d-shadow with-transitions'>
 	<svg></svg>
     </div>
@@ -253,10 +256,10 @@
 	
     <div class="table-div">
 
-	<p class="sub-title">PI No.{{pi_num}} 측정 결과 미리보기</p>
+	<p class="sub-title">No.{{pi_num}} 상세 데이터</p>
 	
-	<a href="{% url 'result' %}"><button class="button2">현재 데이터 조회</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button2">과거 데이터 조회</button></a>
+	<a href="{% url 'result' %}"><button class="button-past">현재 데이터 조회</button></a>
+        <a href="{% url 'beforeResult' %}"><button class="button-current">과거 데이터 조회</button></a>
 	
         <table class="table-result" id="table_data">
         </table>
