@@ -48,6 +48,8 @@
         }
     </script>
     
+    <!-- NanumSquare Font -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/NanumSquare/nanumsquare.css' %}"/>
     
 
     <style>
@@ -108,9 +110,9 @@
             
         </script>
     
-        <button class="button3" onclick="getDataByTime();">조회</button>
+        <button class="button-current" style='float: none' onclick="getDataByTime();">조회</button>
     
-        <table class="table-result" id="table_select_data"> </table>
+        <table class="table-result past" id="table_select_data"> </table>
         
     
     <br><br>
@@ -119,7 +121,7 @@
     <div class="beforeResult_result">
         
         <p class="sub-title">최대값 데이터</p>
-        <table class="table-result" id="summary_data">
+        <table class="table-result past" id="summary_data">
             <tr>
                 <td style="font-weight:bold">No Data</td>
             </tr>
@@ -128,9 +130,9 @@
         <hr/>
         <hr/>
         
-        <button class="button2" onclick="csv_download();">엑셀 파일 저장</button>
+        <button class="button-current" onclick="csv_download();">엑셀 파일 저장</button>
         <p class="sub-title bt2">측정 결과 표</p>
-        <table class="table-result" id="table_data"> 
+        <table class="table-result past" id="table_data"> 
             <tr>
                 <td style="font-weight:bold">No Data</td>
             </tr>

@@ -24,7 +24,8 @@
             return this.split(org).join(dest);
         }
     </script>
-    
+    <!-- NanumSquare Font -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/NanumSquare/nanumsquare.css' %}"/>
 
     <style>
         text {
@@ -49,12 +50,11 @@
 
 <div class="result">
     <a href="{% url 'result' %}"><button class="btn-re">새로고침</button></a>
-    <p class="graph-title">PI No.{{pi_num}} 측정 결과 확인</p>
+    <p class="graph-title">No.{{pi_num}} 측정 결과 확인</p>
 </div>
 
 <div class="table-div result">
-<button class="button2" onclick="csv_name({{pi_num}}, '{{th_state.start_time|date:'Ymd_His'}}')">엑셀 파일 저장</button>
-<p class="sub-title bt2">측정 결과</p>
+<button class="button-current" style='margin-top:10px;' onclick="csv_name({{pi_num}}, '{{th_state.start_time|date:'Ymd_His'}}')">엑셀 파일 저장</button>
 
 	<table class="table-result" id="table_data"> </table>
         

@@ -253,13 +253,13 @@
     <!--- GRAPH POSITION END --->
 
     <br><br><br><br>
-	
-    <div class="table-div">
+	<div class='container-padding'>
+	    <p class='home-title'>No.{{pi_num}} 상세 데이터</p>
+	</div>
+    <div class="table-div" style='padding-top: 10px;'>
 
-	<p class="sub-title">No.{{pi_num}} 상세 데이터</p>
-	
-	<a href="{% url 'result' %}"><button class="button-past">현재 데이터 조회</button></a>
-        <a href="{% url 'beforeResult' %}"><button class="button-current">과거 데이터 조회</button></a>
+	<a href="{% url 'result' %}"><button class="button-current">현재 데이터 조회</button></a>
+        <a href="{% url 'beforeResult' %}"><button class="button-past">과거 데이터 조회</button></a>
 	
         <table class="table-result" id="table_data">
         </table>

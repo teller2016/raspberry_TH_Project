@@ -176,8 +176,8 @@ body{
 }
 
 
-.button-past{
-	margin-top:5px;
+.button-current{
+	margin-top:0px;
 	margin-right: 15px;
 	float:right;
 	font-size: 12px;
@@ -189,8 +189,8 @@ body{
 	border:1px solid #2243a1;
 }
 
-.button-current{
-	margin-top:5px;
+.button-past{
+	margin-top:0px;
 	margin-right: 15px;
 	float:right;
 	font-size: 12px;
@@ -338,6 +338,11 @@ button {
 	border: 0px solid #a8a8a8;
 	border-collapse: collapse;
 	margin: 0 auto;
+	margin-top: 50px;
+}
+
+.table-result.past{
+	margin-top: 20px;
 }
 
 .tr-bar2{
