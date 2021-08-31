@@ -210,7 +210,8 @@ def restartAll(request, time, second): #time: ex> "2021-07-06 17:13:00" // secon
     new_state.save()
     
     conn.close()
-    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
+    #os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run.py ' + second + ' &')
+    os.system('sudo python3 /home/pi/Project/TH_Project/singletonTH/th_run_sht.py ' + second + ' &')
     
     return HttpResponse('***HttpResponse restart all***')
 

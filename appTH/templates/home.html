@@ -65,7 +65,7 @@
 	    
 	    <div style='display:flex; text-align:left'>
 		<!-- Div( Pi href Button) -->
-		<div style='width:30%'>
+		<div style='width:30%' class='mobile-margin'>
 		    <div class = 'information-box'>
 			<a href="http://192.168.243.1:80/">
 			    <button class = 'pi-select-button btn-me'>
@@ -98,12 +98,12 @@
 		<!-- Div( Time Info ) -->
 		<!-- PI 기준 (시간 + 주기)--><!-- 경과시간 -->
 		<div style='width:70%'>
-		    <div class = 'information-box'>
+		    <div class = 'information-box padding-add'>
 			<div class='information-text-box text-bold text-gray'>PI No.{{pi_num}} 기준</div>
 			<div class='information-text-box text-bold text-gray' id="dataCycle">측정주기: N/A</div>
 		    </div>
 		    
-		    <div class = 'information-box'>
+		    <div class = 'information-box padding-add'>
 			<div class='information-text-box text-bold'>현재시간</div>
 			<div style='display:flex'>
 			    <div class='information-text-box' style='color:#355dcc' id='cur_date'>date</div>
@@ -120,7 +120,7 @@
 			    </div>
 			    
 			    
-			    <div class='information-text-box two'>
+			    <div class='information-text-box two '>
 				{% if run_state == 2 %}
 				<div class='text-bold'>종료시간</div>
 				<div class='text-gray'>{{th_state.end_time|date:"Y-m-d"}}</div>
@@ -143,24 +143,25 @@
 	</div>
 	
 	<div class='start-button-container'>
-	    <div style='display:flex; padding:20px; padding-bottom:0px;'>
+	    <div style='display:flex; padding:10px; padding-right:0px;'>
 		{% if run_state == 2 %}
-		<div style='width:50%'>
+		<div style='width:55%; margin-top:15px; margin-left:8px;'>
 		    <div>
 			<input type="range" id="cycle" name="cycle" value="30" min="5" step="5" max="60"  onInput="setCycle()">
 		    </div>
-		    <div style='width:100%'>
-			<div class='information-text-box' style='float:left; padding-left:0px'>측정주기</div>
-			<div class='information-text-box' style='float:right; padding-left:3px'>초</div>
-			<div style='float:right; border:solid 2px; width:40px; border-radius:5px;'>
-			    <div class='information-text-box' style='float:right'>
+		    <div style='width:100%; display:flex; align-items: center; justify-content:center;'>
+			<div class='cycle-time-box' style='padding-left:0px'>측정주기</div>
+			<div style='border:solid 2px; width:40px; border-radius:5px; margin-left:10px;'>
+			    <div class='cycle-time-box' >
 			    <label for="cycle" id="cycleLabel">30</label>
 			    </div>
 			</div>
+			<div class='cycle-time-box' style='padding-left:3px'>초</div>
+			
 		    </div>
 		</div>
 		
-		<div style='width:50%'>
+		<div style='width:45%;'>
 		    <button class="btn-startAll" onclick="start_pi();">측정 시작</button>
 		</div>
 		{% else %}

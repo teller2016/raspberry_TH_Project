@@ -29,8 +29,7 @@ pymysql.install_as_MySQLdb()
 
 # Get I2C bus
 bus = smbus.SMBus(1)
-bus.write_i2c_block_data(0x44, 0x2C, [0x06])
-time.sleep(0.5)
+
 #.connect로 MySQL에 연결
 # 호스트명, 포트, 로그인, 암호, 접속할 DB
 conn= pymysql.connect(host="localhost",
@@ -75,10 +74,12 @@ try :
         #now = datetime.date.today()
 
         while True:
+            bus.write_i2c_block_data(0x44, 0x2C, [0x06])
+            time.sleep(0.5)
             data = bus.read_i2c_block_data(0x44, 0x00, 6)
             temperature = ((((data[0] * 256.0) + data[1]) * 175) / 65535.0) - 45
             humidity = 100 * (data[3] * 256 + data[4]) / 65535.0
-           #humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+          
             if humidity is not None and temperature is not None and humidity < 120 :
                 print('Temp=%0.1f*C Humidity=%0.1f'%(temperature, humidity))
                 end=time.time() #end = 현재 시간
@@ -89,14 +90,14 @@ try :
                 runtimedate = start_date_res[0][0] + datetime.timedelta(seconds=runtime)
                
             
-               #cur.execute(sql,
-                #           (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,3),round(humidity,3)))
-               #conn.commit()
-               # max database update
-                if max_hum <= round(humidity,3):
+                cur.execute(sql,
+                           (count,runtime,sec2time(end-start, 0),runtimedate,round(temperature,1),round(humidity,1)))
+                conn.commit()
+                #max database update
+                if max_hum <= round(humidity,1):
                     print('Max Humid value appeared!!')
-                    max_hum = round(humidity,3)
-                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,3),round(temperature,3)))
+                    max_hum = round(humidity,1)
+                    cur.execute(max_hum_sql, (count,sec2time(end-start, 0),runtimedate,round(humidity,1),round(temperature,1)))
                     conn.commit()
                 count = count + 1
                 time.sleep(sleepTime)
